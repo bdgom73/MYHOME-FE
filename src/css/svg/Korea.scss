@@ -1,0 +1,26 @@
+.korea_area{   
+    width: 100%;
+    height: 100%;
+    display: flex;
+  
+    svg{
+        transform: scaleX(0.5);
+        transform: scaleY(0.7);
+        margin-top: -100px;
+    }
+    .OUTLINE {
+        stroke-linejoin:round;
+        stroke: #ffffff;
+        stroke-width: 2;
+        cursor: pointer;
+        fill: #a8a4a4;
+        &:hover{
+            fill : #aa1c1c;
+        }
+        g{
+            stroke-width:0 ;
+        }
+       
+    }
+    
+}

@@ -1,0 +1,205 @@
+.gyeonggi_area{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 800px;
+    #gyeonggi{
+        .OUTLINE {
+            stroke-linejoin:round;
+            stroke: #ffffff;
+            stroke-width: 2;
+            cursor: pointer;
+            fill: #a8a4a4;
+            &:hover{
+                fill : #aa1c1c;
+            }
+        }
+    }
+}
+
+
+// #CD41111 {
+//     fill: #f1c40f;
+//     cursor: pointer;
+// }
+// #CD41113 {
+//     fill: #16a085;
+//     cursor: pointer;
+// }
+// #CD41115 {
+//     fill: #f39c12;
+//     cursor: pointer;
+// }
+// #CD41117 {
+//     fill: #2ecc71;
+//     cursor: pointer;
+// }
+// #CD41131 {
+//     fill: #e67e22;
+//     cursor: pointer;
+// }
+// #CD41133 {
+//     fill: #27ae60;
+//     cursor: pointer;
+// }
+// #CD41135 {
+//     fill: #d35400;
+//     cursor: pointer;
+// }
+// #CD41150 {
+//     fill: #3498db;
+//     cursor: pointer;
+// }
+// #CD41171 {
+//     fill: #e74c3c;
+//     cursor: pointer;
+// }
+// #CD41173 {
+//     fill: #2980b9;
+//     cursor: pointer;
+// }
+// #CD41190 {
+//     fill: #c0392b;
+//     cursor: pointer;
+// }
+// #CD41210 {
+//     fill: #9b59b6;
+//     cursor: pointer;
+// }
+// #CD41220 {
+//     fill: #8e44ad;
+//     cursor: pointer;
+// }
+// #CD41250 {
+//     fill: #34495e;
+//     cursor: pointer;
+// }
+// #CD41271 {
+//     fill: #2c3e50;
+//     cursor: pointer;
+// }
+// #CD41273 {
+//     cursor: pointer;
+//     fill: #1abc9c;
+// }
+// #CD41281 {
+//     cursor: pointer;
+//     fill: #f1c40f;
+// }
+// #CD41285 {
+//     cursor: pointer;
+//     fill: #16a085;
+// }
+// #CD41287 {
+//     fill: #f39c12;
+//     cursor: pointer;
+// }
+// #CD41290 {
+//     fill: #2ecc71;
+//     cursor: pointer;
+// }
+// #CD41310 {
+//     fill: #e67e22;
+//     cursor: pointer;
+// }
+// #CD41360 {
+//     fill: #27ae60;
+//     cursor: pointer;
+// }
+// #CD41370 {
+//     fill: #d35400;
+//     cursor: pointer;
+// }
+// #CD41390 {
+//     fill: #3498db;
+//     cursor: pointer;
+// }
+// #CD41410 {
+//     fill: #e74c3c;
+//     cursor: pointer;
+// }
+// #CD41430 {
+//     fill: #2980b9;
+//     cursor: pointer;
+// }
+// #CD41450 {
+//     cursor: pointer;
+//     fill: #c0392b;
+// }
+// #CD41461 {
+//     fill: #9b59b6;
+//     cursor: pointer;
+// }
+// #CD41463 {
+//     fill: #8e44ad;
+//     cursor: pointer;
+// }
+// #CD41465 {
+//     fill: #34495e;
+//     cursor: pointer;
+// }
+// #CD41480 {
+//     fill: #2c3e50;
+//     cursor: pointer;
+// }
+// #CD41500 {
+//     fill: #1abc9c;
+//     cursor: pointer;
+// }
+// #CD41550 {
+//     fill: #f1c40f;
+//     cursor: pointer;
+// }
+// #CD41570 {
+//     fill: #16a085;
+//     cursor: pointer;
+// }
+// #CD41590 {
+//     fill: #f39c12;
+//     cursor: pointer;
+// }
+// #CD41610 {
+//     fill: #2ecc71;
+//     cursor: pointer;
+// }
+// #CD41630 {
+//     fill: #e67e22;
+//     cursor: pointer;
+// }
+// #CD41650 {
+//     fill: #27ae60;
+//     cursor: pointer;
+// }
+// #CD41670 {
+//     fill: #d35400;
+//     cursor: pointer;
+// }
+// #CD41800 {
+//     fill: #3498db;
+//     cursor: pointer;
+// }
+// #CD41820 {
+//     fill: #e74c3c;
+//     cursor: pointer;
+// }
+// #CD41830 {
+//     fill: #2980b9;
+//     cursor: pointer;
+// }
+// .LINE {
+//     stroke-linejoin:round;
+//     stroke: #ffffff;
+//     stroke-width: 1;
+//     fill: none;
+// }
+// .POINT {
+//     stroke: #ffffff;
+//     stroke-width: 1;
+//     fill: #ffffff;
+// }
+// .TEXT {
+//     fill: #ffffff;
+//     font-size: 13px;
+//     text-anchor: middle;
+//     alignment-baseline: middle;
+// }

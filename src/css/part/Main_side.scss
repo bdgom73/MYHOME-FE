@@ -1,0 +1,90 @@
+@import "../color.scss";
+.content_wrap{
+    .side_menu{
+        width: 100%; 
+        position: absolute;
+        top:0;
+        z-index: 998;
+        transition: all .4s ease;
+        height: 100vh;
+        background-color: rgba(0,0,0,.5);
+        display: flex;
+        .side_sh{
+            width: 80%;
+            height: 100%;
+            position: relative;
+            z-index: 999;
+        }
+       .side_nav{    
+            -webkit-animation: slide-in-left 0.2s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+            animation: slide-in-left 0.2s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+            min-width: 168px;
+            width: 20%;
+            height: 100vh;
+            background-color: $mushroom;
+            position: relative;
+            z-index: 999;
+            .sub_menu{
+                padding: 11px 4px;
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                img{
+                    width: 100px;
+                    cursor: pointer;
+                }
+                svg{
+                    margin-right: 14px;
+                }
+            }
+            ul{
+                list-style: none;
+                padding: 0;  
+                border-top:1px solid #aaa ; 
+                li{
+                    padding: 10px;
+                    font-size: 13px;  
+                    cursor: pointer;   
+                    display: flex;
+                    align-items: center;   
+                    font-size: 16px;   
+                    color : #1d1d1d;
+                    font-weight: bold;
+                    &:hover{
+                     color : $gunmetal;
+                    }
+                    svg{
+                      color : #222;
+                      margin-right: 5px;
+                    }
+                }
+            }
+       }
+    }
+}
+
+ @-webkit-keyframes slide-in-left {
+    0% {
+      -webkit-transform: translateX(-1000px);
+              transform: translateX(-1000px);
+      opacity: 0;
+    }
+    100% {
+      -webkit-transform: translateX(0);
+              transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  @keyframes slide-in-left {
+    0% {
+      -webkit-transform: translateX(-1000px);
+              transform: translateX(-1000px);
+      opacity: 0;
+    }
+    100% {
+      -webkit-transform: translateX(0);
+              transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  

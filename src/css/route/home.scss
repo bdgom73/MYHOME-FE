@@ -1,0 +1,27 @@
+.home_wrap{
+    width: 100%;
+    min-height: 100vh;
+    .home_s1{
+        display: flex;
+        .home_calendar{
+         
+        }
+        .home_weather{
+            
+        }
+    }
+}
+
+@media screen and (max-width: 560px) {
+    .home_wrap{  
+        .home_s1{
+            flex-direction: column;
+            .home_calendar{
+                
+            }
+            .home_weather{
+                
+            }
+        }
+    }
+}

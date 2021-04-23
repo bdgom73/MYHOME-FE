@@ -1,0 +1,77 @@
+@import "../color.scss";
+.weather_card{
+    padding: 5px;
+    border: 1px solid #bbb;
+    margin: 30px 5px 10px;
+    max-width: 350px;
+    background-color: $mushroom;
+    .weather_select{
+        display: inline;
+        font-size: 20px;
+        margin: 0;
+        font-weight: bold;
+        color : $gunmetal;
+        select{
+            background-color: inherit;
+            display: inline;
+            border : 0;
+            font-size: 20px;
+            font-weight: bold;
+            color : $gunmetal;
+            &:focus{
+                outline: none;
+            }
+            
+        }
+    }
+    .weather_card_body{
+        
+        .weather{
+            display: flex;
+            .icon{
+                img{
+                    width: 80px;
+                    height: 80px;
+                } 
+            }
+            .weather_info{    
+                display: flex;
+                .weather_c1{
+                    display: flex;
+                    flex-direction: column;
+                    .temp{
+                        font-size: 50px;
+                        font-weight: bold;
+                        color : #120863;
+                        span{
+                            font-size: 30px;
+                            font-weight: 500;
+                        }
+                    }
+                    .weather_status{
+                        text-align: center;
+                        font-size: 25px;
+                        font-weight: bold;
+                        color :#120863;
+                        span{
+                            margin-left: 10px;
+                            font-size: 14px;        
+                        }
+                    }     
+                }
+                .weather_c2{
+                    display: flex;
+                    padding: 10px;
+                    flex-direction: column;
+                    .humidity, 
+                    .updated,
+                    .speed{
+                        font-size: 13px;
+                        color : #120863;
+                    }
+                }
+   
+            }
+        }    
+    }
+}

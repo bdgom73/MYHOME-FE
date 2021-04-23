@@ -1,0 +1,87 @@
+@import "../color.scss";
+header{
+    box-sizing: border-box;
+    min-width: 320px;
+    background-color: $mushroom;
+    width: 100%;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .header_s1{
+        display: flex;
+        align-items: center;
+        .sub_menu{
+            cursor: pointer;
+        }
+        .logo{
+            img{
+                width: 100px;
+                cursor: pointer;
+            }
+            
+        }
+    }
+    .search{
+        display: flex;
+        align-items: center;
+        animation: _opacity_ .5s ease-in;
+        input[type="text"]{
+            padding: 5px;
+            width: 320px;
+            height: 30px;
+            border: 1px solid #bbb;
+        }
+        input[type="text"]:focus{
+            outline: none;
+        }
+        input[type="button"]{
+            height: 30px;
+            padding: 5px;
+            border: 1px solid #bbb;
+            border-left: 0;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            color:#eee;
+            background-color:$thatch ;
+        }
+        input[type="button"]:hover{
+            background-color: #b38982;   
+        }    
+    }
+    .user_info{
+        display: flex;
+        align-items: center;
+        .alert{
+            cursor: pointer;
+        }
+        .user_profile{
+            margin-left: 10px;
+            background-color: #eee;
+            width: 45px;
+            height: 45px;
+            border : 1px solid #bbb;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }   
+    }  
+}
+@media screen and (max-width: 560px) {
+    header{
+        .search{
+            display: none;     
+        }
+    }
+}
+@keyframes _opacity_ {
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}

@@ -1,0 +1,231 @@
+@import "../color.scss";
+*{
+    box-sizing: border-box !important;
+}
+
+.weather_current{
+    display: flex;
+    width: 100%;
+    padding: 5px;
+    .time_table{
+        width: 30%;
+        margin: 5px;
+
+        border : 1px solid #ccc;
+        border-collapse: collapse;
+        th{
+            padding: 5px;
+            border : 1px solid #ccc;
+        }
+        td{
+            padding: 5px;
+            border : 1px solid #ccc;
+            text-align: center;
+        }
+    }
+}
+.weather_b1{
+    width: 70%;
+    
+    .weather_sub_b1{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        border : 1px solid #bbb;
+        border-radius: 10px;
+        background-color: #f7f7f7;
+        padding: 5px;
+        position: relative;
+        .reload{
+            position: absolute;
+            top:5px;
+            right: 5px;
+            cursor: pointer;
+        }
+    }
+   
+   
+    .weather_control{
+        select{
+            border:0;
+            padding: 5px;
+            background-color: inherit;
+            font-size: 16px;
+            font-weight: bold;
+            &:focus{
+                outline: none;
+            }
+        }
+    }
+}
+.weather_chart{
+    input[type=range]::-ms-track { background: transparent; border-color: transparent; color: transparent; }
+    .week_weather{
+        font-size: 16px;
+        font-weight: bold;
+        
+    }
+}
+.korea_weather{
+    width: 490px;
+    height: 565px;
+    .weather_map{
+        border-radius: 10px;
+        svg{
+            text{
+                font-size: 16px;
+                font-weight: bold;
+            }
+        }
+        .weather_map_top{
+            background-color: #fff;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            border:1px solid #bbb;
+            padding: 15px 10px;
+            margin: -5px -5px 5px;
+            font-weight: bold;
+            font-size: 21px;
+            span{
+                margin-left: 20px;
+            }
+        }
+    }
+}
+.weather{
+    display: flex;
+    .icon{
+        img{
+            width: 80px;
+            height: 80px;
+        } 
+    }
+    .weather_info{    
+        display: flex;
+        .weather_c1{
+            display: flex;
+            flex-direction: column;
+            .temp{
+                font-size: 50px;
+                font-weight: bold;
+                color : #120863;
+                span{
+                    font-size: 30px;
+                    font-weight: 500;
+                }
+            }
+            .weather_status{
+                text-align: center;
+                font-size: 25px;
+                font-weight: bold;
+                color :#120863;
+                display: flex;
+                flex-direction: column;
+                span{    
+                    top:0px;
+                    left: 50px;
+                    font-size: 14px;  
+                    color :#120863;  
+                    padding: 5px;   
+                    .hour1{
+                        font-size: 10px;
+                        font-weight: 100;
+                    } 
+                }
+            }     
+        }
+        .weather_c2{
+            display: flex;
+            padding: 10px;
+            flex-direction: column;
+            .humidity, 
+            .updated,
+            .speed{
+                font-size: 13px;
+                color : #120863;
+            }
+        }
+
+    }
+}
+.weather_hourly{
+    min-width: 320px;
+    width: 100%;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    margin: 10px 0;
+    padding:  10px 0;
+    .time_weather{
+        font-size: 16px;
+        font-weight: bold;
+        
+    }
+    .weather_hourly_main{
+        
+        min-width: 320px;
+        position: relative;
+        
+        .weather_icon{
+            position: absolute;
+            width: 100%;
+            top: 140px;        
+            z-index: 8;
+            img{
+                position: absolute;
+                width: 50px;
+                height: 50px;
+                &:first{
+                    left : 10px !important;
+                }
+            }
+           
+        }
+    }
+}
+@media screen and (max-width: 850px){
+    .weather_current{
+
+        display: flex;
+        flex-direction: column; 
+        .time_table{
+            width: 100%;
+            margin: 0;
+            th{
+                padding: 5px;
+                border : 1px solid #ccc;
+            }
+            td{
+                padding: 5px;
+                border : 1px solid #ccc;
+                text-align: center;
+            }
+        }
+    }
+   
+    .weather_b1{      
+        width: 100%;        
+    }
+    .korea_weather{
+        width: auto;
+        height: auto;
+    }
+}
+
+@media screen and (max-width: 480px) {
+   
+    .weather_hourly{
+   
+        .weather_hourly_main{
+           
+            .weather_icon{
+                top: 150px; 
+                img{
+                    
+                    width: 40px;
+                    height: 40px;
+                }
+               
+            }
+        }
+    }
+}

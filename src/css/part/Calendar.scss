@@ -1,0 +1,192 @@
+@import "../color.scss";
+.calendar_wrap{
+    width: 100%;
+    padding: 10px;
+    .calendar_top{
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        button{
+            background-color: inherit;
+            border:0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            cursor: pointer;
+            &:hover{
+                color : $thatch;
+            }
+        }
+        .current_date{
+            font-size: 18px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            position: relative;
+            svg{
+                cursor: pointer;
+            }
+            .date_selector{
+                background-color: $mushroom;
+                padding: 10px;
+                position: absolute;
+                top:35px;
+                right:-5px;
+                border-radius: 5px;
+                &::before{
+                    content: "";
+                    position: absolute;
+                    top:-10px;
+                    right: 5px;
+                    border-top:10px solid none;
+                    border-bottom:10px solid $mushroom;
+                    border-right: 10px solid transparent;
+                    border-left: 10px solid  transparent;
+                   
+                }
+                form{
+                    display: flex;
+                    select{
+                        border : 1px solid #eee;
+                        background-color: $elephant;
+                        color : white;
+                        padding: 5px 10px;
+                    
+                        &:first-child{
+                            border-right: 0;
+                            margin-right: 2px;
+                        }
+                        &:focus{
+                            outline: none;
+                        }
+                        &::-webkit-scrollbar{
+                            width: 5px;
+                            height: 0;
+                        }
+                        &::-webkit-scrollbar-track{
+                            background-color: $elephant;
+                        }
+                        &::-webkit-scrollbar-thumb{
+                            background-color: $mushroom;
+                        }
+                    }
+                    input[type="submit"]{
+                        border : 1px solid #eee;
+                        background-color: $thatch;
+                        color : white;
+                        padding: 5px 10px;
+                        border-radius: 5px;
+                        cursor: pointer;
+                        font-size: 10px;
+                    }
+                }
+            }
+        }
+    }
+    .calendar_table{
+        width: 100%;
+        padding: 5px;
+        border-collapse: collapse;
+        thead{
+            tr{
+                background-color: $gunmetal;
+                color:#fff;
+                th{
+                    padding: 10px;
+                    border:1px solid #BBB;
+                    &:first-child{
+                        color:#c4302b;
+                    } 
+                    &:last-child{
+                        color:#7ca7df;
+                    } 
+                }
+            }
+        }
+        tbody{ 
+            tr{
+                .selected{     
+                    border :3px double #f06a1c
+                }
+                td{     
+                    height: 50px;  
+                    border:1px solid #bbb;
+                    &:first-child{
+                        color:#c4302b;
+                    } 
+                    &:last-child{
+                        color:#4B89DC;
+                    } 
+                    &:hover{
+                        background-color: #e7e8f7;
+                        cursor: pointer;
+                    }
+                    .date_day{
+                        display: flex;
+                        justify-content: flex-end; 
+                        font-size: 20px;
+                        .date{
+
+                            &:hover{
+                                color : #f06a1c;
+                            }
+                        }
+                    }
+                    .date_content{
+                        width: 100%;
+                        height: 100px;
+                        .status{
+                            width:90%;
+                            height: 20px;
+                            
+                            border-radius: 10px;
+                            background-color: #133d74;
+                            padding: 5px;
+                            color : #fff;
+                            font-size: 10px;
+                            overflow: hidden;
+                            display: flex;
+                            align-items: center;
+                            &:hover{
+                                background-color: #265694;
+                            }
+                        }
+                    }
+            
+                }
+            }
+        }
+    }
+   
+    .grayed{
+        color :#ccc;
+    }
+}
+
+@media screen and (max-width: 560px) {
+    .calendar_wrap{
+        .calendar_table{
+            tbody{ 
+                tr{
+                    td{             
+                        .date_content{
+                            height: 50px;
+                            .status{          
+                                white-space: nowrap;
+                                width: 20px;
+                                height: 20px;
+                                overflow: hidden;
+                                border-radius: 50%;
+                                text-overflow: clip;
+                                font-size: 0;
+                            }
+                        }
+                
+                    }
+                }
+            }
+        }
+        
+    }
+}
