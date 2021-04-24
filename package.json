@@ -16,6 +16,7 @@
     "d3-geo-projection": "^3.0.0",
     "dotenv": "^8.2.0",
     "google-map-react": "^2.1.9",
+    "google-maps-react": "^2.0.6",
     "moment": "^2.29.1",
     "moment-range": "^1.0.2",
     "node-sass": "^5.0.0",
@@ -26,6 +27,7 @@
     "react-dom": "^17.0.2",
     "react-hooks": "^1.0.1",
     "react-icons": "^4.2.0",
+    "react-instantsearch-dom-maps": "^6.10.3",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "web-vitals": "^1.1.1"
