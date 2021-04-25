@@ -2,18 +2,31 @@ import GoogleMapReact from 'google-map-react';
 import { useEffect, useRef, useState } from 'react';
 import { FiMapPin } from 'react-icons/fi';
 import { GrMap } from 'react-icons/gr';
+import cityJson from "../../json/city.json";
 import "../../css/part/googleMap.scss";
+import axios from 'axios';
+import { getWeatherIconUrl } from '../../js/weather_conversion';
+import WeatherInfo from "./weather/WeatherInfo";
+import Modal from '../modal/modal';
 
-const Marker = ({ children }) => <div className="marker">{children}</div>;
+const Marker = ({ children,key }) => <div className="marker" key={key}>{children}</div>;
 
-// openweathermap의 API KEY 값
+// google API KEY 값
 const API_KEY = process.env.REACT_APP_GOOGLE_KEY;
+// openweathermap의 API KEY 값
+const W_API_KEY = process.env.REACT_APP_WEATHER_ID;
+
 
 export default function GoogleMap(props){
 
     const searchRef = useRef();
     // 검색 DATA 저장
     const [searchData,setSearchData] = useState({});
+    // 지도 ZOOM
+    const [zoom,setZoom] = useState(11);
+    // 범위 날씨 값
+    const [t,setT] = useState([]);
+    const [bounds,setBounds] = useState({});
     const {width, height} = props;
     const [searchBox, setSearchBox] = useState();
     const [defaultValue,setDefaultValue] = useState(
@@ -35,13 +48,35 @@ export default function GoogleMap(props){
         lat : 0,
         lng : 0
     })
-
+    // modal open
+    const [modal,setModal] = useState(false);
+    const [mode,setMode] = useState();
+    const [modalIndex,setModalIndex]=useState();
+    const [cityname,setCityname] = useState();
+    // ajax 현재 도시의 아이디값으로 날씨데이터 가져오기.
+    function getWeatherBbox(bound,cb){
+        bound = bound ? bound : bounds;
+        axios({
+            method:"get",
+            url : `http://api.openweathermap.org/data/2.5/box/city?bbox=${bound.La.g},${bound.Ua.g},${bound.La.i},${bounds.Ua.i},${zoom}&appid=${W_API_KEY}`
+        }).then((res)=>{
+            if(cb) cb(res);
+        }).catch((e)=>{  
+            alert(e.response.data.message)
+        })
+    }
     // MAP API LOAD
     const handleApiLoaded = (map,maps)=>{
         if(map && maps){
+            setBounds(map.getBounds())
+            setZoom(map.zoom);
             setMap(map);
             setGooglempas(maps);
-            setSearchBox(new maps.places.SearchBox(searchRef.current));     
+            setSearchBox(new maps.places.SearchBox(searchRef.current));  
+            getWeatherBbox(map.getBounds(),(res)=>{  
+                setT(res.data.list || []);     
+            })
+            
         }
     }
 
@@ -49,12 +84,8 @@ export default function GoogleMap(props){
     const onPlaceChange = ()=>{
         const selected = searchBox.getPlaces();
         const { 0 : place} = selected;
-        console.log(place)
         setSearchData(place);
-
-        if(!place.geometry){
-           return;
-        }
+        if(!place.geometry){ return; }
 
         if(!place.geometry.viewport){
             map.fitBounds(place.geometry.viewport);
@@ -76,24 +107,43 @@ export default function GoogleMap(props){
             searchBox.addListener("places_changed",onPlaceChange);
             searchBox.bindTo("bounds",map);
         }
+       
     },[searchBox])
 
+    useEffect(()=>{
 
+        if(bounds.La && bounds.Ua){
+            getWeatherBbox("",(res)=>{  
+                setT(res.data.list || []);        
+            })
+        }  
+    },[bounds])
+    // 이벤트 모달창 종료
+    const onCloseHandler = ()=>{
+        setModal(false);
+        const body = document.body;
+        body.style.overflow ="auto";
+    }
 
+    function openModal() {
+        if(mode === 1 && modal){
+            return <Modal title={cityname} close={onCloseHandler}><WeatherInfo ok cityId={modalIndex}/></Modal>
+        }    
+    }
     return(
         <>  
+        {openModal()}
         <div className="google_map_wrap">
             {
                 subMenuActive ? (
                     <div className="google_map_menu">
-                        <span className="title"><GrMap/>지도</span>
                         <input type="text" ref={(ref)=>{searchRef.current = ref}} id="map_search" title={searchRef.current ? searchRef.current.value : ""}/>
-                        
+                     
                     </div>
                 ) : <></>
             }  
-            <div class="map" style={{ height: height ? height : '', width: width ? width : '' }}>
-
+            <div className="map" style={{ height: height ? height : '', width: width ? width : '' }}>
+                 
                     <GoogleMapReact     
                     bootstrapURLKeys={{
                         key: API_KEY,
@@ -105,15 +155,63 @@ export default function GoogleMap(props){
                     onGoogleApiLoaded={({map, maps})=>{
                         handleApiLoaded(map,maps);  
                     }}
+                    
+                    onChange={(e)=>{
+                        let bounds1 = {
+                            La : {
+                                g : e.bounds.ne.lng,
+                                i : e.bounds.sw.lng
+                            },
+                            Ua : {
+                                g : e.bounds.ne.lat,
+                                i : e.bounds.sw.lat
+                            }
+                            
+                        }
+                        setZoom(e.zoom);
+                        setBounds(bounds1);
+                      
+                    }}
                     >
-                        
+                      
                     <Marker
                         lat={current.lat}
                         lng={current.lng}
                     >
-                        <FiMapPin size="30" fill="#9f02ff" stroke="#eee"/>    
+                        <FiMapPin size="40" fill="#9f02ff" stroke="#eee"/>    
                     </Marker>
-                    
+                    {/* {
+                        cityJson.map((c,i)=>{
+                            return(
+                                <Marker key={c.coord.lat+c.coord.lon+i}
+                                    lat={c.coord.lat} lng ={c.coord.lon}
+                                >
+                                    <FiMapPin size="30" fill="#9f02ff" stroke="#eee"/>             
+                                </Marker>
+                            );
+                        })
+                    } */}
+                    { console.log(Array.isArray(t))}
+                     {
+                        
+                        Array.isArray(t) ?
+                        t.map((t,i)=>{
+                            return(
+                                <Marker key={i}
+                                    lat={t.coord.Lat} lng ={t.coord.Lon}     
+                                >   
+                                   <img src={`${getWeatherIconUrl(t.weather[0].icon)}`} alt="d" 
+                                   onClick={()=>{
+                                        setModalIndex(t.id);
+                                        setModal(true);
+                                        setMode(1);
+                                        setCityname(t.name);
+                                   }}/>                                     
+                                </Marker>
+                            );
+                        }) : <></>
+                        
+                    }
                     </GoogleMapReact>
             </div>
         </div>

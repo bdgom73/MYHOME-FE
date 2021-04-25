@@ -2,18 +2,19 @@
 $MAP_WIDTH : 350px;
 .google_map_wrap{
     width: 100%;
-    display: flex;
-
+    
     .google_map_menu{
-        width: $MAP_WIDTH ;
-        padding: 10px;
+        padding: 5px 5px 5px ;
         background-color: $mushroom;
         border-right: 0;
-        position: relative;
+        position: sticky;
+        top:0px;
+        z-index: 2;
         input[type="text"]{
             border : 1px solid #bbb;
-            padding: 5px;
+            padding: 10px;
             width: 100%;
+            border-radius: 5px;
             &:focus{
                 outline: none;
             }
@@ -22,6 +23,12 @@ $MAP_WIDTH : 350px;
     .map{
         width: 100%;
         height: 100vh;
+        position: relative;
+        img{   
+            width: 50px;
+            height:50px;
+            cursor: pointer;
+        }
     }
 }
 .title{

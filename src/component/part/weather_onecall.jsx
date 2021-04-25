@@ -5,7 +5,7 @@ import cityList from "../../storage/cityList";
 import "../../css/part/weather_onecall.scss";
 import { ResponsiveLine  } from '@nivo/line'
 import Loading from "./Loading";
-import { getWeatherIconUrl, hourFormat, timestampToDate, timestampToDate2, timestampToDate3, timestampToHour, timestampToMonth, timestampToMonthAndDate, timestampToMonthAndDateAndHour } from "../../js/weather_conversion";
+import { getWeatherIconUrl, hourFormat, timestampToDate, timestampToDate2, timeFormat,timestampToDate3, timestampToHour, timestampToMonth, timestampToMonthAndDate, timestampToMonthAndDateAndHour } from "../../js/weather_conversion";
 import ChartMap from "./ChartMap";
 import { AiOutlineReload } from 'react-icons/ai';
 
@@ -68,6 +68,8 @@ export default function WeatherOneCall(props){
         {data:[]}
     ]);
 
+    
+
     // 일주일 날씨 차트 x 좌표 라벨 유무
     const [chartBottom,setChartBottom] = useState(true);
    
@@ -104,7 +106,7 @@ export default function WeatherOneCall(props){
         createDatas(datas);   
         setViewData(datas.current) ;
         setLoading(false);  
-       createDateHourly(datas);
+        createDateHourly(datas);
     }
 
     // 차트의 높이 조절 ( 일주일 날씨 차트 )
@@ -149,6 +151,7 @@ export default function WeatherOneCall(props){
         for(let a =0; a < values.daily.length ; a++){
             daily_.push({
                 x : dateFormat(new Date(values.daily[a].dt*1000)) === dateFormat(new Date()) ? `오늘 (${week[new Date(values.daily[a].dt*1000).getDay()]})` : timestampToDate2(values.daily[a].dt),
+
                 y : Math.round(values.daily[a].temp["day"]),
                 id : values.daily[a].dt
             });
@@ -187,6 +190,8 @@ export default function WeatherOneCall(props){
         ]);
     }
 
+   
+
     // 로컬스토리지에 일주일 날씨 차트 높이 설정.
     const onChartSizeChangeHandler = (e)=>{
         setChartSize(e.target.value);
@@ -204,13 +209,14 @@ export default function WeatherOneCall(props){
     }
     return(<>
         {loading ? <Loading/> : <></>}
-        <div className="weather_main">
+
+        <div className="weather_main" >
       
             {
                 viewData.weather.length > 0  && viewData ?
                 <>
-                <div className="weather_current">   
-                    <div className="weather_b1">
+                <div className="weather_current" >   
+                    <div className="weather_b1" style={props.width ? {width: props.width} : {}}>
                         <div className="weather_sub_b1">
                         <div className="reload" onClick={()=>{
                               getWeatherCityId(onCityHandler(),(res)=>{
@@ -374,14 +380,20 @@ export default function WeatherOneCall(props){
                     </div>
                    
                     </div>
-                   
+                  
                 </div>  
-                    {/* 한국 주요도시 맵 표시 */}
-                    <div className="korea_weather">
-                        <ChartMap/>
-                    </div>  
-                </div>              
-                <table className="time_table">
+                {
+                    /* 한국 주요도시 맵 표시 */
+                    !props.ok ? ( 
+                        <div className="korea_weather">
+                            <ChartMap/>
+                        </div> 
+                    ) :<></>
+                }        
+                </div>   
+                {
+                    !props.ok ? (
+                        <table className="time_table">
                         {/*  시간당 날씨 데이터 표 */}
                         <thead>
                             <tr>
@@ -404,13 +416,17 @@ export default function WeatherOneCall(props){
                             }
                         </tbody>
                     </table>
-                </div>
+                    ) :<></>
+                }           
                
+                </div>   
                 </> : <></>
             }
           
+          
        </div>
     </>);
+    
 }
 
         

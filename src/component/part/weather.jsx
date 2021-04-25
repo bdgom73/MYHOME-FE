@@ -48,13 +48,14 @@ export default function Weather(props){
     const [cityName, setCityName]=useState();
     // 최근 업데이트 된 시간
     const [dt, setDt]=useState();
-    // 현재 날씨데이터
+    // 현재 도시의 아이디값
     const [current,setCurrent] = useState();
     useEffect(()=>{
         saveWeatherInfo();
         setCurrent(props.id)
     },[]);
 
+    // ajax 기본 respanse 세팅
     function saveInfo(res){
         const info = res.data; 
         setMain(info.main);
@@ -66,6 +67,8 @@ export default function Weather(props){
         setCityName(cityJson[info.id].name);
         setDt(timestampToDate(info.dt));      
     }
+
+    // 날씨 모드에 따른 값 가져오는 방법 검사
     const saveWeatherInfo = ()=>{
         if(props.mode === "id"){
             getWeatherCityId(props.id ? props.id : 1838716,(res)=>{

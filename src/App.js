@@ -8,6 +8,8 @@ import WeatherOneCall from "./component/part/weather_onecall";
 import Loading from "./component/part/Loading";
 import ChartMap from "./component/part/ChartMap";
 import GoogleMap from "./component/part/googleMap";
+import { ResponsiveLine } from "@nivo/line";
+import WeatherInfo from "./component/part/weather/WeatherInfo";
 
 function App() {
  
@@ -18,7 +20,8 @@ function App() {
         <Route exact path="/weather"><Template><WeatherOneCall/></Template></Route>
         <Route exact path="/dust"><Template></Template></Route>
         <Route exact path="/schedule"><Template><Calendar view={true}/></Template></Route>
-        <Route exact path="/map"><Template><GoogleMap/></Template></Route>
+        <Route exact path="/map"><Template><GoogleMap/></Template></Route>  
+        <Route exact path="/test"><Template><WeatherInfo cityId={1838716}/></Template></Route>
       </Switch>
     </BrowserRouter>
   );

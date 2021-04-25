@@ -72,3 +72,7 @@ export function hourFormat(_date){
 
     return Y+M+D;
 }
+export function timeFormat(timestamp){
+    const _date = new Date(timestamp*1000);
+    return  _date.getHours();
+}
