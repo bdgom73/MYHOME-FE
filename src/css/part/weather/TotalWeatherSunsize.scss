@@ -1,0 +1,54 @@
+.sun_wrap{
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    
+    h1{
+        font-size: 18px;     
+        color: #161616;  
+    }
+    .sun_table{
+        background-color: #fff;
+        border-radius: 10px;
+        tr{
+            td{
+                text-align: center;
+                padding: 5px;
+                &:first-child{
+                    svg{
+                        color: #c73510;
+                    }
+                }
+                &:nth-child(2){
+                    svg{
+                        color: #520f00;
+                    }
+                }
+                &:nth-child(3){
+                    svg{
+                        color: #ccbf07;
+                    }
+                }
+                &:nth-child(4){
+                    svg{
+                        color: #363300;
+                    }
+                }
+            }
+            &:first-child{
+                td{
+                    position: relative;
+                    span{
+                        position: absolute;
+                        bottom:0;
+                        left:28px;
+                        font-size: 13px;
+                        font-weight: bold;
+                        color : #181818;
+                    }
+                }
+            }
+        }
+        
+    }
+}

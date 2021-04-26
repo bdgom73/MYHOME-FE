@@ -211,18 +211,17 @@ export default function WeatherOneCall(props){
         {loading ? <Loading/> : <></>}
 
         <div className="weather_main" >
-      
             {
                 viewData.weather.length > 0  && viewData ?
                 <>
                 <div className="weather_current" >   
                     <div className="weather_b1" style={props.width ? {width: props.width} : {}}>
                         <div className="weather_sub_b1">
-                        <div className="reload" onClick={()=>{
-                              getWeatherCityId(onCityHandler(),(res)=>{
-                                responseDataService(res);
-                            })
-                        }}><AiOutlineReload/></div>
+                            <div className="reload" onClick={()=>{
+                                getWeatherCityId(onCityHandler(),(res)=>{
+                                    responseDataService(res);
+                                })
+                            }}><AiOutlineReload/></div>
                         <div className="weather_control">
                             <select onChange={onCityChangeHandler} value={city}>
                                 {
@@ -234,8 +233,7 @@ export default function WeatherOneCall(props){
                                 }
                             </select>
                         </div>
-                        <div className="weather_body">
-                        
+                        <div className="weather_body">                      
                             <div className="weather">                   
                                 <div className="icon">
                                 {viewData.weather[0].icon ? <><img src={getWeatherIconUrl(viewData.weather[0].icon)} alt={viewData.weather[0].icon}/></>:<></>} 
@@ -246,8 +244,7 @@ export default function WeatherOneCall(props){
                                         <span className="temp">
                                             {
                                             viewData.temp['day'] ? (<>{Math.round(viewData.temp['day'])}<span>℃</span></>) : 
-                                            viewData.temp ?  (<>{Math.round(viewData.temp)}<span>℃</span></>) : <></>
-                                            
+                                            viewData.temp ?  (<>{Math.round(viewData.temp)}<span>℃</span></>) : <></>                                            
                                             }     
                                         </span>
                                         <span className="weather_status">
@@ -262,8 +259,7 @@ export default function WeatherOneCall(props){
                                             <span className="unit">mm</span>
                                             </>) : ""}        
                                         </span>  
-                                        </span>  
-                                        
+                                        </span>          
                                     </div> 
                                     <div className="weather_c2">
                                         <span className="updated">{viewData.dt ? timestampToDate(viewData.dt) : ""}</span>
@@ -282,7 +278,6 @@ export default function WeatherOneCall(props){
                                         </span>
                                     </div>
                                 </div>  
-                            
                             </div>
                             <div className="weather_hourly">
                             <span className="time_weather">시간별 날씨</span>   
@@ -315,7 +310,6 @@ export default function WeatherOneCall(props){
                                                 tickSize: 13,
                                                 tickPadding: 20,
                                                 tickRotation: 0,
-                                            
                                                 legendOffset: 36,
                                                 legendPosition: 'middle'
                                             }}
@@ -327,60 +321,58 @@ export default function WeatherOneCall(props){
                                             pointLabelYOffset={-12}
                                             useMesh={true}
                                             
-                                /></div>
-                               
-                            </div>
-                    <div className="weather_chart">
-                    <span className="week_weather">주간 날씨</span>  
-                    <form>
-                        <input type="range" name="chart_size" min="200" max="600" defaultValue={chartSize} onChange={onChartSizeChangeHandler}/>
-                    </form>
-                    {
-                        // 일주일 날씨 온도 차트
-                        chart ? 
-                        <div style={{height: `${chartSize}px`}}>
-                        <ResponsiveLine
-                                data={chart}
-                                margin={chartBottom ? { top: 40, right: 30, bottom: 50, left: 20 } :{ top: 10, right: 10, bottom: 10, left: 10 }}
-                                xScale={{ type: 'point' }}
-                                yScale={{ type: 'linear', min: 'auto', max: 'auto', stacked: true, reverse: false }}
-                                yFormat=" >-.2f"
-                                axisTop={null}
-                                axisRight={null}
-                                enableGridX={false}
-                                enableGridY={false}
-                                curve="monotoneX"
-                                axisBottom={chartBottom ? {
-                                    orient: 'bottom',
-                                    tickSize: 5,
-                                    tickPadding: 5,
-                                    tickRotation: 0,      
-                                    legendOffset: 36,
-                                    legendPosition: 'middle'
-                                }: null }
-                                enableArea={true}
-                                axisLeft={null}
-                                enablePointLabel={true}
-                                pointSize={7}
-                                pointColor={{ theme: 'background' }}
-                                pointBorderWidth={2}
-                                pointBorderColor={{ from: 'serieColor' }}
-                                pointLabelYOffset={-12}
-                                useMesh={true}
-                                onClick={(e)=>{
-                                    for(let i = 0 ; i < daily.length ; i++){
-                                        if(daily[i].dt === e.data.id){
-                                            setViewData(daily[i]);
+                                />
+                            </div>                              
+                        </div>
+                        <div className="weather_chart">
+                        <span className="week_weather">주간 날씨</span>  
+                        <form>
+                            <input type="range" name="chart_size" min="200" max="600" defaultValue={chartSize} onChange={onChartSizeChangeHandler}/>
+                        </form>
+                        {
+                            // 일주일 날씨 온도 차트
+                            chart ? 
+                            <div style={{height: `${chartSize}px`}}>
+                            <ResponsiveLine
+                                    data={chart}
+                                    margin={chartBottom ? { top: 40, right: 30, bottom: 50, left: 20 } :{ top: 10, right: 10, bottom: 10, left: 10 }}
+                                    xScale={{ type: 'point' }}
+                                    yScale={{ type: 'linear', min: 'auto', max: 'auto', stacked: true, reverse: false }}
+                                    yFormat=" >-.2f"
+                                    axisTop={null}
+                                    axisRight={null}
+                                    enableGridX={false}
+                                    enableGridY={false}
+                                    curve="monotoneX"
+                                    axisBottom={chartBottom ? {
+                                        orient: 'bottom',
+                                        tickSize: 5,
+                                        tickPadding: 5,
+                                        tickRotation: 0,      
+                                        legendOffset: 36,
+                                        legendPosition: 'middle'
+                                    }: null }
+                                    enableArea={true}
+                                    axisLeft={null}
+                                    enablePointLabel={true}
+                                    pointSize={7}
+                                    pointColor={{ theme: 'background' }}
+                                    pointBorderWidth={2}
+                                    pointBorderColor={{ from: 'serieColor' }}
+                                    pointLabelYOffset={-12}
+                                    useMesh={true}
+                                    onClick={(e)=>{
+                                        for(let i = 0 ; i < daily.length ; i++){
+                                            if(daily[i].dt === e.data.id){
+                                                setViewData(daily[i]);
+                                            }
                                         }
-                                    }
-                                }}
-            
-                        /></div> : <></>
-                    }
+                                    }}
+                
+                            /></div> : <></>
+                        }
+                        </div> 
                     </div>
-                   
-                    </div>
-                  
                 </div>  
                 {
                     /* 한국 주요도시 맵 표시 */

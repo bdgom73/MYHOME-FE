@@ -76,3 +76,28 @@ export function timeFormat(timestamp){
     const _date = new Date(timestamp*1000);
     return  _date.getHours();
 }
+
+// 타임스탬프 형식 날짜데이터를 기본날짜데이터로 변경 
+export function gethourMin(timestamp){
+    const _date = new Date(timestamp*1000);
+    const Y = _date.getFullYear();
+    const M = (_date.getMonth()+1) < 10 ? "0"+(_date.getMonth()+1) : _date.getMonth()+1;
+    const D = (_date.getDate()) < 10 ? "0"+_date.getDate() : _date.getDate();
+    const H = (_date.getHours()) < 10 ? "0"+_date.getHours() : _date.getHours();
+    const m = (_date.getMinutes()) < 10 ? "0"+_date.getMinutes() : _date.getMinutes();
+    const S = (_date.getSeconds()) < 10 ? "0"+_date.getSeconds() : _date.getSeconds();
+    const K = week[_date.getDay()];
+    return H + "시 " + m +"분"
+}
+
+export function getYMD(timestamp){
+    const _date = new Date(timestamp*1000);
+    const Y = _date.getFullYear();
+    const M = (_date.getMonth()+1) < 10 ? "0"+(_date.getMonth()+1) : _date.getMonth()+1;
+    const D = (_date.getDate()) < 10 ? "0"+_date.getDate() : _date.getDate();
+    const H = (_date.getHours()) < 10 ? "0"+_date.getHours() : _date.getHours();
+    const m = (_date.getMinutes()) < 10 ? "0"+_date.getMinutes() : _date.getMinutes();
+    const S = (_date.getSeconds()) < 10 ? "0"+_date.getSeconds() : _date.getSeconds();
+    const K = week[_date.getDay()];
+    return Y+"-"+M +"-"+D
+}

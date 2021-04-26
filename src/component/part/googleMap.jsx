@@ -154,8 +154,8 @@ export default function GoogleMap(props){
                     yesIWantToUseGoogleMapApiInternals
                     onGoogleApiLoaded={({map, maps})=>{
                         handleApiLoaded(map,maps);  
-                    }}
-                    
+                    }}     
+                    zoom={zoom}
                     onChange={(e)=>{
                         let bounds1 = {
                             La : {

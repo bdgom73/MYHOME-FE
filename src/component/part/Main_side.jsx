@@ -24,10 +24,7 @@ export default function Main_side(props){
             <ul>
                 <li onClick={()=>{routePush("/weather")}}> 
                     <TiWeatherSunny/> 날씨
-                </li>
-                <li onClick={()=>{routePush("/dust")}}>
-                    <GiDustCloud/> 미세먼지
-                </li>
+                </li>       
                 <li onClick={()=>{routePush("/schedule")}}>
                     <AiFillSchedule/>
                     일정
@@ -37,12 +34,12 @@ export default function Main_side(props){
                     지도
                 </li>
             </ul>
-            <ul>
+            {/* <ul>
                 <li>테스트5</li>
                 <li>테스트6</li>
                 <li>테스트7</li>
                 <li>테스트8</li>
-            </ul>
+            </ul> */}
         </div>
         </>
     );
