@@ -107,6 +107,7 @@
         max-width: 950px;
         width: 100%;
         justify-content: center;
+        
         .sun_rise{
             .title{
                 padding: 10px;
@@ -125,12 +126,12 @@
             background: rgb(255,255,255);
             background: linear-gradient(0deg, rgb(175, 172, 212) 0%, rgba(148,170,254,1) 100%);
             height: 100%;  
-            overflow-y: auto;
             padding: 10px;    
             border-radius: 10px;
             display: flex;
             align-items: center;
             flex-direction: column;
+            margin: 7px;
             &::-webkit-scrollbar{
                 display: none;
             }
@@ -214,6 +215,11 @@
             .hourly_wrap, .daily_wrap{
                 max-width: 320px;
             } 
+        }
+        .korea_weather{
+            width: 100%;
+        
+            
         }
     }
 }

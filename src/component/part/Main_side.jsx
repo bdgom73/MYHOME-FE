@@ -1,9 +1,12 @@
 import "../../css/part/Main_side.scss";
 import { BsList } from 'react-icons/bs';
 import { TiWeatherSunny } from 'react-icons/ti';
-import { GiDustCloud } from 'react-icons/gi';
+import { AiFillPicture } from 'react-icons/ai';
 import { AiFillSchedule } from 'react-icons/ai';
+import { FaVideo } from 'react-icons/fa';
 import { GrMap } from 'react-icons/gr';
+import { CgBoard } from 'react-icons/cg';
+
 import { useHistory } from "react-router";
 
 export default function Main_side(props){
@@ -34,12 +37,20 @@ export default function Main_side(props){
                     지도
                 </li>
             </ul>
-            {/* <ul>
-                <li>테스트5</li>
-                <li>테스트6</li>
-                <li>테스트7</li>
-                <li>테스트8</li>
-            </ul> */}
+            <ul>
+                <li>
+                    <FaVideo/>
+                    공유동영상
+                </li>
+                <li>
+                    <CgBoard/>
+                    게시판
+                </li>
+                <li>
+                    <AiFillPicture/>
+                    사진첩
+                </li>
+            </ul>
         </div>
         </>
     );

@@ -179,12 +179,12 @@ function TotalWeather(props){
                     }}/>
                 </div>
                 <div className="total_weather_c1">
-                <div className="totalWeather_c1" style={{ maxHeight: "680px"}}>
+                <div className="totalWeather_c1" >
                     <div className="korea_weather" >
                         <ChartMap/>
                     </div>   
                 </div>
-                <div className="totalWeather_c1" style={{marginLeft:"20px",maxHeight: "680px"}} >
+                <div className="totalWeather_c1" style={{minHeight:"500px"}} >
                     <div className="sun_rise">
                         <TotalWeatherSunrise data={daily}/>
                     </div>

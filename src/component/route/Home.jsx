@@ -5,10 +5,6 @@ import Calendar from "../part/Calendar";
 require('dotenv').config();
 
 export default function Home(props){
-
-    useEffect(()=>{
-        console.log(process.env.REACT_APP_WEATHER_ID);
-    },[])
     return (
         <>
         <div className="home_wrap">
@@ -16,15 +12,14 @@ export default function Home(props){
                 <div className="home_calendar">
                     <Calendar readonly/>
                 </div>
-                <div className="home_weather">
+                <div className="home_weather" style={{width:"100%"}}>
                     <Weather mode="id" id={1838716}/>
                     <Weather mode="id" id={1835848}/>
                     <Weather mode="id" id={1833742}/>         
-                </div>
-            </div> 
-               
+                </div>     
+            </div>        
         </div>    
-        
+
         </>
     );
 }

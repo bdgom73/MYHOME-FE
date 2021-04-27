@@ -7,14 +7,17 @@ import WeatherOneCall from "./component/part/weather_onecall";
 import GoogleMap from "./component/part/googleMap";
 import TotalWeatherCard from "./component/part/weather/TotalWeatherCard";
 import TotalWeather from "./component/part/TotalWeather";
+import VideoWrite from "./component/route/VideoWrite";
 function App() {
-  return (
-      <Switch>
+  return (   
+      
+      <Switch>   
         <Route exact path="/"><Template><Home/></Template></Route>
-        <Route exact path="/weather"><Template><WeatherOneCall/></Template></Route>
+        <Route exact path="/weather"><Template><TotalWeather/></Template></Route>
         <Route exact path="/schedule"><Template><Calendar view={true}/></Template></Route>
         <Route exact path="/map"><Template><GoogleMap/></Template></Route>  
-        <Route exact path="/test"><Template><TotalWeather/></Template></Route>
+        <Route exact path="/test"><Template><VideoWrite/></Template></Route>
+        <Route path="/">404</Route>
       </Switch>
     
   );

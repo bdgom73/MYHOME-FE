@@ -1,0 +1,114 @@
+@import "../color.scss";
+.write_wrap{
+    width: 100%;
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 30px;
+    form{
+       
+        table{
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 1000px;
+            border: 1px solid #ccc;
+            .editor_save{
+                min-height: 500px;
+                border: 1px solid #eee;
+            }
+            th{
+                padding: 5px;
+                width: 77px;
+                p{
+                    padding: 0;
+                    margin: 0;
+                    font-size: 11px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-weight: 400;
+                }
+            }
+            td{
+                padding: 15px;
+            }
+            .w_title{
+                font-size: 25px;
+                font-weight: bold;
+                border : 0;
+                border-bottom : 1px solid #bbb;
+            }
+            input[type="text"]{
+                padding: 5px;
+                width: 100%;  
+                
+                
+                &:focus{
+                    outline: none;
+                }
+            }
+            .writer{
+                max-width: 150px;
+                border : 0;
+            }
+            .video_file_text{
+                border : 0;
+                border-bottom : 1px solid #bbb; 
+            }
+            .file_wrap{
+                display: flex;
+                align-items: center;
+                input[type="text"]{
+                    padding: 5px;
+                    max-width: 200px;  
+                    height: 30px;
+                    border : 1px solid #bbb;                       
+                    &:focus{
+                        outline: none;
+                    }
+                }
+                input[type="file"]{
+                  display: none;
+                }
+                label[for="video_url"]{  
+                    font-weight: bold;
+                    padding: 5px 10px;
+                    height: 30px;
+                    border: 1px solid #bbb;
+                    border-left: 0;
+                    cursor: pointer;
+                    background-color: #ccc;
+                }
+                
+            }
+        }
+    }
+   
+}
+
+.btn_wrap{
+    margin: 10px 5px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    .btn{
+        border : 1px solid #eee;
+        padding: 5px 10px;
+        background-color: #0f7e00;
+        color:#fff;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 100px;
+        height: 40px;
+        &:hover{
+            background-color: #169705;
+        }
+    }
+    .delete{
+        background-color: #a70b0b;
+        &:hover{
+            background-color: #b91717; 
+        }
+    }
+}

@@ -65,7 +65,7 @@ export default function Weather(props){
         setSnow(info.snow);
         setWeather(info.weather);
         setCityName(cityJson[info.id].name);
-        setDt(timestampToDate(info.dt));      
+        setDt(timestampToDate(info.dt));   
     }
 
     // 날씨 모드에 따른 값 가져오는 방법 검사
