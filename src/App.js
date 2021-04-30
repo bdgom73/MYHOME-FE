@@ -8,6 +8,8 @@ import GoogleMap from "./component/part/googleMap";
 import TotalWeatherCard from "./component/part/weather/TotalWeatherCard";
 import TotalWeather from "./component/part/TotalWeather";
 import VideoWrite from "./component/route/VideoWrite";
+import Register from "./component/route/Register";
+import Login from "./component/route/Login";
 function App() {
   return (   
       
@@ -16,7 +18,7 @@ function App() {
         <Route exact path="/weather"><Template><TotalWeather/></Template></Route>
         <Route exact path="/schedule"><Template><Calendar view={true}/></Template></Route>
         <Route exact path="/map"><Template><GoogleMap/></Template></Route>  
-        <Route exact path="/test"><Template><VideoWrite/></Template></Route>
+        <Route exact path="/test"><Template><Login/></Template></Route>
         <Route path="/">404</Route>
       </Switch>
     

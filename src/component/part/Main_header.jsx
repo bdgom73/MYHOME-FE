@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import { BsList,BsFillBellFill } from 'react-icons/bs';
 import { useHistory } from 'react-router';
 import "../../css/part/Main_header.scss";
+
 export default function Main_header(props){
 
     const history = useHistory();
@@ -17,10 +18,6 @@ export default function Main_header(props){
                     <img src="/image/logo.png" alt="LOGO" onClick={()=>{history.push("/")}}/>
                 </div>
             </div>
-            {/* <div className="search">
-                <input type="text" name="search"/>
-                <input type="button" value="검색"/>
-            </div> */}
             <div className="user_info">
                 <div className="alert"><BsFillBellFill size={25} color="#32435F"/></div>
                 <div className="user_profile">

@@ -1,17 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
+import "./css/form.scss";
 import reportWebVitals from './reportWebVitals';
 import dotenv from "dotenv";
 import { BrowserRouter } from 'react-router-dom';
+import {CookiesProvider} from "react-cookie";
 dotenv.config();
 
 ReactDOM.render(
-  <BrowserRouter>
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-  </BrowserRouter>,
+  <CookiesProvider>
+    <BrowserRouter>
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    </BrowserRouter>
+  </CookiesProvider>
+  ,
   document.getElementById('root')
 );
 
