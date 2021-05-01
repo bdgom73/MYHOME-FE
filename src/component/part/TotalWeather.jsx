@@ -70,9 +70,7 @@ function TotalWeather(props){
         createDatas(datas);   
         setViewData(datas.current) ;
         setLoading(false);  
-        createDateHourly(datas);
-        console.log(datas.daily)
-       
+        createDateHourly(datas);     
     }
 
     // Local-Storage에서 저장된 도시 확인.
@@ -156,7 +154,7 @@ function TotalWeather(props){
                         {
                         cityList.map(c=>{
                             return(
-                                <option value={c.id} key={c.id+"weather_onecall"}>{c.name}</option>
+                                <option value={c.id} key={c.id+"weather"}>{c.name}</option>
                             );
                         })
                         }

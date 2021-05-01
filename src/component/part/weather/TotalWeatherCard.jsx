@@ -7,12 +7,6 @@ export default function TotalWeatherCard(props){
 
     const { data } = props;
 
-    const history = useHistory();
-
-    useEffect(()=>{
-        console.log(data);
-    },[])
-
     if(data && data.weather && data.temp){
         return(
             <div className="weather">                   

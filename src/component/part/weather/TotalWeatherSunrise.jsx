@@ -23,6 +23,7 @@ export default function TotalWeatherSunrise(props){
                             <div className="sun_wrap" key={d.dt+i}>
                                 <h1>{i === 0 ? "오늘" : i===1 ? "내일" : i===2 ? "모레" :"" }</h1>
                                 <table className="sun_table">
+                                    <tbody>
                                     <tr>
                                         <td>
                                             <WiSunrise size="50"/>
@@ -47,6 +48,7 @@ export default function TotalWeatherSunrise(props){
                                         <td>{gethourMin(d.moonrise)}</td>
                                         <td>{gethourMin(d.moonset)}</td>
                                     </tr>
+                                    </tbody>
                                 </table>
                             </div>
                         );

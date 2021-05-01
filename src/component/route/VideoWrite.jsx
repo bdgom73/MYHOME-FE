@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {Editor} from "react-draft-wysiwyg";
 import { EditorState,convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
@@ -11,11 +11,30 @@ export default function VideoWrite(props){
     // const editorToHtml = draftToHtml(convertToRaw(editorState.getCurrentContent()));
     const [editorState, setEditorState] = useState(EditorState.createEmpty());
     const [videoType,setVideoType] = useState(false);
+    const [videoName,setVideoName]= useState("");
 
     const onWriteSubmit = (e)=>{
         const editorToHtml = draftToHtml(convertToRaw(editorState.getCurrentContent()));
     }
 
+    const uploadCallback = (file)=>{
+        return new Promise(
+            (resolve, reject)=>{
+                var reader = new FileReader();
+                reader.readAsDataURL(file);
+                let img = new Image();
+                reader.onload = function (e) {
+                    img.src = this.result
+                    resolve({
+                      data: {
+                        link: img.src
+                      }
+                    })
+                }
+            
+            }
+        );
+    }
     return(
         <>
         <div className="write_wrap">
@@ -40,8 +59,8 @@ export default function VideoWrite(props){
                             {
                                 videoType ?  (
                                     <div className="file_wrap">
-                                        <input type="text" readOnly placeholder="영상을 선택해주세요"/>
-                                        <input type="file" id="video_url" />
+                                        <input type="text" readOnly placeholder="영상을 선택해주세요" defaultValue={videoName}/>
+                                        <input type="file" id="video_url" onChange={(e)=>{setVideoName(e.target.files[0].name)}}/>
                                         <label htmlFor="video_url"><RiPhoneFindLine size="20"/></label>
                                     </div> 
                                 ): <input type="text" className="video_file_text" defaultValue="https://"/> 
@@ -57,6 +76,21 @@ export default function VideoWrite(props){
                             }}
                             editorClassName="editor_save"
                             editorState = {editorState}
+                            toolbar ={{
+                                image : {
+                                    urlEnabled: true,
+                                    uploadEnabled: true,
+                                    alignmentEnabled: true,
+                                    previewImage: true,
+                                    inputAccept: 'image/gif,image/jpeg,image/jpg,image/png,image/svg',
+                                    alt: { present: false, mandatory: false },
+                                    defaultSize: {
+                                      height: 'auto',
+                                      width: 'auto',
+                                    },
+                                    uploadCallback: uploadCallback     
+                                }
+                            }}
                             onEditorStateChange={(editorState)=>{
                                 setEditorState(editorState);
                             }}

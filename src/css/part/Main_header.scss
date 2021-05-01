@@ -68,6 +68,23 @@ header{
             justify-content: center;
             cursor: pointer;
         }   
+        ul{
+            display: flex;
+            list-style: none;
+            li{
+                a{
+                    display: flex;
+                    align-items: center;
+                    color : #000;
+                    font-size: 14px;
+                    font-weight: bold;
+                    text-decoration: none;
+                }
+                
+                margin: 0 5px;
+                cursor: pointer;
+            }
+        }
     }  
 }
 @media screen and (max-width: 560px) {

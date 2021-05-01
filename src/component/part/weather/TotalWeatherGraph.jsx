@@ -5,14 +5,7 @@ import { getWeatherIconUrl } from "../../../js/weather_conversion";
 export default function TotalWeatherGraph(props){
 
     const {data, type, width, height,size,onClick}=props;
-    const [graphWidth,setGraphWidth]=useState(window.innerWidth);
-    useEffect(()=>{
-        const twg = document.getElementById("totalWeatherGraph");
-        console.log(twg.width);
-        // document.getElementById("totalWeatherGraph").addEventListener('resize',()=>{
-        //     setGraphWidth(document.getElementById("totalWeatherGraph").innerWidth);
-        // })
-    },[graphWidth])
+   
     if(data && width){
         return(
             <div id="totalWeatherGraph" style={{width: "100%",height : height ? height : "200px",position: "relative", overflowX: size ? "hidden" : "auto", overflowY : "hidden"}}>
@@ -51,7 +44,7 @@ export default function TotalWeatherGraph(props){
             {                  
                Array.isArray(data) && data.length > 0 ?  
                data[0].id === "hourly" ? data[0].data.map((m,i)=>{
-                    return <img key={m.id+i+m.icon} src={getWeatherIconUrl(m.icon)} alt=""/>
+                    return <img key={m.id+i+Math.random().toString(36).substr(2, 9)} src={getWeatherIconUrl(m.icon)} alt=""/>
                }) :"" :""
                
             }
@@ -95,7 +88,7 @@ export default function TotalWeatherGraph(props){
             {                  
                Array.isArray(data) && data.length > 0 ?  
                data[0].id === "hourly" ? data[0].data.map((m,i)=>{
-                    return <img key={m.id+i+m.icon} src={getWeatherIconUrl(m.icon)} alt=""/>
+                    return <img key={m.id+Math.random().toString(36).substr(2, 9)} src={getWeatherIconUrl(m.icon)} alt=""/>
                }) :"" :""
                
             }

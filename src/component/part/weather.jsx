@@ -58,6 +58,7 @@ export default function Weather(props){
     // ajax 기본 respanse 세팅
     function saveInfo(res){
         const info = res.data; 
+     
         setMain(info.main);
         setWind(info.wind);
         setClouds(info.clouds);

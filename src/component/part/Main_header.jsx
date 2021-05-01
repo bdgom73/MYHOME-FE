@@ -1,12 +1,17 @@
 import { useState,useEffect } from 'react';
 import { BsList,BsFillBellFill } from 'react-icons/bs';
+import { AiOutlineLogin } from 'react-icons/ai';
 import { useHistory } from 'react-router';
 import "../../css/part/Main_header.scss";
+import useMember from '../../customState/useMember';
+import { Link } from 'react-router-dom';
 
 export default function Main_header(props){
 
     const history = useHistory();
+    const memberData = useMember();
 
+  
     return(
         <>
         <header>
@@ -19,12 +24,26 @@ export default function Main_header(props){
                 </div>
             </div>
             <div className="user_info">
-                <div className="alert"><BsFillBellFill size={25} color="#32435F"/></div>
-                <div className="user_profile">
-                    IJ
-                </div>
+            {
+                memberData.logined ? (
+                    <>
+                    <div className="alert"><BsFillBellFill size={25} color="#32435F"/></div>
+                    <div className="user_profile">{memberData.name}</div>
+                    </>
+                ) : (
+                    <>
+                    <ul>
+                        <li><Link to="/login" title="로그인하기">Login</Link>  </li>
+                        <li><Link to="/register" title="가입하기">Register</Link> </li>
+                    </ul>
+                    </>
+                )
+            }
+     
             </div>      
         </header>
         </>
     );
+    
+   
 }
