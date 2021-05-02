@@ -1,4 +1,9 @@
 @import "../color.scss";
+.editor_main_wrapper{
+    div{
+        margin: 0;
+    }
+}
 .write_wrap{
     width: 100%;
     padding: 0 10px;
@@ -14,10 +19,7 @@
             width: 100%;
             max-width: 1000px;
             border: 1px solid #ccc;
-            .editor_save{
-                min-height: 500px;
-                border: 1px solid #eee;
-            }
+            
             th{
                 padding: 5px;
                 width: 77px;
@@ -87,7 +89,15 @@
     }
    
 }
-
+.editor_save{
+    min-height: 500px;
+    border: 1px solid #eee;
+}
+.editor_comment{
+    height: 100px;
+    border: 1px solid #eee;
+    overflow: hidden;
+}
 .btn_wrap{
     margin: 10px 5px;
     display: flex;

@@ -26,6 +26,7 @@ export default function WeatherInfo(props){
         if(props.cityId){
             getWeatherCityId(props.cityId,(res)=>{
                 setWeather(res.data);
+                console.log(res.data)
             })
         }  
     },[])
@@ -58,10 +59,10 @@ export default function WeatherInfo(props){
                 <span className="updated">{weather.dt ? timestampToDate(weather.dt) : ""}</span>
                 <span className="humidity">
                     <span>습도 :</span> 
-                    {weather.humidity}%
+                    {weather.main ? weather.main.humidity : ""}%
                 </span> 
-                <span className="speed">풍속 {weather.wind_speed ? weather.wind_speed+"m/s" : ""}</span>
-                <span  className="humidity">자외선지수 {weather.uvi}</span>
+                <span className="speed">풍속 {weather.wind ? weather.wind.speed+"m/s" : ""}</span>
+                <span  className="humidity">{weather.uvi ? "자외선지수 "+weather.uvi : ""}</span>
                 <span  className="humidity">체감온도 
                 {      
                     !weather.main ?  <></> :

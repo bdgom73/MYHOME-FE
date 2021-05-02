@@ -3,10 +3,12 @@ import Weather from "../part/weather";
 import "../../css/route/home.scss";
 import Calendar from "../part/Calendar";
 import useMember from "../../customState/useMember";
+import WriteEditor from "../part/write/WriteEditor";
 require('dotenv').config();
 
 export default function Home(props){
     
+
     return (
         <>
         <div className="home_wrap">

@@ -1,0 +1,69 @@
+.board_wrap{
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px;
+    justify-content: center;
+}
+.card_wrap{
+    width : 200px;
+    height: 220px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    margin: 0 5px;
+    background-color: #ffffff;
+    .card_preview{
+        margin: -5px -5px 5px;
+        img{
+            width: 100%;
+            height: 120px;
+        }
+    }
+    .card_body{
+        width: 100%;
+        height: 100%;
+        .title{
+            font-size: 16px;
+            display: inline-block;
+            width: 100%;
+            overflow: hidden;
+            text-overflow:ellipsis;
+            white-space: nowrap;
+            color : #01003d;
+        }
+        .writer{
+            font-size: 14px;
+            display: inline-block;
+            width: 100%;
+            overflow: hidden;
+            text-overflow:ellipsis;
+            white-space: nowrap;
+            color : #01003d;
+        }
+        .info{
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            .recommend,.views{
+                span{
+                    max-width: 60px;
+                    overflow: hidden;
+                    text-overflow:ellipsis;
+                    white-space: nowrap;
+                }
+                display: flex;
+                align-items: center;
+                
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 560px){
+    .card_wrap{
+        width: 150px;
+    }
+}

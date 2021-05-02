@@ -191,7 +191,6 @@ export default function GoogleMap(props){
                             );
                         })
                     } */}
-                    { console.log(Array.isArray(t))}
                      {
                         
                         Array.isArray(t) ?
