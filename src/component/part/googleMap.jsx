@@ -111,7 +111,7 @@ export default function GoogleMap(props){
     },[searchBox])
 
     useEffect(()=>{
-
+        console.log(zoom)
         if(bounds.La && bounds.Ua){
             getWeatherBbox("",(res)=>{  
                 setT(res.data.list || []);        
@@ -147,8 +147,10 @@ export default function GoogleMap(props){
                     <GoogleMapReact     
                     bootstrapURLKeys={{
                         key: API_KEY,
-                        libraries : 'places'
+                        libraries : 'places',
+                        
                     }}          
+                    
                     defaultCenter={defaultValue.center}
                     defaultZoom={defaultValue.zoom}             
                     yesIWantToUseGoogleMapApiInternals
@@ -156,6 +158,11 @@ export default function GoogleMap(props){
                         handleApiLoaded(map,maps);  
                     }}     
                     zoom={zoom}
+                    options={
+                        {
+                            minZoom :9
+                        }
+                    }
                     onChange={(e)=>{
                         let bounds1 = {
                             La : {

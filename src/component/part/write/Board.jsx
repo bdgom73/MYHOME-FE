@@ -1,11 +1,9 @@
 
 export default function Board(props){
 
-    const {children}=props;
-
-    console.log(children)
+    const {children,style}=props;
     return(
-        <div className="board_wrap">
+        <div className="board_wrap" style={style}>
             {children}
         </div>
     )

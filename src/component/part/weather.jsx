@@ -23,7 +23,7 @@ function getWeatherCityName(city,cb,error){
 function getWeatherCityId(city_id,cb,error){
     axios({
         method:"get",
-        url : `http://api.openweathermap.org/data/2.5/weather?id=${city_id}&lang=kr&appid=${API_KEY}`
+        url : `http://api.openweathermap.org/data/2.5/weather?id=${city_id}&lang=kr&units=metric&appid=${API_KEY}`
     }).then((res)=>{
         if(cb) cb(res);
     }).catch((e)=>{
@@ -118,7 +118,7 @@ export default function Weather(props){
                                 <div className="weather_info">
                                     <div className="weather_c1">
                                         <span className="temp">
-                                            {KtoC(main.temp)}
+                                            {Math.round(main.temp)}
                                             <span>℃</span>
                                         </span>
                                         <span className="weather_status">
@@ -136,8 +136,10 @@ export default function Weather(props){
                                             {main.humidity}%
                                         </span> 
                                         <span className="speed">풍속 {wind.speed}m/s</span>
-                                        
-                                    </div>
+                                        <span className="humidity">체감온도 {Math.round(main.feels_like)}℃</span>
+                                        <span className="humidity">최고기온 : {main.temp_max}℃</span>
+                                        <span className="humidity">최저기온 : {main.temp_min}℃</span>
+                                    </div>              
                                 </div>  
                             </div>
                            

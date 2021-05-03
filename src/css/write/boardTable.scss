@@ -1,8 +1,25 @@
 table.table{
+    border-collapse: collapse;
     width: 100%;
     thead{
         th{
-
+            background-color: #03036d;
+            padding: 5px;
+            color : #fff;
+            border-bottom: 1px solid #bbb;
+        }
+    }
+    tbody{
+        tr{
+            cursor: pointer;
+            &:hover{
+                background-color: #eeeeee;
+            }
+            td{
+                padding: 5px;
+                border-bottom: 1px solid #bbb;
+                text-align: center;
+            }
         }
     }
 }

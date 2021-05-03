@@ -27,7 +27,7 @@
             svg{
                 cursor: pointer;
             }
-            .date_selector{
+            .date_selector{        
                 background-color: $mushroom;
                 padding: 10px;
                 position: absolute;
@@ -46,7 +46,7 @@
                    
                 }
                 form{
-                    display: flex;
+                    display: flex  !important;
                     select{
                         border : 1px solid #eee;
                         background-color: $elephant;

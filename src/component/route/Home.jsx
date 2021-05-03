@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import Weather from "../part/weather";
 import "../../css/route/home.scss";
 import Calendar from "../part/Calendar";
-import useMember from "../../customState/useMember";
-import WriteEditor from "../part/write/WriteEditor";
+import WeatherInfo from "../part/weather/WeatherInfo";
+import GoogleMap from "../part/googleMap";
+import ChartMap from "../part/ChartMap";
+import BoardTable from "../part/write/BoardTable";
 require('dotenv').config();
 
 export default function Home(props){
@@ -13,14 +15,28 @@ export default function Home(props){
         <>
         <div className="home_wrap">
             <div className="home_s1">
-                <div className="home_calendar">
+                <div className="home_calendar" >
                     <Calendar readonly/>
+                    <BoardTable columnData={["No","제목","작성자","조회수"]} linkColumn="title" data={[
+                        {
+                            id:"1",
+                            title : "공지사항입니다.",
+                            writer : "어드민",
+                            views : "50"
+                        },
+                        {
+                            id:"1",
+                            title : "공지사항입니다.",
+                            writer : "어드민",
+                            views : "50"
+                        }
+                    ]} /> 
                 </div>
-                <div className="home_weather" style={{width:"100%"}}>
-                    <Weather mode="id" id={1838716}/>
-                    <Weather mode="id" id={1835848}/>
-                    <Weather mode="id" id={1833742}/>         
+                <div className="home_weather" >
+                    <Weather mode="id" id={1838716} width="100%"/>    
+                    <ChartMap/> 
                 </div>     
+             
             </div>        
         </div>    
 

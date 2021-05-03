@@ -3,8 +3,8 @@
     padding: 5px;
     border: 1px solid #bbb;
     margin: 30px 5px 10px;
-    max-width: 350px;
-    background-color: $mushroom;
+    border-radius: 10px;
+    background-color: #fefefe;
     .weather_select{
         display: inline;
         font-size: 20px;
@@ -28,10 +28,11 @@
         
         .weather{
             display: flex;
+          
             .icon{
                 img{
-                    width: 80px;
-                    height: 80px;
+                    width: 100px;
+                    height: 100px;
                 } 
             }
             .weather_info{    
@@ -60,6 +61,7 @@
                     }     
                 }
                 .weather_c2{
+                    margin-left: 5px;
                     display: flex;
                     padding: 10px;
                     flex-direction: column;
@@ -73,5 +75,18 @@
    
             }
         }    
+    }
+}
+@media screen and (max-width: 700px){
+    .weather_info{
+        // display: flex;
+        flex-direction: column;
+        .weather_c2{
+        }
+    }
+}
+@media screen and (max-width: 560px){
+    .weather_info{
+        flex-direction: row;
     }
 }

@@ -1,14 +1,20 @@
+
 .home_wrap{
+    margin: 0 auto;
     width: 100%;
+    padding: 10px;
+    max-width: 1050px;
     min-height: 100vh;
     .home_s1{
         display: flex;
         .home_calendar{
-         
+            width: 500px;
+            margin-right: 20px;
         }
         .home_weather{
-            
+            width: 500px;
         }
+        
     }
 }
 
@@ -17,10 +23,10 @@
         .home_s1{
             flex-direction: column;
             .home_calendar{
-                
+                width: 100%;
             }
             .home_weather{
-                
+                width: 100%;
             }
         }
     }
