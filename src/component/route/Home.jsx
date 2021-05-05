@@ -9,8 +9,7 @@ import BoardTable from "../part/write/BoardTable";
 require('dotenv').config();
 
 export default function Home(props){
-    
-
+ 
     return (
         <>
         <div className="home_wrap">

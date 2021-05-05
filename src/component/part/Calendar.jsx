@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import moment,{Moment as MomentTypes} from 'moment';
 import { AiOutlineArrowLeft,AiOutlineArrowRight } from 'react-icons/ai';
 import { MdDateRange } from 'react-icons/md';
@@ -6,6 +6,9 @@ import "../../css/part/Calendar.scss";
 import CalendarMemo from "../modal/form/calendar_memo";
 import Modal from "../modal/modal";
 import CalendarView from "../modal/form/calendar_view";
+import { dateRange } from "../../js/date";
+import CalendarMemoRange from "../modal/form/calendar_memo_range";
+import CalendarViewRange from "../modal/form/calendar_view_range";
 
 
 export default function Calendar(props){
@@ -22,24 +25,70 @@ export default function Calendar(props){
     const [eventModal,setEventModal] = useState(0);
     // 이벤트 모달 종류 결정
     const [emValue, setEmValue] = useState(1)
-    // 테스트 값 주입
-    const [a,setA] = useState([
+
+    // 범위 일정 색 띠
+    const colorEvent= ["#133d74","#ff3399","#41a500","#e60088","#00512c","0000ff"]
+    //  값 주입
+    const [rangeEvent,setRangeEvent] = useState([
         {
-            date : "2021-04-01",
-            memo : "test",
-            title : "테스트 입니다."
-        },
+            startDate : "2021-05-10",
+            endDate : "2021-05-12",
+            memo : "",
+            title : "dsdsdsdsdsdsds",
+        }, 
         {
-            date : "2021-04-02",
+            startDate : "2021-05-28",
+            endDate : "2021-05-30",
+            memo : "",
+            title : "dsdsdsdsdsdsds",
+        }, 
+         {
+            startDate : "2021-05-01",
+            endDate : "2021-05-05",
+            memo : "",
+            title : "dsdsdsdsdsdsds",
+        }, 
+        {
+            startDate : "2021-05-05",
+            endDate : "2021-05-10",
+            memo : "",
+            title : "dsdsdsdsdsdsds",
+        }, 
+        {
+            startDate : "2021-05-06",
+            endDate : "2021-05-13",
+            memo : "",
+            title : "dsdsdsdsdsdsds",
+        }, 
+        {
+            startDate : "2021-05-09",
+            endDate : "2021-05-18",
             memo : "test2",
             title : "테스트 입니다.",
         },
-        {
-            date : "2021-04-03",
-            memo : "test2",
-            title : "테스트 입니다.",
-        }
+  
     ]);
+
+    const [singleEvent,setSingleEvent]=useState([
+        {
+            date : "2021-05-10",
+            memo : "",
+            title : "zzz",
+        }, 
+    ])
+    // 시작날짜
+    const [startDate,setStartDate] = useState();
+
+    // 종료날짜
+    const [endDate,setEndDate] = useState();
+
+    const [range,setRange] = useState(false);
+
+    const [multSelect, setMultSelect] = useState(false);
+
+    const [dayWidth,setDayWidth]=useState();
+
+    const dayRef = useRef("");
 
     // 이벤트 모달 종류에 따른 이벤트 변경
     const ModalContext = ()=>{
@@ -47,6 +96,10 @@ export default function Calendar(props){
             return <Modal title="Event" close={onCloseHandler}><CalendarMemo date={emValue}/></Modal>   
         }else if(eventModal === 2){
             return <Modal title="Event" close={onCloseHandler}><CalendarView date={emValue}/></Modal>  
+        }else if(eventModal === 3){
+            return <Modal title="Event" close={onCloseHandler}><CalendarMemoRange startDate={startDate} endDate={endDate}/></Modal>  
+        }else if(eventModal === 4){
+            return <Modal title="Event" close={onCloseHandler}><CalendarViewRange startDate={emValue.startDate} endDate={emValue.endDate}/></Modal> 
         }
     }
 
@@ -66,6 +119,47 @@ export default function Calendar(props){
         setEventModal(view);
     }
 
+    /** 달력 범위 선택 */
+    const onMouseDownHandler = (e)=>{
+        if(multSelect){
+            setRange(true);
+            if(e.target.parentNode.className == "date_td "){
+                setStartDate(e.target.parentNode.dataset.date);
+            }
+        }
+        
+    }
+    const onMouseEnterHandler = (e)=>{
+        if(multSelect){
+            if(range){
+                setEndDate(e.target.dataset.date);
+            }    
+        }
+    }
+    const onMouseUpHandler = (e)=>{
+        if(multSelect){
+            setStartDate(startDate);
+            setEndDate(e.target.parentNode.dataset.date ? e.target.parentNode.dataset.date : endDate);
+            setEventModal(3);
+            setRange(false);
+        }
+    }
+    useEffect(()=>{    
+        if(multSelect){
+            const date_td = document.getElementsByClassName("date_td");
+            const ra = dateRange(startDate,endDate);       
+            for(let i = 0 ; i < date_td.length ; i++){
+                for(let j=0 ; j < ra.length ; j++){
+                    if(date_td[i].dataset.date === ra[j]){
+                        date_td[i].style.backgroundColor = "#0000ff";            
+                    }
+                }
+            }  
+        }
+    },[range,startDate,endDate])
+    /** // 달력 범위 선택 */
+  
+const [c,setC] = useState(0);
     // 캘린더 생성
     function generate() {
         const today = moment(year+"-"+month+"-"+day);
@@ -73,23 +167,25 @@ export default function Calendar(props){
         const endWeek = today.clone().endOf('month').week() === 1 ? 53 : today.clone().endOf('month').week();
         let calendar = [];
         for (let week = startWeek; week <= endWeek; week++) {
-          calendar.push(
-            <tr key={week+"week"}>
+           
+          calendar.push(    
+            <tr key={week+"week"} data-week={week} id="week">
               {
                 Array(7).fill(0).map((n, i) => {
-                  let current = moment(year+"-"+month).clone().week(week).startOf('week').add(n + i, 'day');
-                  let isSelected = moment().format('YYYYMMDD') === current.format('YYYYMMDD') ? 'selected' : '';
-                  let isGrayed = current.format('MM') === today.format('MM') ? '' : 'grayed';  
-                  return (
-                        
-                        <td key={i+Math.random().toString(36).substr(2, 9)}  className={isSelected}>
+                    let current = moment(year+"-"+month).clone().week(week).startOf('week').add(n + i, 'day');
+                    let isSelected = moment().format('YYYYMMDD') === current.format('YYYYMMDD') ? 'selected' : '';
+                    let isGrayed = current.format('MM') === today.format('MM') ? '' : 'grayed';               
+                    return (         
+                        <td key={i+Math.random().toString(36).substr(2, 9)} data-date={current.format("YYYY-MM-DD")}
+                            className={"date_td "+isSelected} onMouseDown={onMouseDownHandler}  onMouseEnter={onMouseEnterHandler} onMouseUp={onMouseUpHandler}              
+                            >
                             <div className="date_day">
                                 <span className={`date  ${isGrayed}`} onClick={()=>{ 
-                                    for(let i = 0; i < a.length ; i++){
-                                        if(a[i].date !== current.format("YYYY-MM-DD")){    
+                                    for(let i = 0; i < singleEvent.length ; i++){
+                                        if(singleEvent[i].date !== current.format("YYYY-MM-DD")){    
                                             onEventMemoHandler(current.format('YYYY-MM-DD'),1);      
                                         }
-                                        if(a[i].date === current.format("YYYY-MM-DD")){
+                                        if(singleEvent[i].date === current.format("YYYY-MM-DD")){
                                             setEventModal(0);    
                                             break;
                                         }
@@ -99,12 +195,97 @@ export default function Calendar(props){
                             </div>
                             {
                                 props.view ?
-                                <div className="date_content">
+                                <div className="date_content" >  
+                                    {
+                                        rangeEvent.map((m,j)=>{     
+                                            const dr = dateRange(m.startDate, m.endDate);   
+                                            const color = colorEvent[j % 6];
+                                            let width = "100%";
+                                            let i = 0 ; 
+                                            while(i < dr.length){     
+                                                // 일정이 한 주 이내일때.
+                                                if(moment(dr[0]).week() === moment(dr[dr.length-1]).week()){    
+                                                    if(dr[0] === current.format("YYYY-MM-DD")){ 
+                                                        width = moment(dr[dr.length-1]).weekday() - moment(dr[0]).weekday();
+                                                        width = ((width + 1 ) * 100) + "%";  
+                                                         
+                                                        return (
+                                                        <div 
+                                                            className={ "range_status" } 
+                                                            key={j+Math.random().toString(36).substr(2, 9)} 
+                                                            title={m.title} 
+                                                            style={{width: width,backgroundColor:color}}
+                                                            onClick={()=>{onEventMemoHandler({startDate :dr[0] , endDate : dr[dr.length-1]},4);}}>
+                                                            <span>{dr[0] === current.format("YYYY-MM-DD") ? m.title : ""}  </span>       
+                                                        </div>);
+                                                    }
+                                                }  
+
+                                                // 일정이 한주 이상이면 시작일부터 그 주 전부 표시
+                                                if(dr[0] === current.format("YYYY-MM-DD")){            
+                                                    width = 5 - moment(dr[0]).weekday();
+                                                    width = ((width + 2 ) * 100) + "%";   
+                                                    return (
+                                                        <div 
+                                                            className={ "range_status" } 
+                                                            key={j+Math.random().toString(36).substr(2, 9)} 
+                                                            title={m.title} 
+                                                            style={{width: width,backgroundColor:color}}
+                                                            onClick={()=>{onEventMemoHandler({startDate :dr[0] , endDate : dr[dr.length-1]},4);}}>
+                                                            <span>{dr[0] === current.format("YYYY-MM-DD") ? m.title : ""}  </span>         
+                                                        </div>
+                                                        );
+                                                }   
+
+                                                // 일정이 3주 이상일 경우.
+                                                if(moment(dr[dr.length-1]).week() !== moment(dr[i]).week() && moment(dr[0]).week() !== moment(dr[i]).week()){   
+                                                               
+                                                    if(moment(dr[i]).weekday() === 0 && dr[i] ===current.format("YYYY-MM-DD") ){    
+                                                        width = 700+"%";       
+                                                        return (
+                                                            <div 
+                                                                className={ "range_status" } 
+                                                                key={j+Math.random().toString(36).substr(2, 9)} 
+                                                                title={m.title} 
+                                                                style={{width: width,backgroundColor:color}}
+                                                                onClick={()=>{onEventMemoHandler({startDate :dr[0] , endDate : dr[dr.length-1]},4);}}>
+                                                                <span>{dr[i] === current.format("YYYY-MM-DD") ? m.title : ""}  </span>          
+                                                            </div>); 
+                                                    }   
+                                                }
+                                                // 일정이 3주 이상일 경우 중간 주 전부 표시
+                                                if(moment(dr[i]).weekday() === 0 && dr[i] === current.format("YYYY-MM-DD") ){
+                                                    width = moment(dr[dr.length-1]).weekday() - moment(dr[i]).weekday();
+                                                    width = ((width + 1 ) * 100) + "%";       
+                                                    return (
+                                                        <div 
+                                                            className={ "range_status" } 
+                                                            key={j+Math.random().toString(36).substr(2, 9)} 
+                                                            title={m.title} 
+                                                            style={{width: width,backgroundColor:color}}
+                                                            onClick={()=>{onEventMemoHandler({startDate :dr[0] , endDate : dr[dr.length-1]},4);}}>
+                                                            <span>{dr[i] === current.format("YYYY-MM-DD") ? m.title : ""}  </span>        
+                                                        </div>);  
+                                                }
+                                                
+                                                
+                                                
+                                                
+                                                                                             
+                                                i++;                       
+                                            }
+                                           
+                                           
+                                           
+                                        })
+                                    }
+                                  
                                     {  
-                                        a.map((m,j) => {   
+                                        singleEvent.map((m,j) => {   
                                             if(m.date === current.format("YYYY-MM-DD")){
                                                 return <div className="status" key={j+Math.random().toString(36).substr(2, 9)} title={m.title} onClick={()=>{ onEventMemoHandler(current.format('YYYY-MM-DD'),2);}}>{m.title}</div>;
                                             }  
+                                           
                                             return "";
                                         })
                                     }
@@ -116,7 +297,9 @@ export default function Calendar(props){
                     );
                 })
               }
+             
             </tr>
+            
           )
         }
         return calendar;
@@ -148,9 +331,11 @@ export default function Calendar(props){
         setMonth(Number(e.target[1].value));
         setDateChange(false);
     }
+
+   
     return(
         <>
-        <div className="calendar_wrap" style={{width:props.width}}>
+        <div className="calendar_wrap" id="calendar" style={{width:props.width}}>
         {ModalContext()}
             <div className="calendar_top">
                 <button type="button"><AiOutlineArrowLeft size="30" onClick={preMonth}/></button>
@@ -188,6 +373,15 @@ export default function Calendar(props){
                 </span>
                 <button type="button"><AiOutlineArrowRight size="30" onClick={nextMonth}/></button>
             </div>
+            {
+                !props.readonly ?  (
+                <div className="btn_wrap">
+                    <button type="button" className="btn" onClick={()=>{setMultSelect(!multSelect)}}
+                        style={multSelect ? {background : "#c4302b"} : {}}
+                    >다중선택</button>
+                </div>) : <></>
+            }
+           
             <table className="calendar_table">
                 <colgroup>
                     <col width="13%"></col>

@@ -1,20 +1,26 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "../../../css/modal/form/calendar_memo.scss";
 import { MdTitle } from 'react-icons/md';
 import { ImFileText2 } from 'react-icons/im';
 import { FcCalendar } from 'react-icons/fc';
 import { BiBookmarkPlus } from 'react-icons/bi';
 
-export default function CalendarMemo(props) {
+export default function CalendarMemoRange(props) {
 
-    console.log(props.date)
+    const {startDate, endDate} =props;
+
+
+  
+
     return(
         <>
         <div className="calendar_memo_wrap">
            <form>
                 <label htmlFor="date">
                     <FcCalendar/>
-                    <input type="text" name="date" defaultValue={props.date} readOnly/>
+                    <input type="text" name="date" defaultValue={
+                        new Date(startDate) > new Date(endDate) ? endDate +" ~ "+startDate :startDate+" ~ "+endDate
+                    } readOnly/>
                 </label>
                 <label htmlFor="date">
                     <MdTitle/>
