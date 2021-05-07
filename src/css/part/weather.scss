@@ -39,7 +39,6 @@
                 display: flex;
                 .weather_c1{
                     display: flex;
-                    flex-direction: column;
                     .temp{
                         font-size: 50px;
                         font-weight: bold;
@@ -64,7 +63,7 @@
                     margin-left: 5px;
                     display: flex;
                     padding: 10px;
-                    flex-direction: column;
+                    flex-direction: column !important;
                     .humidity, 
                     .updated,
                     .speed{
@@ -77,6 +76,56 @@
         }    
     }
 }
+
+.weather{
+    display: flex;
+  
+    .icon{
+        img{
+            width: 100px;
+            height: 100px;
+        } 
+    }
+    .weather_info{    
+        display: flex;
+        .weather_c1{
+            display: flex;
+            flex-direction: column;
+            .temp{
+                font-size: 50px;
+                font-weight: bold;
+                color : #120863;
+                span{
+                    font-size: 30px;
+                    font-weight: 500;
+                }
+            }
+            .weather_status{
+                text-align: center;
+                font-size: 25px;
+                font-weight: bold;
+                color :#120863;
+                span{
+                    margin-left: 10px;
+                    font-size: 14px;        
+                }
+            }     
+        }
+        .weather_c2{
+            margin-left: 5px;
+            display: flex;
+            padding: 10px;
+            flex-direction: column !important;
+            .humidity, 
+            .updated,
+            .speed{
+                font-size: 13px;
+                color : #120863;
+            }
+        }
+
+    }
+}    
 @media screen and (max-width: 700px){
     .weather_info{
         // display: flex;

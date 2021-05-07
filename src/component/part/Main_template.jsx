@@ -3,10 +3,13 @@ import Footer from "./Main_footer";
 import Header from "./Main_header";
 import Side from "./Main_side";
 import "../../css/part/Main_template.scss";
+import useMember from "../../customState/useMember";
+import { useHistory } from "react-router";
 export default function Main_template(props) {
-    const {children} = props; 
+    const {children, access} = props; 
     const [subMenu, setSubMenu] = useState(false); 
-
+    const {logined} = useMember();
+    const history = useHistory();
     // 서브메뉴 ON/OFF
     const subMenuHandler = ()=>{
         setSubMenu(!subMenu);   
@@ -29,6 +32,18 @@ export default function Main_template(props) {
             body.style.backgroundColor="#fff";
         }
     },[subMenu])
+
+    useEffect(()=>{
+        if(access === "user"){
+            if(!logined){    
+                history.push("/login");
+            }
+        }else if(access === "non-user"){
+            if(logined) {
+                history.push("/");
+            }
+        }
+    })
     return(
         <>
         <Header subMenuHandler={subMenuHandler}/>

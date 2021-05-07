@@ -15,3 +15,7 @@ export function dateRange(startDate,endDate){
     return dates;
 
 }
+
+export function dateCompare(){
+    
+}

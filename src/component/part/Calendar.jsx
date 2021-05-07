@@ -24,10 +24,10 @@ export default function Calendar(props){
     // 값입력 모달창 활성여부
     const [eventModal,setEventModal] = useState(0);
     // 이벤트 모달 종류 결정
-    const [emValue, setEmValue] = useState(1)
+    const [emValue, setEmValue] = useState(1);
 
     // 범위 일정 색 띠
-    const colorEvent= ["#133d74","#ff3399","#41a500","#e60088","#00512c","0000ff"]
+    const colorEvent= ["#133d74","#ff3399","#41a500","#e60088","#00512c","0000ff"];
     //  값 주입
     const [rangeEvent,setRangeEvent] = useState([
         {
@@ -86,10 +86,6 @@ export default function Calendar(props){
 
     const [multSelect, setMultSelect] = useState(false);
 
-    const [dayWidth,setDayWidth]=useState();
-
-    const dayRef = useRef("");
-
     // 이벤트 모달 종류에 따른 이벤트 변경
     const ModalContext = ()=>{
         if(eventModal === 1){
@@ -120,6 +116,7 @@ export default function Calendar(props){
     }
 
     /** 달력 범위 선택 */
+    // 마우스 다운시 시작일 저장
     const onMouseDownHandler = (e)=>{
         if(multSelect){
             setRange(true);
@@ -129,6 +126,8 @@ export default function Calendar(props){
         }
         
     }
+
+    // 마우스가 해당일에 들어가실 시 종료일 변경
     const onMouseEnterHandler = (e)=>{
         if(multSelect){
             if(range){
@@ -136,6 +135,8 @@ export default function Calendar(props){
             }    
         }
     }
+
+    // 마우스 업 시 시작, 종료일 선택
     const onMouseUpHandler = (e)=>{
         if(multSelect){
             setStartDate(startDate);
@@ -159,7 +160,6 @@ export default function Calendar(props){
     },[range,startDate,endDate])
     /** // 달력 범위 선택 */
   
-const [c,setC] = useState(0);
     // 캘린더 생성
     function generate() {
         const today = moment(year+"-"+month+"-"+day);
@@ -174,7 +174,7 @@ const [c,setC] = useState(0);
                 Array(7).fill(0).map((n, i) => {
                     let current = moment(year+"-"+month).clone().week(week).startOf('week').add(n + i, 'day');
                     let isSelected = moment().format('YYYYMMDD') === current.format('YYYYMMDD') ? 'selected' : '';
-                    let isGrayed = current.format('MM') === today.format('MM') ? '' : 'grayed';               
+                    let isGrayed = current.format('MM') === today.format('MM') ? '' : 'grayed';            
                     return (         
                         <td key={i+Math.random().toString(36).substr(2, 9)} data-date={current.format("YYYY-MM-DD")}
                             className={"date_td "+isSelected} onMouseDown={onMouseDownHandler}  onMouseEnter={onMouseEnterHandler} onMouseUp={onMouseUpHandler}              
@@ -238,8 +238,7 @@ const [c,setC] = useState(0);
                                                 }   
 
                                                 // 일정이 3주 이상일 경우.
-                                                if(moment(dr[dr.length-1]).week() !== moment(dr[i]).week() && moment(dr[0]).week() !== moment(dr[i]).week()){   
-                                                               
+                                                if(moment(dr[dr.length-1]).week() !== moment(dr[i]).week() && moment(dr[0]).week() !== moment(dr[i]).week()){                     
                                                     if(moment(dr[i]).weekday() === 0 && dr[i] ===current.format("YYYY-MM-DD") ){    
                                                         width = 700+"%";       
                                                         return (

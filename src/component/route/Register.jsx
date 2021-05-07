@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { useState } from 'react';
 import DaumPostcode from 'react-daum-postcode';
 import { useHistory } from 'react-router';
@@ -7,6 +8,7 @@ export default function Register(){
     const [modalIndex,setModalIndex] = useState(0);
     const [zipcode,setZipcode]=useState("");
     const [address,setAddress] = useState("");
+    const [msg,setMsg] = useState("");
     const history = useHistory();
 
     function openModal(){
@@ -26,34 +28,62 @@ export default function Register(){
     function onComplete(data){
         setZipcode(data.zonecode);
         setAddress(data.address);
+        setMsg("");
         onclose();
     }
+
+    function onSubmitHandler(e){
+        const {target} = e;
+        e.preventDefault();
+        console.log(e)
+        if(!target[4].value){
+            setMsg("우편번호를 선택해주세요");
+            return;
+        }
+        const fd = new FormData();
+        fd.append("email",target[0].value);
+        fd.append("password",target[1].value);
+        fd.append("password2",target[2].value);
+        fd.append("name",target[3].value);
+        fd.append("zipcode",target[4].value);
+        fd.append("address",target[6].value);
+        fd.append("detail_address",target[7].value);
+
+        axios.post("/member/register",fd)
+            .then(res=>{
+                console.log(res);
+            }).catch(e=>{
+                console.log(e.response)
+            })
+    }
+
+
     return(
         <>
         {openModal()}
-        <div className="register_wrap">
+        <div className="write_wrap">
             <div className="sub_header">
                 <div className="logo">
                     <img src="/image/logo.png" alt="LOGO" onClick={()=>{history.push("/")}}/>
                 </div>
                 <div className="title">회원가입</div>
             </div>   
-            <form>
+            <form onSubmit={onSubmitHandler}> 
                 <div className="label_wrap">
                     <label htmlFor="email">이메일</label>
-                    <input type="email" name="email" />
+                    <input type="email" required name="email" />
                 </div>
                 <div className="label_wrap">
                     <label htmlFor="password">비밀번호</label>
-                    <input type="password" name="password" />
+                    <input type="password" required name="password" />
                 </div>
                 <div className="label_wrap">
                     <label htmlFor="password2">비밀번호확인</label>
-                    <input type="password" name="password2" />
+                    <input type="password" required name="password2" />
                 </div>
                 <div className="label_wrap">
                     <label htmlFor="name">이름</label>
-                    <input type="text" name="name" />
+                    <input type="text" required name="name" />
                 </div>
                 <div className="address_wrap">
                     <div className="zipcode_wrap">
@@ -64,10 +94,11 @@ export default function Register(){
                     <label htmlFor="address">주소</label>
                     <input type="text" readOnly name="address"  defaultValue={address}/>
                     <label htmlFor="detail_address">상세주소</label>
-                    <input type="text" name="detail_address" />
+                    <input type="text" name="detail_address"/>
+                    <div className="error">{msg}</div>
                 </div>
-                <input type="submit" value="가입하기"/>
-               
+                
+                <input type="submit" value="가입하기" />      
             </form>
         </div>
         </>
