@@ -4,10 +4,27 @@ import { MdTitle } from 'react-icons/md';
 import { ImFileText2 } from 'react-icons/im';
 import { FcCalendar } from 'react-icons/fc';
 import { BiBookmarkPlus } from 'react-icons/bi';
+import axios from "axios";
 
 export default function CalendarMemo(props) {
 
-    console.log(props.date)
+    function onSubmitHandler(e){
+        const {target} = e;
+        e.preventDefault();
+       
+        const fd = new FormData();
+        fd.append("date",target[0].value);
+        fd.append("title",target[1].value);
+        fd.append("content",target[2].value);
+        
+        axios.post("/calendar/add",fd)
+            .then(res=>{
+                console.log(res);
+            }).catch(e=>{
+                alert(e.response.message);
+            })
+    }
+    
     return(
         <>
         <div className="calendar_memo_wrap">

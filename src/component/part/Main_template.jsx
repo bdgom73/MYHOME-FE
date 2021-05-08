@@ -8,7 +8,8 @@ import { useHistory } from "react-router";
 export default function Main_template(props) {
     const {children, access} = props; 
     const [subMenu, setSubMenu] = useState(false); 
-    const {logined} = useMember();
+
+    const {logined,SESSION_UID} = useMember();
     const history = useHistory();
     // 서브메뉴 ON/OFF
     const subMenuHandler = ()=>{
@@ -35,14 +36,16 @@ export default function Main_template(props) {
 
     useEffect(()=>{
         if(access === "user"){
-            if(!logined){    
+            if(!logined && !SESSION_UID){    
                 history.push("/login");
             }
         }else if(access === "non-user"){
-            if(logined) {
+            if(logined && SESSION_UID) {
                 history.push("/");
             }
         }
+        
+        
     })
     return(
         <>

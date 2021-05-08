@@ -67,6 +67,10 @@ header{
             align-items: center;
             justify-content: center;
             cursor: pointer;
+            white-space: nowrap;
+            overflow: hidden;
+            font-size: 9px;
+            font-weight: bold;
         }   
         ul{
             display: flex;

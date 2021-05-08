@@ -9,11 +9,12 @@ import { Link } from 'react-router-dom';
 export default function Main_header(props){
 
     const history = useHistory();
-    const memberData = useMember();
+    
+    const {data,logined} = useMember();
 
-  
     return(
         <>
+       
         <header>
             <div className="header_s1">
                 <div className="sub_menu">
@@ -25,10 +26,10 @@ export default function Main_header(props){
             </div>
             <div className="user_info">
             {
-                memberData.logined ? (
+                logined ? (
                     <>
                     <div className="alert"><BsFillBellFill size={25} color="#32435F"/></div>
-                    <div className="user_profile">{memberData.name}</div>
+                    <div className="user_profile">{data.avatar_url ? <img src={data.avatar_url} alt={data.name+"의 아바타"}/> : data.name}</div>
                     </>
                 ) : (
                     <>

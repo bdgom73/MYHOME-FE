@@ -51,9 +51,9 @@ export default function Register(){
 
         axios.post("/member/register",fd)
             .then(res=>{
-                console.log(res);
+                history.push("/login");
             }).catch(e=>{
-                console.log(e.response)
+                alert(e.response.message ? e.response.message : "알수 없는 오류로 인해 로그인에 실패했습니다.");
             })
     }
 

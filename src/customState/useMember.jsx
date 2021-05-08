@@ -18,11 +18,13 @@ function useMember(){
             .then(res=>{
                 setUser(res.data || {});
                 setLogined(true);   
-                setMessage(res.data.name+"님 어서오세요");        
+                setMessage(res.data.name+"님 어서오세요");     
+                console.log("EXE") 
             }).catch(e=>{
                 setMessage(e.response.data.message);
                 setLogined(false);
                 setUser({})
+                console.log("EXE") 
             })                
         }else{
             setUser({})
@@ -31,7 +33,7 @@ function useMember(){
         }
 
         return false;
-    },[])
+    },[cookie.SESSION_UID])
 
  
 

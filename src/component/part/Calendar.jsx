@@ -9,6 +9,8 @@ import CalendarView from "../modal/form/calendar_view";
 import { dateRange } from "../../js/date";
 import CalendarMemoRange from "../modal/form/calendar_memo_range";
 import CalendarViewRange from "../modal/form/calendar_view_range";
+import axios from "axios";
+import useMember from "../../customState/useMember";
 
 
 export default function Calendar(props){
@@ -29,53 +31,9 @@ export default function Calendar(props){
     // 범위 일정 색 띠
     const colorEvent= ["#133d74","#ff3399","#41a500","#e60088","#00512c","0000ff"];
     //  값 주입
-    const [rangeEvent,setRangeEvent] = useState([
-        {
-            startDate : "2021-05-10",
-            endDate : "2021-05-12",
-            memo : "",
-            title : "dsdsdsdsdsdsds",
-        }, 
-        {
-            startDate : "2021-05-28",
-            endDate : "2021-05-30",
-            memo : "",
-            title : "dsdsdsdsdsdsds",
-        }, 
-         {
-            startDate : "2021-05-01",
-            endDate : "2021-05-05",
-            memo : "",
-            title : "dsdsdsdsdsdsds",
-        }, 
-        {
-            startDate : "2021-05-05",
-            endDate : "2021-05-10",
-            memo : "",
-            title : "dsdsdsdsdsdsds",
-        }, 
-        {
-            startDate : "2021-05-06",
-            endDate : "2021-05-13",
-            memo : "",
-            title : "dsdsdsdsdsdsds",
-        }, 
-        {
-            startDate : "2021-05-09",
-            endDate : "2021-05-18",
-            memo : "test2",
-            title : "테스트 입니다.",
-        },
-  
-    ]);
+    const [rangeEvent,setRangeEvent] = useState([]);
 
-    const [singleEvent,setSingleEvent]=useState([
-        {
-            date : "2021-05-10",
-            memo : "",
-            title : "zzz",
-        }, 
-    ])
+    const [singleEvent,setSingleEvent]=useState([]);
     // 시작날짜
     const [startDate,setStartDate] = useState();
 
@@ -85,6 +43,25 @@ export default function Calendar(props){
     const [range,setRange] = useState(false);
 
     const [multSelect, setMultSelect] = useState(false);
+
+    
+    // 캘린더 정보 가져오기
+    const member = useMember();
+    useEffect(()=>{
+        const today = moment(year+"-"+month+"-"+day);
+        const startWeek = today.clone().startOf('month').week();
+        const endWeek = today.clone().endOf('month').week() === 1 ? 53 : today.clone().endOf('month').week();
+        const start_date = moment(year+"-"+month).clone().week(startWeek-1).format("YYYY-MM-DD");
+        const end_date = moment(year+"-"+month).clone().week(endWeek).format("YYYY-MM-DD");
+
+        axios.get(`/calendar/schedule?start_date=${start_date}&end_date=${end_date}&type=range`,{headers:{'Authorization': member.SESSION_UID}})
+        .then(res=>{
+            console.log(res.data)
+            setRangeEvent(res.data.range || []);
+            setSingleEvent(res.data.single || []);
+        });
+      
+    },[month])
 
     // 이벤트 모달 종류에 따른 이벤트 변경
     const ModalContext = ()=>{
@@ -166,8 +143,7 @@ export default function Calendar(props){
         const startWeek = today.clone().startOf('month').week();
         const endWeek = today.clone().endOf('month').week() === 1 ? 53 : today.clone().endOf('month').week();
         let calendar = [];
-        for (let week = startWeek; week <= endWeek; week++) {
-           
+        for (let week = startWeek; week <= endWeek; week++) {      
           calendar.push(    
             <tr key={week+"week"} data-week={week} id="week">
               {
@@ -181,7 +157,12 @@ export default function Calendar(props){
                             >
                             <div className="date_day">
                                 <span className={`date  ${isGrayed}`} onClick={()=>{ 
+                                     if(singleEvent.length === 0){
+                                        onEventMemoHandler(current.format('YYYY-MM-DD'),1); 
+                                        return;
+                                    }
                                     for(let i = 0; i < singleEvent.length ; i++){
+                                       
                                         if(singleEvent[i].date !== current.format("YYYY-MM-DD")){    
                                             onEventMemoHandler(current.format('YYYY-MM-DD'),1);      
                                         }

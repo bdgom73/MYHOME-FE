@@ -16,12 +16,12 @@ export default function Login(){
         fd.append("email",target[0].value);
         fd.append("password",target[1].value);
      
-
         axios.post("/member/login",fd)
             .then(res=>{
                 setCookies("SESSION_UID",res.data,{path : "/"});
+                history.push("/");
             }).catch(e=>{
-                alert(e.response.message);
+                alert(e.response.message ? e.response.message : "알수 없는 오류로 인해 로그인에 실패했습니다.");
             })
     }
     return(
