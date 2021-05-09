@@ -48,19 +48,20 @@ export default function Calendar(props){
     // 캘린더 정보 가져오기
     const member = useMember();
     useEffect(()=>{
-        const today = moment(year+"-"+month+"-"+day);
-        const startWeek = today.clone().startOf('month').week();
-        const endWeek = today.clone().endOf('month').week() === 1 ? 53 : today.clone().endOf('month').week();
-        const start_date = moment(year+"-"+month).clone().week(startWeek-1).format("YYYY-MM-DD");
-        const end_date = moment(year+"-"+month).clone().week(endWeek).format("YYYY-MM-DD");
-
-        axios.get(`/calendar/schedule?start_date=${start_date}&end_date=${end_date}&type=range`,{headers:{'Authorization': member.SESSION_UID}})
-        .then(res=>{
-            console.log(res.data)
-            setRangeEvent(res.data.range || []);
-            setSingleEvent(res.data.single || []);
-        });
-      
+        if(!props.view){
+            const today = moment(year+"-"+month+"-"+day);
+            const startWeek = today.clone().startOf('month').week();
+            const endWeek = today.clone().endOf('month').week() === 1 ? 53 : today.clone().endOf('month').week();
+            const start_date = moment(year+"-"+month).clone().week(startWeek-1).format("YYYY-MM-DD");
+            const end_date = moment(year+"-"+month).clone().week(endWeek).format("YYYY-MM-DD");
+    
+            axios.get(`/calendar/schedule?start_date=${start_date}&end_date=${end_date}&type=range`,{headers:{'Authorization': member.SESSION_UID}})
+            .then(res=>{    
+                setRangeEvent(res.data.range || []);
+                setSingleEvent(res.data.single || []);
+            });    
+        }
+        
     },[month])
 
     // 이벤트 모달 종류에 따른 이벤트 변경

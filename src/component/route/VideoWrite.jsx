@@ -6,18 +6,36 @@ import '../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import "../../css/route/VideoWrite.scss";
 import { RiPhoneFindLine } from 'react-icons/ri';
 import WriteEditor from "../part/write/WriteEditor";
+import Modal from "../modal/modal";
+import useModal from "../../customState/useModal";
 
 export default function VideoWrite(props){
 
     // const editorToHtml = draftToHtml(convertToRaw(editorState.getCurrentContent()));
  
+    const modal = useModal();
     const [videoType,setVideoType] = useState(false);
     const [videoName,setVideoName]= useState("");
-   
+
+    function onModalHandler(){
+        if(modal.modal === 1){
+            return <Modal close={modal.close}>잘못된 URL입니다.</Modal>
+        }
+    }
+    const onSubmitHandler = (e)=>{
+        e.preventDefault();
+        const url = e.target[3].value;
+        const unique = url.split("https://youtu.be/")[1];
+        if(!unique){
+            modal.setModal(1)
+        }
+    }
+
     return(
         <>
-        <div className="write_wrap">
-            <form>
+        {onModalHandler()}
+        <div className="v_write_wrap">
+            <form onSubmit={onSubmitHandler}>
                 <table>
                     <tbody>
                     <tr>

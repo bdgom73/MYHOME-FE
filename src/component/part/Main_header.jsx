@@ -8,6 +8,11 @@ import { Link } from 'react-router-dom';
 
 export default function Main_header(props){
 
+    const [profileAct, setProfileAct] = useState(false);
+
+    const onClickProfileHandler = ()=>{
+        setProfileAct(!profileAct);
+    }
     const history = useHistory();
     
     const {data,logined} = useMember();
@@ -29,7 +34,18 @@ export default function Main_header(props){
                 logined ? (
                     <>
                     <div className="alert"><BsFillBellFill size={25} color="#32435F"/></div>
-                    <div className="user_profile">{data.avatar_url ? <img src={data.avatar_url} alt={data.name+"의 아바타"}/> : data.name}</div>
+                    <div className="user_profile" >
+                        <div className="user_profile_main" onClick={onClickProfileHandler}>{data.avatar_url ? <img src={data.avatar_url} alt={data.name+"의 아바타"}/> : data.name}</div>
+                        {
+                            profileAct ? (
+                                <div className="user_profile_detail">
+                                
+                                <span className="btn">Log-out</span>
+                                </div>
+                            ) : <></>
+                        }
+                    </div>
+                    
                     </>
                 ) : (
                     <>

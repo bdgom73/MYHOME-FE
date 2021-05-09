@@ -68,9 +68,57 @@ header{
             justify-content: center;
             cursor: pointer;
             white-space: nowrap;
-            overflow: hidden;
+            
             font-size: 9px;
             font-weight: bold;
+            position: relative;
+            .user_profile_main{
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .user_profile_detail{
+                position: absolute;
+                width: 100px;
+                height: 100px;
+                top : 55px;
+                right: 0px;
+                z-index: 12;
+                background-color: #eee;
+                padding: 6px;
+                border: 3px solid #bbb;
+                &::before{
+                    bottom: 100%;
+                    left: 40%;
+                    border: solid transparent;
+                    content: "";
+                    height: 0;
+                    width: 0;
+                    position: absolute;
+                    pointer-events: none;
+                    border-color: rgba(194, 225, 245, 0);
+                    border-bottom-color: #bbb;
+                    border-width: 14px;
+                    margin-left: 16px;
+                }
+                &::after{
+                    bottom: 100%;
+                    left: 40%;
+                    border: solid transparent;
+                    content: "";
+                    height: 0;
+                    width: 0;
+                    position: absolute;
+                    pointer-events: none;
+                    border-color: rgba(109, 189, 213, 0);
+                    border-bottom-color: #eee;
+                    border-width: 10px;
+                    margin-left: 20px;
+                }
+            }
         }   
         ul{
             display: flex;

@@ -2,3 +2,32 @@ $mushroom : #E1DCD9;
 $elephant : #8F8681;
 $thatch : #A67F78;
 $gunmetal : #32435F;
+
+.arrow_box {
+	position: relative;
+	background: #6dbdd5;
+	border: 4px solid #c2e1f5;
+}
+.arrow_box:after, .arrow_box:before {
+	bottom: 100%;
+	left: 50%;
+	border: solid transparent;
+	content: "";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.arrow_box:after {
+	border-color: rgba(109, 189, 213, 0);
+	border-bottom-color: #6dbdd5;
+	border-width: 15px;
+	margin-left: -15px;
+}
+.arrow_box:before {
+	border-color: rgba(194, 225, 245, 0);
+	border-bottom-color: #c2e1f5;
+	border-width: 21px;
+	margin-left: -21px;
+}

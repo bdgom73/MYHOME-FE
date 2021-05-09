@@ -12,6 +12,8 @@ import useMember from "./customState/useMember";
 import VideoBoard from "./component/route/VideoBoard";
 
 import NotFound from "./component/NotFound";
+import VideoDetail from "./component/route/board/VideoDetail";
+import VideoWrite from "./component/route/VideoWrite";
 
 function App() {
   return (   
@@ -22,7 +24,7 @@ function App() {
       <Route exact path="/map" ><Template access="user"><GoogleMap/></Template></Route>  
       <Route exact path="/login" ><Template access="non-user"><Login/></Template></Route>
       <Route exact path="/register"><Template access="non-user"><Register/></Template></Route>
-      <Route exact path="/test"><Template><VideoBoard/></Template></Route>
+      <Route exact path="/test"><Template><VideoWrite/></Template></Route>
       <Route path="/"><NotFound/></Route>
     </Switch> 
   );
