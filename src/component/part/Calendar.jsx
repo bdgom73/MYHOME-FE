@@ -25,6 +25,8 @@ export default function Calendar(props){
     const [dateChange,setDateChange] = useState(false);
     // 값입력 모달창 활성여부
     const [eventModal,setEventModal] = useState(0);
+    // 상세보기 데이터
+    const [dataMemo,setDataMemo] = useState({});
     // 이벤트 모달 종류 결정
     const [emValue, setEmValue] = useState(1);
 
@@ -47,29 +49,27 @@ export default function Calendar(props){
     
     // 캘린더 정보 가져오기
     const member = useMember();
-    useEffect(()=>{
-        if(!props.view){
-            const today = moment(year+"-"+month+"-"+day);
-            const startWeek = today.clone().startOf('month').week();
-            const endWeek = today.clone().endOf('month').week() === 1 ? 53 : today.clone().endOf('month').week();
-            const start_date = moment(year+"-"+month).clone().week(startWeek-1).format("YYYY-MM-DD");
-            const end_date = moment(year+"-"+month).clone().week(endWeek).format("YYYY-MM-DD");
-    
-            axios.get(`/calendar/schedule?start_date=${start_date}&end_date=${end_date}&type=range`,{headers:{'Authorization': member.SESSION_UID}})
-            .then(res=>{    
-                setRangeEvent(res.data.range || []);
-                setSingleEvent(res.data.single || []);
-            });    
-        }
-        
-    },[month])
+    useEffect(()=>{ 
+        const today = moment(year+"-"+month+"-"+day);
+        const startWeek = today.clone().startOf('month').week();
+        const endWeek = today.clone().endOf('month').week() === 1 ? 53 : today.clone().endOf('month').week();
+        const start_date = moment(year+"-"+month).clone().week(startWeek-1).format("YYYY-MM-DD");
+        const end_date = moment(year+"-"+month).clone().week(endWeek).format("YYYY-MM-DD");
+
+       
+        axios.get(`/calendar/schedule?start_date=${start_date}&end_date=${end_date}&type=range`,{headers:{'Authorization': member.SESSION_UID}})
+        .then(res=>{    
+            setRangeEvent(res.data.range || []);
+            setSingleEvent(res.data.single || [] );
+        });             
+    },[month,year])
 
     // 이벤트 모달 종류에 따른 이벤트 변경
     const ModalContext = ()=>{
         if(eventModal === 1){
             return <Modal title="Event" close={onCloseHandler}><CalendarMemo date={emValue}/></Modal>   
         }else if(eventModal === 2){
-            return <Modal title="Event" close={onCloseHandler}><CalendarView date={emValue}/></Modal>  
+            return <Modal title="Event" close={onCloseHandler}><CalendarView data={emValue}/></Modal>  
         }else if(eventModal === 3){
             return <Modal title="Event" close={onCloseHandler}><CalendarMemoRange startDate={startDate} endDate={endDate}/></Modal>  
         }else if(eventModal === 4){
@@ -90,6 +90,13 @@ export default function Calendar(props){
             return;
         }
         setEmValue(date);
+        setEventModal(view);
+    }
+    const onEventMemoViewHandler = (data,view)=>{  
+        if(props.readonly){
+            return;
+        }
+        setDataMemo(data);
         setEventModal(view);
     }
 
@@ -180,7 +187,7 @@ export default function Calendar(props){
                                 <div className="date_content" >  
                                     {
                                         rangeEvent.map((m,j)=>{     
-                                            const dr = dateRange(m.startDate, m.endDate);   
+                                            const dr = dateRange(m.start_date, m.end_date);   
                                             const color = colorEvent[j % 6];
                                             let width = "100%";
                                             let i = 0 ; 
@@ -197,7 +204,7 @@ export default function Calendar(props){
                                                             key={j+Math.random().toString(36).substr(2, 9)} 
                                                             title={m.title} 
                                                             style={{width: width,backgroundColor:color}}
-                                                            onClick={()=>{onEventMemoHandler({startDate :dr[0] , endDate : dr[dr.length-1]},4);}}>
+                                                            onClick={()=>{onEventMemoHandler({start_date :dr[0] , end_date : dr[dr.length-1]},4);}}>
                                                             <span>{dr[0] === current.format("YYYY-MM-DD") ? m.title : ""}  </span>       
                                                         </div>);
                                                     }
@@ -213,7 +220,7 @@ export default function Calendar(props){
                                                             key={j+Math.random().toString(36).substr(2, 9)} 
                                                             title={m.title} 
                                                             style={{width: width,backgroundColor:color}}
-                                                            onClick={()=>{onEventMemoHandler({startDate :dr[0] , endDate : dr[dr.length-1]},4);}}>
+                                                            onClick={()=>{onEventMemoHandler({start_date :dr[0] , end_date : dr[dr.length-1]},4);}}>
                                                             <span>{dr[0] === current.format("YYYY-MM-DD") ? m.title : ""}  </span>         
                                                         </div>
                                                         );
@@ -229,7 +236,7 @@ export default function Calendar(props){
                                                                 key={j+Math.random().toString(36).substr(2, 9)} 
                                                                 title={m.title} 
                                                                 style={{width: width,backgroundColor:color}}
-                                                                onClick={()=>{onEventMemoHandler({startDate :dr[0] , endDate : dr[dr.length-1]},4);}}>
+                                                                onClick={()=>{onEventMemoHandler({start_date :dr[0] , end_date : dr[dr.length-1]},4);}}>
                                                                 <span>{dr[i] === current.format("YYYY-MM-DD") ? m.title : ""}  </span>          
                                                             </div>); 
                                                     }   
@@ -244,7 +251,7 @@ export default function Calendar(props){
                                                             key={j+Math.random().toString(36).substr(2, 9)} 
                                                             title={m.title} 
                                                             style={{width: width,backgroundColor:color}}
-                                                            onClick={()=>{onEventMemoHandler({startDate :dr[0] , endDate : dr[dr.length-1]},4);}}>
+                                                            onClick={()=>{onEventMemoHandler({start_date :dr[0] , end_date : dr[dr.length-1]},4);}}>
                                                             <span>{dr[i] === current.format("YYYY-MM-DD") ? m.title : ""}  </span>        
                                                         </div>);  
                                                 }
@@ -264,7 +271,8 @@ export default function Calendar(props){
                                     {  
                                         singleEvent.map((m,j) => {   
                                             if(m.date === current.format("YYYY-MM-DD")){
-                                                return <div className="status" key={j+Math.random().toString(36).substr(2, 9)} title={m.title} onClick={()=>{ onEventMemoHandler(current.format('YYYY-MM-DD'),2);}}>{m.title}</div>;
+                                                return <div className="status" key={j+Math.random().toString(36).substr(2, 9)} title={m.title} 
+                                                onClick={()=>{onEventMemoHandler(m,2);  }}>{m.title}</div>;
                                             }  
                                            
                                             return "";
@@ -316,6 +324,7 @@ export default function Calendar(props){
    
     return(
         <>
+        {console.log(rangeEvent)}
         <div className="calendar_wrap" id="calendar" style={{width:props.width}}>
         {ModalContext()}
             <div className="calendar_top">

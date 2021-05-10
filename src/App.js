@@ -15,16 +15,19 @@ import NotFound from "./component/NotFound";
 import VideoDetail from "./component/route/board/VideoDetail";
 import VideoWrite from "./component/route/VideoWrite";
 
-function App() {
+function App(props) {
+
+
   return (   
     <Switch>   
-      <Route exact path="/"><Template><Home/></Template></Route>
+      <Route exact path="/" ><Template><Home /></Template></Route>
       <Route exact path="/weather" ><Template access="user"><TotalWeather/></Template></Route>
-      <Route exact path="/schedule" ><Template access="user"><Calendar view={true}/></Template></Route>
+      <Route exact path="/schedule" ><Template access="user"><Calendar view/></Template></Route>
       <Route exact path="/map" ><Template access="user"><GoogleMap/></Template></Route>  
       <Route exact path="/login" ><Template access="non-user"><Login/></Template></Route>
       <Route exact path="/register"><Template access="non-user"><Register/></Template></Route>
       <Route exact path="/test"><Template><VideoWrite/></Template></Route>
+      <Route exact path="/watch" render={()=>{return <Template><VideoDetail {...props}/></Template>}} ></Route>
       <Route path="/"><NotFound/></Route>
     </Switch> 
   );

@@ -39,9 +39,10 @@ export default function NotFound(props){
                 </div>
                 <span className="error_explan" style={{
                     display:"block"
-                }}>
-                    해당 URL의 페이지를 찾을 수 없습니다.
-                    URL을 확인해주세요.
+                }}>    
+                    {
+                        props.text ? props.text : "해당 URL의 페이지를 찾을 수 없습니다. URL을 확인해주세요."
+                    }
                 </span>
                 <button className="btn" onClick={()=>{window.location.href="/"}} style={{
                     border : 0,

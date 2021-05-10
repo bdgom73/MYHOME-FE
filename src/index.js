@@ -12,7 +12,7 @@ ReactDOM.render(
   <CookiesProvider>
     <BrowserRouter>
       <React.StrictMode>
-        <App />
+        <App/>
       </React.StrictMode>
     </BrowserRouter>
   </CookiesProvider>

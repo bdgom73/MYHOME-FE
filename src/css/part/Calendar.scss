@@ -150,7 +150,7 @@
                         .status{  
                             position: absolute; 
                             top: -20px;      
-                            width:90%;
+                            width:60%;
                             height: 20px;    
                             border-radius: 10px;
                             background-color: #133d74;
@@ -158,9 +158,10 @@
                             color : #fff;
                             font-size: 10px;
                             overflow: hidden;
+
                             display: flex;
                             align-items: center;
-                            text-overflow: ellipsis;
+                          text-overflow: ellipsis;
                             white-space: nowrap;
                             overflow: hidden;
                             &:hover{

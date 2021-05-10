@@ -5,8 +5,11 @@ import { ImFileText2 } from 'react-icons/im';
 import { FcCalendar } from 'react-icons/fc';
 import { BiBookmarkPlus } from 'react-icons/bi';
 import axios from "axios";
+import useMember from "../../../customState/useMember";
 
 export default function CalendarMemo(props) {
+
+    const member = useMember();
 
     function onSubmitHandler(e){
         const {target} = e;
@@ -17,18 +20,18 @@ export default function CalendarMemo(props) {
         fd.append("title",target[1].value);
         fd.append("content",target[2].value);
         
-        axios.post("/calendar/add",fd)
+        axios.post("/calendar/add",fd,{headers:{"Authorization" : member.SESSION_UID}})
             .then(res=>{
                 console.log(res);
             }).catch(e=>{
-                alert(e.response.message);
+                console.log(e.response);
             })
     }
     
     return(
         <>
         <div className="calendar_memo_wrap">
-           <form>
+           <form onSubmit={onSubmitHandler}>
                 <label htmlFor="date">
                     <FcCalendar/>
                     <input type="text" name="date" defaultValue={props.date} readOnly/>

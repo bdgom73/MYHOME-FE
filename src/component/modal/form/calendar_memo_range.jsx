@@ -4,18 +4,43 @@ import { MdTitle } from 'react-icons/md';
 import { ImFileText2 } from 'react-icons/im';
 import { FcCalendar } from 'react-icons/fc';
 import { BiBookmarkPlus } from 'react-icons/bi';
+import axios from "axios";
+import useMember from "../../../customState/useMember";
 
 export default function CalendarMemoRange(props) {
 
     const {startDate, endDate} =props;
+    const member = useMember();
 
-
-  
+    function onSubmitHandler(e){
+        const {target} = e;
+        e.preventDefault();
+       
+        const fd = new FormData();
+        const value = target[0].value;
+        const str = value.replace(" ", "");
+        console.log(str)
+        const date = str.split("~");
+        const start = date[0].trim();
+        const end = date[1].trim();
+        console.log(date);
+        fd.append("start_date",start);
+        fd.append("end_date",end);
+        fd.append("title",target[1].value);
+        fd.append("content",target[2].value);
+        
+        axios.post("/calendar/add",fd,{headers:{"Authorization" : member.SESSION_UID}})
+            .then(res=>{
+                console.log(res);
+            }).catch(e=>{
+                console.log(e.response);
+            })
+    }
 
     return(
         <>
         <div className="calendar_memo_wrap">
-           <form>
+           <form onSubmit={onSubmitHandler}>
                 <label htmlFor="date">
                     <FcCalendar/>
                     <input type="text" name="date" defaultValue={
