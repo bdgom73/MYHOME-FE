@@ -19,12 +19,11 @@ function useMember(){
                 setUser(res.data || {});
                 setLogined(true);   
                 setMessage(res.data.name+"님 어서오세요");     
-                console.log("EXE") 
             }).catch(e=>{
                 setMessage(e.response.data.message);
-                setLogined(false);
-                setUser({})
-                console.log("EXE") 
+                setLogined(false);   
+                setUser({})    
+                if(cookie.SESSION_UID) removeCookie("SESSION_UID",{path:"/"}); 
             })                
         }else{
             setUser({})

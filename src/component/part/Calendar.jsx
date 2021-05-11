@@ -69,11 +69,11 @@ export default function Calendar(props){
         if(eventModal === 1){
             return <Modal title="Event" close={onCloseHandler}><CalendarMemo date={emValue}/></Modal>   
         }else if(eventModal === 2){
-            return <Modal title="Event" close={onCloseHandler}><CalendarView data={emValue}/></Modal>  
+            return <Modal title="Event" close={onCloseHandler}><CalendarView data={dataMemo}/></Modal>  
         }else if(eventModal === 3){
             return <Modal title="Event" close={onCloseHandler}><CalendarMemoRange startDate={startDate} endDate={endDate}/></Modal>  
         }else if(eventModal === 4){
-            return <Modal title="Event" close={onCloseHandler}><CalendarViewRange startDate={emValue.startDate} endDate={emValue.endDate}/></Modal> 
+            return <Modal title="Event" close={onCloseHandler}><CalendarViewRange data={dataMemo}/></Modal> 
         }
     }
 
@@ -169,8 +169,7 @@ export default function Calendar(props){
                                         onEventMemoHandler(current.format('YYYY-MM-DD'),1); 
                                         return;
                                     }
-                                    for(let i = 0; i < singleEvent.length ; i++){
-                                       
+                                    for(let i = 0; i < singleEvent.length ; i++){  
                                         if(singleEvent[i].date !== current.format("YYYY-MM-DD")){    
                                             onEventMemoHandler(current.format('YYYY-MM-DD'),1);      
                                         }
@@ -186,7 +185,7 @@ export default function Calendar(props){
                                 props.view ?
                                 <div className="date_content" >  
                                     {
-                                        rangeEvent.map((m,j)=>{     
+                                        rangeEvent.map((m,j)=>{    
                                             const dr = dateRange(m.start_date, m.end_date);   
                                             const color = colorEvent[j % 6];
                                             let width = "100%";
@@ -204,7 +203,7 @@ export default function Calendar(props){
                                                             key={j+Math.random().toString(36).substr(2, 9)} 
                                                             title={m.title} 
                                                             style={{width: width,backgroundColor:color}}
-                                                            onClick={()=>{onEventMemoHandler({start_date :dr[0] , end_date : dr[dr.length-1]},4);}}>
+                                                            onClick={()=>{onEventMemoViewHandler(m,4);}}>
                                                             <span>{dr[0] === current.format("YYYY-MM-DD") ? m.title : ""}  </span>       
                                                         </div>);
                                                     }
@@ -220,7 +219,7 @@ export default function Calendar(props){
                                                             key={j+Math.random().toString(36).substr(2, 9)} 
                                                             title={m.title} 
                                                             style={{width: width,backgroundColor:color}}
-                                                            onClick={()=>{onEventMemoHandler({start_date :dr[0] , end_date : dr[dr.length-1]},4);}}>
+                                                            onClick={()=>{onEventMemoViewHandler(m,4);}}>
                                                             <span>{dr[0] === current.format("YYYY-MM-DD") ? m.title : ""}  </span>         
                                                         </div>
                                                         );
@@ -236,7 +235,7 @@ export default function Calendar(props){
                                                                 key={j+Math.random().toString(36).substr(2, 9)} 
                                                                 title={m.title} 
                                                                 style={{width: width,backgroundColor:color}}
-                                                                onClick={()=>{onEventMemoHandler({start_date :dr[0] , end_date : dr[dr.length-1]},4);}}>
+                                                                onClick={()=>{onEventMemoViewHandler(m,4);}}>
                                                                 <span>{dr[i] === current.format("YYYY-MM-DD") ? m.title : ""}  </span>          
                                                             </div>); 
                                                     }   
@@ -251,7 +250,7 @@ export default function Calendar(props){
                                                             key={j+Math.random().toString(36).substr(2, 9)} 
                                                             title={m.title} 
                                                             style={{width: width,backgroundColor:color}}
-                                                            onClick={()=>{onEventMemoHandler({start_date :dr[0] , end_date : dr[dr.length-1]},4);}}>
+                                                            onClick={()=>{onEventMemoViewHandler(m,4);}}>
                                                             <span>{dr[i] === current.format("YYYY-MM-DD") ? m.title : ""}  </span>        
                                                         </div>);  
                                                 }
@@ -272,7 +271,7 @@ export default function Calendar(props){
                                         singleEvent.map((m,j) => {   
                                             if(m.date === current.format("YYYY-MM-DD")){
                                                 return <div className="status" key={j+Math.random().toString(36).substr(2, 9)} title={m.title} 
-                                                onClick={()=>{onEventMemoHandler(m,2);  }}>{m.title}</div>;
+                                                onClick={()=>{onEventMemoViewHandler(m,2);  }}>{m.title}</div>;
                                             }  
                                            
                                             return "";
@@ -324,7 +323,6 @@ export default function Calendar(props){
    
     return(
         <>
-        {console.log(rangeEvent)}
         <div className="calendar_wrap" id="calendar" style={{width:props.width}}>
         {ModalContext()}
             <div className="calendar_top">
