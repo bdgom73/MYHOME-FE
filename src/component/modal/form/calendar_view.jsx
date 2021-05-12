@@ -23,11 +23,21 @@ export default function CalendarView(props) {
         
         axios.put("/calendar/update?type=none",fd,{headers:{"Authorization" : member.SESSION_UID}})
             .then(res=>{
-                console.log(res);
+                props.close();
             }).catch(e=>{
                 console.log(e.response);
             })
     }
+
+    function onDeleteCilckHandler(){     
+        axios.delete(`/calendar/delete?type=none&cid=${data.id}`,{headers:{"Authorization" : member.SESSION_UID}})
+            .then(res=>{          
+                props.close();
+            }).catch(e=>{
+                console.log(e.response);
+            })
+    }
+
     return(
         <>
         <div className="calendar_memo_wrap">
@@ -42,11 +52,11 @@ export default function CalendarView(props) {
                 </label>     
                 <label htmlFor="text">
                     <ImFileText2/>
-                    <textarea name="text" maxLength="200" rows="8" placeholder="내용을 입력해주세요">{data.content}</textarea>
+                    <textarea name="text" maxLength="200" rows="8" placeholder="내용을 입력해주세요" defaultValue={data.content}></textarea>
                 </label> 
                 <div className="controller">
                     <button type="submit"><MdUpdate size="20" color="#ffffff"/>수정</button>
-                    <button type="button" className="btn delete"><RiDeleteBin2Fill size="20"/>삭제</button>
+                    <button type="button" className="btn delete" onClick={onDeleteCilckHandler}><RiDeleteBin2Fill size="20"/>삭제</button>
                 </div>
            </form>
         </div>

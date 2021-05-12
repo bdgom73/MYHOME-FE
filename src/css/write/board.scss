@@ -1,8 +1,36 @@
+@import "../color.scss";
 .board_wrap{
     display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
     padding: 10px;
     justify-content: center;
+    .board_controller{
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        .item{
+            padding: 5px;
+            svg{
+                &:hover{
+                    color : $mushroom;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+    h1{
+        position: relative;
+        &::after{
+            position: absolute;
+            top:-5px;
+            display: block;
+            content: "";
+            border-top: 5px solid $mushroom;
+            width: 100%;
+            max-width: 60px;
+        }
+    }
 }
 .card_wrap{
     width : 200px;

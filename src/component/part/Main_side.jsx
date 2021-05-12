@@ -38,7 +38,7 @@ export default function Main_side(props){
                 </li>
             </ul>
             <ul>
-                <li>
+                <li onClick={()=>{routePush("/bbs/free")}}>
                     <FaVideo/>
                     공유동영상
                 </li>

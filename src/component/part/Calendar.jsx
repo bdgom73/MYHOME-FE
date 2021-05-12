@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import moment,{Moment as MomentTypes} from 'moment';
+import { useEffect, useState } from "react";
+import moment from 'moment';
 import { AiOutlineArrowLeft,AiOutlineArrowRight } from 'react-icons/ai';
 import { MdDateRange } from 'react-icons/md';
 import "../../css/part/Calendar.scss";
@@ -62,18 +62,18 @@ export default function Calendar(props){
             setRangeEvent(res.data.range || []);
             setSingleEvent(res.data.single || [] );
         });             
-    },[month,year])
+    },[month,year,eventModal])
 
     // 이벤트 모달 종류에 따른 이벤트 변경
     const ModalContext = ()=>{
         if(eventModal === 1){
-            return <Modal title="Event" close={onCloseHandler}><CalendarMemo date={emValue}/></Modal>   
+            return <Modal title="Event" close={onCloseHandler}><CalendarMemo close={onCloseHandler} date={emValue}/></Modal>   
         }else if(eventModal === 2){
-            return <Modal title="Event" close={onCloseHandler}><CalendarView data={dataMemo}/></Modal>  
+            return <Modal title="Event" close={onCloseHandler}><CalendarView close={onCloseHandler} data={dataMemo}/></Modal>  
         }else if(eventModal === 3){
-            return <Modal title="Event" close={onCloseHandler}><CalendarMemoRange startDate={startDate} endDate={endDate}/></Modal>  
+            return <Modal title="Event" close={onCloseHandler}><CalendarMemoRange close={onCloseHandler} startDate={startDate} endDate={endDate}/></Modal>  
         }else if(eventModal === 4){
-            return <Modal title="Event" close={onCloseHandler}><CalendarViewRange data={dataMemo}/></Modal> 
+            return <Modal title="Event" close={onCloseHandler}><CalendarViewRange close={onCloseHandler} data={dataMemo}/></Modal> 
         }
     }
 
@@ -363,7 +363,7 @@ export default function Calendar(props){
             </div>
             {
                 !props.readonly ?  (
-                <div className="btn_wrap">
+                <div className="calendar_btn_wrap">
                     <button type="button" className="btn" onClick={()=>{setMultSelect(!multSelect)}}
                         style={multSelect ? {background : "#c4302b"} : {}}
                     >다중선택</button>

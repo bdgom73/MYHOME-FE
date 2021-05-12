@@ -1,10 +1,12 @@
 import "../../../css/write/board.scss";
 import { AiTwotoneLike } from 'react-icons/ai';
 import { GrFormView } from 'react-icons/gr';
+import { useHistory } from "react-router";
 
 export default function BoardCard(props){
 
-    const {        
+    const {  
+        id,      
         title,
         imageUrl,
         key,
@@ -13,9 +15,10 @@ export default function BoardCard(props){
         views
      } = props;
 
+    const history = useHistory();
     return(
         <>
-        <div className="card_wrap" key={key}>
+        <div className="card_wrap" key={key} onClick={()=>{history.push(`/bbs/free/${id}`)}}>
             <div className="card_preview">
                 <img src={imageUrl} alt="" />
             </div>

@@ -1,6 +1,5 @@
 import { useState,useEffect } from 'react';
 import { BsList,BsFillBellFill } from 'react-icons/bs';
-import { AiOutlineLogin } from 'react-icons/ai';
 import { useHistory } from 'react-router';
 import "../../css/part/Main_header.scss";
 import useMember from '../../customState/useMember';
@@ -15,7 +14,7 @@ export default function Main_header(props){
     }
     const history = useHistory();
     
-    const {data,logined} = useMember();
+    const {data,logined,removeCookie} = useMember();
 
     return(
         <>
@@ -40,7 +39,7 @@ export default function Main_header(props){
                             profileAct ? (
                                 <div className="user_profile_detail">
                                 
-                                <span className="btn">Log-out</span>
+                                <span className="btn" onClick={()=>{removeCookie("SESSION_UID",{path:"/"}); window.location.reload()}}>Log-out</span>
                                 </div>
                             ) : <></>
                         }

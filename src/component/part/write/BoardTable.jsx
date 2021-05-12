@@ -20,7 +20,7 @@ export default function BoardTable(props){
         return key;
     }
     const onClickHandler=(id)=>{
-        history.push(`/${boardName ? boardName : "free"}/read?board_id=${id}`)
+        history.push(`/bbs/${boardName ? boardName : "free"}/${id}`)
     }
     return(
         <>
@@ -36,7 +36,7 @@ export default function BoardTable(props){
             </thead>
             <tbody>
                 {
-                    data ?
+                    data.length > 0?
                     data.map((d,i)=>{
                         const key = dataField();
                         return (
@@ -70,7 +70,7 @@ export default function BoardTable(props){
                                
                             </tr>
                         )
-                    }) : <></>
+                    }) : <tr><td colSpan={columnData.length}>데이터가 존재하지 않습니다.</td></tr>
                 }
             </tbody>
         </table>

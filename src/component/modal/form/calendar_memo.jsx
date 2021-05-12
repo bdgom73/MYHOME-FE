@@ -22,7 +22,7 @@ export default function CalendarMemo(props) {
         
         axios.post("/calendar/add",fd,{headers:{"Authorization" : member.SESSION_UID}})
             .then(res=>{
-                console.log(res);
+                props.close();
             }).catch(e=>{
                 console.log(e.response);
             })

@@ -1,3 +1,4 @@
+@import "../color.scss";
 
 .home_wrap{
     margin: 0 auto;
@@ -7,6 +8,7 @@
     min-height: 100vh;
     .home_s1{
         display: flex;
+       
         .home_calendar{
             width: 500px;
             margin-right: 20px;
