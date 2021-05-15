@@ -8,15 +8,18 @@ import { RiPhoneFindLine } from 'react-icons/ri';
 import WriteEditor from "../part/write/WriteEditor";
 import Modal from "../modal/modal";
 import useModal from "../../customState/useModal";
+import useMember from "../../customState/useMember";
+import axios from "axios";
 
 export default function VideoWrite(props){
 
-    // const editorToHtml = draftToHtml(convertToRaw(editorState.getCurrentContent()));
+    
  
     const modal = useModal();
+    const member = useMember();
     const [videoType,setVideoType] = useState(false);
     const [videoName,setVideoName]= useState("");
-
+    const [desc,setDesc] = useState("");
     function onModalHandler(){
         if(modal.modal === 1){
             return <Modal close={modal.close}>잘못된 URL입니다.</Modal>
@@ -24,11 +27,27 @@ export default function VideoWrite(props){
     }
     const onSubmitHandler = (e)=>{
         e.preventDefault();
-        const url = e.target[3].value;
-        const unique = url.split("https://youtu.be/")[1];
-        if(!unique){
-            modal.setModal(1)
+       
+        console.log(e);
+        const fd = new FormData();
+        if(e.target[2].checked){
+            fd.append("video",e.target[4].files[0]);
+        }else{
+            const url = e.target[3].value;
+            const unique = url.split("https://youtu.be/")[1];
+            if(!unique){
+                modal.setModal(1)
+            }
+            fd.append("video_url",e.target[3].value);
         }
+       
+        fd.append("title",e.target[0].value);
+        fd.append("description",desc);
+        
+        axios.post("/bbs/write?category=video",fd,{headers:{'Content-Type': 'multipart/form-data',"Authorization" : member.SESSION_UID}})
+            .then(res=>{
+                console.log(res);
+            }).catch(e=>console.log(e.response))
     }
 
     return(
@@ -45,7 +64,7 @@ export default function VideoWrite(props){
                     </tr>
                     <tr>
                         <td colSpan='2'>
-                            <input type="text" className="writer" readOnly/>
+                            <input type="text" className="writer" readOnly defaultValue={member.data.name}/>
                         </td>
                     </tr>
                     <tr>
@@ -68,7 +87,7 @@ export default function VideoWrite(props){
                     </tr>
                     <tr>
                         <td colSpan='2'>
-                           <WriteEditor />
+                           <WriteEditor onChange={(ed)=>{setDesc(ed)}} />
                         </td>
                     </tr>
                     </tbody>

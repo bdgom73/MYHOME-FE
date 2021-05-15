@@ -33,6 +33,7 @@ function App() {
       
       <Route exact path="/test"><Template><VideoWrite/></Template></Route>
       <Route exact path="/bbs/free"><Template><FreeBoard/></Template></Route>
+      <Route exact path="/bbs/write"><Template><VideoWrite/></Template></Route>
       <Route exact path="/watch" render={(props)=>{ return <Template><VideoDetail {...props}/></Template>}} ></Route>
       <Route path="/"><NotFound/></Route>
     </Switch> 

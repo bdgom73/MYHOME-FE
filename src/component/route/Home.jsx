@@ -6,10 +6,18 @@ import WeatherInfo from "../part/weather/WeatherInfo";
 import GoogleMap from "../part/googleMap";
 import ChartMap from "../part/ChartMap";
 import BoardTable from "../part/write/BoardTable";
+import axios from "axios";
 require('dotenv').config();
 
 export default function Home(props){
  
+
+    useEffect(()=>{
+        axios.get("/bbs/free/get")
+        .then(res=>{
+            console.log(res);
+        }).catch(e=> console.log(e.response))
+    },[])
     return (
         <>
         <div className="home_wrap">
