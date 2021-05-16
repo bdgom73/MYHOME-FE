@@ -12,12 +12,7 @@ require('dotenv').config();
 export default function Home(props){
  
 
-    useEffect(()=>{
-        axios.get("/bbs/free/get")
-        .then(res=>{
-            console.log(res);
-        }).catch(e=> console.log(e.response))
-    },[])
+   
     return (
         <>
         <div className="home_wrap">

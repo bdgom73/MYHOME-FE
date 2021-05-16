@@ -8,9 +8,7 @@ import TotalWeather from "./component/part/TotalWeather";
 import Register from "./component/route/Register";
 import Login from "./component/route/Login";
 import useMember from "./customState/useMember";
-
-import VideoBoard from "./component/route/VideoBoard";
-
+import VideoBoard from "./component/route/board/VideoBoard";
 import NotFound from "./component/NotFound";
 import VideoDetail from "./component/route/board/VideoDetail";
 import VideoWrite from "./component/route/VideoWrite";
@@ -33,9 +31,11 @@ function App() {
       
       <Route exact path="/test"><Template><VideoWrite/></Template></Route>
       <Route exact path="/bbs/free"><Template><FreeBoard/></Template></Route>
+      <Route exact path="/bbs/free/:id" render={(props)=>{ return <Template><VideoDetail {...props}/></Template>}} ></Route>
+      <Route exact path="/bbs/video"><Template><VideoBoard/></Template></Route>
+      <Route exact path="/bbs/video/:id" render={(props)=>{ return <Template><VideoDetail {...props}/></Template>}} ></Route>
       <Route exact path="/bbs/write"><Template><VideoWrite/></Template></Route>
-      <Route exact path="/watch" render={(props)=>{ return <Template><VideoDetail {...props}/></Template>}} ></Route>
-      <Route path="/"><NotFound/></Route>
+      
     </Switch> 
   );
 }

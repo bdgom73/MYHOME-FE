@@ -7,23 +7,24 @@ import "../../../css/write/board.scss";
 import BoardCard from "../../part/write/BoardCard";
 import axios from "axios";
 
-export default function FreeBoard(){
+export default function VideoBoard(){
 
     const [data,setData] = useState([{
         id : 5,
         title : "공지사항",
         writer : "ADMIN",
         created : "2021-05-12 18:22",
-        hits : "20",
+        views : "20",
         recommend : 50
     }]);
 
     const [type, setType] = useState("list");
     
     useEffect(()=>{
-        axios.get("/bbs/free/get")
+        axios.get("/bbs/video/get")
         .then(res=>{
             console.log(res);
+            setData(res.data || [])
         }).catch(e=> console.log(e.response))
     },[])
 
@@ -41,7 +42,9 @@ export default function FreeBoard(){
         <BoardTable 
             data={data}
             columnData={["No","제목","글쓴이","작성일","조회","추천"]}
-            linkColumn={"title"}/>
+            linkColumn={"title"}
+            columnDataKey={["id","title","writer","updated","views","recommend"]}
+            />
             
         </Board>
         ) : (
@@ -59,7 +62,7 @@ export default function FreeBoard(){
                     key = {m.title}
                     writer = {m.writer}
                     recommend = {m.recommend}
-                    views = {m.hits}/>
+                    views = {m.views}/>
             })
         }
         </Board>

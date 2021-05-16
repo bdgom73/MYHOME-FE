@@ -3,35 +3,60 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router";
 import NotFound from "../../NotFound";
 import "../../../css/route/videoDetail.scss";
-export default function VideoDetail(){
+import axios from "axios";
+export default function VideoDetail(props){
 
-    const {search} = useLocation();
-    const params = qs.parse(search);
+    const {params}= props.match;
+  
     const [board_id, setBoardId] = useState();
-
-    useEffect(()=>{
-        setBoardId(params.id);
+    const [videoType, setVideoType] = useState("YOUTUBE");
+    const [data,setData] = useState({});
+    const [existence,setExistence] = useState(false);
+    const [videoUrl,setVideoUrl] = useState("")
+    useEffect(()=>{    
+       setBoardId(params.id);
+       axios.get("/bbs/view/"+board_id)
+        .then(res=>{
+            const unique = res.data.video_url.split("https://youtu.be/")[1];
+            setData(res.data || {});
+            setVideoType(res.data.videoType);
+            setVideoUrl(unique);
+            setExistence(true);
+        })
+        .catch(e=>{
+            console.log(e.response);
+            setExistence(false);
+        })
     },[board_id])
-    if(board_id){
+
+
+    if(existence){
         return(
         <>
         <div className="board_detail_wrap">
             <div className="board_body">
                 <div className="board_video">
-                    {/* <video controls>
-                        <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4" />
-                    </video> */}
-                    <iframe 
-                        title="Youtube video"
-                        className="iframeVideo"
-                        src="https://www.youtube.com/embed/dFk43kPfVAo"  
-                        allowfullscreen="allowfullscreen"
-                        mozallowfullscreen="mozallowfullscreen" 
-                        msallowfullscreen="msallowfullscreen" 
-                        oallowfullscreen="oallowfullscreen" 
-                        webkitallowfullscreen="webkitallowfullscreen"
-                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen"
-                    ></iframe>
+                    {
+                        videoType === "YOUTUBE" ? (
+                            <iframe 
+                            title="Youtube video"
+                            className="iframeVideo"
+                            src={`https://www.youtube.com/embed/${videoUrl}`}  
+                            allowfullscreen="allowfullscreen"
+                            mozallowfullscreen="mozallowfullscreen" 
+                            msallowfullscreen="msallowfullscreen" 
+                            oallowfullscreen="oallowfullscreen" 
+                            webkitallowfullscreen="webkitallowfullscreen"
+                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+                        ></iframe>
+                        ) : (
+                        <video controls>
+                        <source src={data.video_url}/>
+                        </video> 
+                        )
+                    }
+                   
+                   
                 </div>
                 <div className="board_sub">
                     <table>
