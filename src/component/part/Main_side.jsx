@@ -38,15 +38,15 @@ export default function Main_side(props){
                 </li>
             </ul>
             <ul>
-                <li onClick={()=>{routePush("/bbs/free")}}>
+                <li onClick={()=>{routePush("/bbs/video")}}>
                     <FaVideo/>
                     공유동영상
                 </li>
-                <li>
+                <li onClick={()=>{routePush("/bbs/free")}}>
                     <CgBoard/>
                     게시판
                 </li>
-                <li>
+                <li onClick={()=>{routePush("/bbs/photo")}}>
                     <AiFillPicture/>
                     사진첩
                 </li>

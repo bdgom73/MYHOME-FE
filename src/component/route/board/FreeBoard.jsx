@@ -9,25 +9,43 @@ import axios from "axios";
 
 export default function FreeBoard(){
 
-    const [data,setData] = useState([{
-        id : 5,
-        title : "공지사항",
-        writer : "ADMIN",
-        created : "2021-05-12 18:22",
-        hits : "20",
-        recommend : 50
-    }]);
+    
+    const [itemCount, setItemCount] = useState(20);
+    const [preItemCount, setPreItemCount] = useState(0);
 
+    const infiniteScroll = ()=>{
+        const scrollHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
+        const scrollTop = Math.max(Math.round(document.documentElement.scrollTop), Math.round(document.body.scrollTop));
+        const clientHeight = document.documentElement.clientHeight; 
+        if(type !== "list" && permit){
+            if(scrollTop + clientHeight === scrollHeight){  
+                setPreItemCount(itemCount);
+                setItemCount(itemCount + 20);         
+                return;
+            }
+
+        }
+    }
+    
+    const [data,setData] = useState([]);
+    const [permit,setPermit] = useState(true);
     const [type, setType] = useState("list");
     
     useEffect(()=>{
-        axios.get("/bbs/free/get")
+        if(itemCount !== preItemCount) _getUrl();
+    },[itemCount])
+    useEffect(()=>{
+        window.addEventListener("scroll",infiniteScroll,true)     
+    })
+    const _getUrl = ()=>{      
+        axios.get(`/bbs/free/get?size=${itemCount}&page=0`)
         .then(res=>{
-            console.log(res);
+            setData(res.data);  
+            if(res.data.length < itemCount){
+                setPermit(false);
+            }
         }).catch(e=> console.log(e.response))
-    },[])
-
-
+    }
     return (
         <>
         {
@@ -39,9 +57,11 @@ export default function FreeBoard(){
             <span className="item" onClick={()=>{setType("table")}} title="상세보기"><BsTable size="22"/></span>
         </div>
         <BoardTable 
-            data={data}
-            columnData={["No","제목","글쓴이","작성일","조회","추천"]}
-            linkColumn={"title"}/>
+             data={data}
+             columnData={["No","제목","글쓴이","작성일","조회","추천"]}
+             linkColumn={"title"}
+             boardName="video"
+             columnDataKey={["id","title","writer","updated","views","recommend"]}/>
             
         </Board>
         ) : (
