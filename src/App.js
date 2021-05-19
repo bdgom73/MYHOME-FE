@@ -36,6 +36,7 @@ function App() {
       <Route exact path="/bbs/video/:id" render={(props)=>{ return <Template><VideoDetail {...props}/></Template>}} ></Route>
       <Route exact path="/bbs/write"><Template><VideoWrite/></Template></Route>
       
+      <Route path="/"><NotFound/></Route>
     </Switch> 
   );
 }

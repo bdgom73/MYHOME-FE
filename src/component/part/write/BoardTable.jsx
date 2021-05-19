@@ -1,6 +1,8 @@
+import moment from "moment";
 import { useEffect } from "react";
 import { useHistory } from "react-router";
 import "../../../css/write/boardTable.scss";
+import Loading from "../Loading";
 export default function BoardTable(props){
 
     const { 
@@ -10,6 +12,7 @@ export default function BoardTable(props){
         columnDataKey,
         boardName,
         linkColumn,
+        dateColumn
      } = props;
 
     const history = useHistory();
@@ -44,16 +47,19 @@ export default function BoardTable(props){
                                 {
                                     columnDataKey ? columnDataKey.map((k,j)=>{  
                                         if(linkColumn){
+                                            console.log(dateColumn , k)
                                             return (
-                                                <td key={k+tableClassName+i+j} onClick={k===linkColumn ? ()=>{onClickHandler(d.id)}:()=>{}}>{d[k]}</td>
+                                                <td key={k+tableClassName+i+j} onClick={k===linkColumn ? ()=>{onClickHandler(d.id)}:()=>{}}>
+                                                    {dateColumn === k  ? moment(d[dateColumn]).format("YYYY-MM-DD HH:mm") : d[k]}
+                                                </td>
                                             )
                                         }else{
                                             return (
-                                                <td key={k+tableClassName+i+j} onClick={()=>{onClickHandler(d.id)}}>{d[k]}</td>
+                                                <td key={k+tableClassName+i+j} onClick={()=>{onClickHandler(d.id)}}>
+                                                    {dateColumn === k ? moment(d[dateColumn]).format("YYYY-MM-DD HH:mm") : d[k]}
+                                                </td>
                                             )
                                         }
-                                      
-                                        
                                       
                                     }) : key.map((k,j)=>{
                                         if(linkColumn){
@@ -70,7 +76,7 @@ export default function BoardTable(props){
                                
                             </tr>
                         )
-                    }) : <tr><td colSpan={columnData.length}>데이터가 존재하지 않습니다.</td></tr>
+                    }) : <tr><td colSpan={columnData.length}><Loading/></td></tr>
                 }
             </tbody>
         </table>

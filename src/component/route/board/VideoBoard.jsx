@@ -9,13 +9,14 @@ import axios from "axios";
 import ReactPaginate from "react-paginate";
 import qs from "query-string";
 import { useHistory, useLocation } from "react-router";
+import "../../../css/pagination.scss";
 export default function VideoBoard(){
 
     const location = useLocation();
     const history = useHistory();
     const [data,setData] = useState([]);
 
-    const [itemCount, setItemCount] = useState(20);
+    const [itemCount, setItemCount] = useState(40);
     const [preItemCount, setPreItemCount] = useState(0);
     const [total,setTotal] = useState(0);
     const [types, setTypes] = useState(true);
@@ -32,7 +33,7 @@ export default function VideoBoard(){
         if(!types && permit){
             if(scrollTop + clientHeight === scrollHeight){  
                 setPreItemCount(itemCount);
-                setItemCount(itemCount + 20);    
+                setItemCount(itemCount + 40);    
                 return;
             }
 
@@ -60,7 +61,7 @@ export default function VideoBoard(){
 
    // data가져오기
     const _getUrl = ()=>{      
-        let url = types ? `/bbs/video/get?size=${20}&page=${page}` : `/bbs/video/get?size=${itemCount}&page=0`;
+        let url = types ? `/bbs/video/get?size=${40}&page=${page}` : `/bbs/video/get?size=${itemCount}&page=0`;
         axios.get(url)
         .then(res=>{
             setData(res.data);  
@@ -82,7 +83,7 @@ export default function VideoBoard(){
         <h1>영상게시판</h1>
         <div className="board_controller">
             <span className="item" onClick={()=>{ setTypes(true)}} title="리스트로 보기"><IoMdList size="22"/></span>
-            <span className="item" onClick={()=>{setItemCount(20); setTypes(false); }} title="상세보기"><BsTable size="22"/></span>
+            <span className="item" onClick={()=>{setItemCount(40); setTypes(false); }} title="상세보기"><BsTable size="22"/></span>
         </div>
         <BoardTable 
             data={data}
@@ -90,17 +91,17 @@ export default function VideoBoard(){
             linkColumn={"title"}
             boardName="video"
             columnDataKey={["id","title","writer","updated","views","recommend"]}
+            dateColumn="updated"
             />
          <ReactPaginate 
-            pageCount={Math.ceil(total / 20)}
-            pageRangeDisplayed={20}
+            pageCount={Math.ceil(total / 40)}
+            pageRangeDisplayed={40}
             marginPagesDisplayed={0}
             breakLabel={""}
             previousLabel={"이전"}
             nextLabel={"다음"}
             onPageChange={({selected})=>{   
-                setPage(Number(selected));
-                
+                setPage(Number(selected));     
                 history.replace(`?page=${Number(selected)+1}`);
             }}
             containerClassName={"pagination-ul"}
@@ -110,12 +111,13 @@ export default function VideoBoard(){
         />     
         </Board>
         ) : (
-        <Board>
+        <Board style={{maxWidth:"1100px",margin:"15px auto"}}>
         <h1>영상게시판</h1>
         <div className="board_controller">
             <span className="item" onClick={()=>{window.location.href="?page=1"}} title="리스트로 보기"><IoMdList size="22"/></span>
             <span className="item" onClick={()=>{setTypes(false)}} title="상세보기"><BsTable size="22"/></span>
         </div>
+        <div className="card_board_wrpa">
         {
             data.map(m=>{
                 return <BoardCard 
@@ -127,6 +129,7 @@ export default function VideoBoard(){
                     views = {m.views}/>
             })
         }
+        </div>
         </Board>
         )
         }

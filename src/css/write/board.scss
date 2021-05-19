@@ -89,7 +89,12 @@
         }
     }
 }
-
+.card_board_wrpa{
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 1100px;
+    margin: 0 auto;
+}
 @media screen and (max-width: 560px){
     .card_wrap{
         width: 150px;

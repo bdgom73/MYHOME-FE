@@ -27,7 +27,7 @@ export default function VideoDetail(props){
         .catch(e=>{
             console.log(e.response);
             setExistence(false);
-            // history.push("/bbs/video");
+            history.push("/bbs/video");
         })
     },[board_id])
 
