@@ -30,7 +30,7 @@ export default function VideoBoard(){
         const scrollHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
         const scrollTop = Math.max(Math.round(document.documentElement.scrollTop), Math.round(document.body.scrollTop));
         const clientHeight = document.documentElement.clientHeight; 
-        if(!types && permit){
+        if(!types){
             if(scrollTop + clientHeight === scrollHeight){  
                 setPreItemCount(itemCount);
                 setItemCount(itemCount + 40);    
@@ -76,22 +76,23 @@ export default function VideoBoard(){
     
     return (
         <>
-        {console.log(types)}
         {
         types ? (
-        <Board style={{maxWidth:"800px",margin:"15px auto"}}>
+        <Board style={{maxWidth:"1100px",margin:"15px auto"}}>
         <h1>영상게시판</h1>
         <div className="board_controller">
-            <span className="item" onClick={()=>{ setTypes(true)}} title="리스트로 보기"><IoMdList size="22"/></span>
-            <span className="item" onClick={()=>{setItemCount(40); setTypes(false); }} title="상세보기"><BsTable size="22"/></span>
+            <span className="item" onClick={()=>{setTypes(true)}} title="리스트로 보기"><IoMdList size="22"/></span>
+            <span className="item" onClick={()=>{setItemCount(40); setData([]); setTypes(false); }} title="상세보기"><BsTable size="22"/></span>
         </div>
         <BoardTable 
             data={data}
-            columnData={["No","제목","글쓴이","작성일","조회","추천"]}
+            columnData={["No","영상","제목","글쓴이","작성일","조회","추천"]}
             linkColumn={"title"}
             boardName="video"
-            columnDataKey={["id","title","writer","updated","views","recommend"]}
+            columnDataKey={["id","video_url","title","writer","updated","views","recommend"]}
             dateColumn="updated"
+            videoColumn="video_url"
+            autoSize
             />
          <ReactPaginate 
             pageCount={Math.ceil(total / 40)}
@@ -120,13 +121,16 @@ export default function VideoBoard(){
         <div className="card_board_wrpa">
         {
             data.map(m=>{
+                const unique = m.video_url ? m["video_url"].split("https://youtu.be/")[1]: "";
                 return <BoardCard 
                     id={m.id}
                     title={m.title}
                     key = {m.title}
                     writer = {m.writer}
                     recommend = {m.recommend}
-                    views = {m.views}/>
+                    views = {m.views}
+                    imageUrl={`https://i1.ytimg.com/vi/${unique}/0.jpg`}
+                    />
             })
         }
         </div>

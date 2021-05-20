@@ -4,6 +4,8 @@ import NotFound from "../../NotFound";
 import "../../../css/route/videoDetail.scss";
 import axios from "axios";
 import { useHistory } from "react-router";
+import { AiTwotoneLike } from 'react-icons/ai';
+import { GrFormView } from 'react-icons/gr';
 export default function VideoDetail(props){
 
     const {params}= props.match;
@@ -36,6 +38,14 @@ export default function VideoDetail(props){
     return(
     <>
     <div className="board_detail_wrap">
+        <cl>
+            board &#62; <a href="/bbs/video?page=1">video</a>
+        </cl>
+        <h1 title={data.title}>{data.title}</h1>
+        <video-info>
+            <vi><GrFormView/> {data.views}</vi>
+            <vi><AiTwotoneLike color="#3b5998"/> {data.recommend}</vi>     
+        </video-info>
         <div className="board_body">
             <div className="board_video">
                 {
@@ -51,18 +61,23 @@ export default function VideoDetail(props){
                         webkitallowfullscreen="webkitallowfullscreen"
                         allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen"
                     ></iframe>
-                    ) : (
+                    ) : videoType === "LOCAL" ? (
                     <video controls>
                     <source src={data.video_url}/>
                     </video> 
-                    )
+                    ) : <></>
                 }
                 
                 
             </div>
             <div className="board_main">    
-                    <div id="content_field"></div>
+               <div id="content_field"></div>
             </div>
+            <userController>
+                <button type="button" className="btn" disabled={true}>
+                    <AiTwotoneLike color="#fff"/>추천
+                </button>
+            </userController>
         </div>
     </div>
     </>

@@ -22,7 +22,7 @@ export default function FreeBoard(){
         const scrollHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
         const scrollTop = Math.max(Math.round(document.documentElement.scrollTop), Math.round(document.body.scrollTop));
         const clientHeight = document.documentElement.clientHeight; 
-        if(!types && permit){
+        if(!types){
             if(scrollTop + clientHeight === scrollHeight){  
                 setPreItemCount(itemCount);
                 setItemCount(itemCount + 40);         
@@ -33,11 +33,10 @@ export default function FreeBoard(){
     }
     
     const [data,setData] = useState([]);
-    const [permit,setPermit] = useState(true);
     const [types, setTypes] = useState(true);
     useEffect(()=>{
         _getUrl();
-    },[page])
+    },[page,types])
     useEffect(()=>{
         if(itemCount !== preItemCount) _getUrl();
     },[itemCount])
@@ -57,9 +56,7 @@ export default function FreeBoard(){
         axios.get(url)
         .then(res=>{
             setData(res.data);  
-            if(res.data.length < itemCount){
-                setPermit(false);
-            }
+           
             if(types  && res.data.length < 1){
                 window.location.href="?page=1";
             }
@@ -73,14 +70,15 @@ export default function FreeBoard(){
         <h1>공유게시판</h1>
         <div className="board_controller">
             <span className="item" onClick={()=>{setTypes(true)}} title="리스트로 보기"><IoMdList size="22"/></span>
-            <span className="item" onClick={()=>{setItemCount(40);setTypes(false)}} title="상세보기"><BsTable size="22"/></span>
+            <span className="item" onClick={()=>{setItemCount(40); setTypes(false)}} title="상세보기"><BsTable size="22"/></span>
         </div>
         <BoardTable 
              data={data}
              columnData={["No","제목","글쓴이","작성일","조회","추천"]}
              linkColumn={"title"}
              boardName="video"
-             columnDataKey={["id","title","writer","updated","views","recommend"]}/>   
+             columnDataKey={["id","title","writer","updated","views","recommend"]}
+             autoSize/>   
         <ReactPaginate 
             pageCount={Math.ceil(total / 40)}
             pageRangeDisplayed={40}

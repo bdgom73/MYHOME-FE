@@ -13,6 +13,7 @@ import NotFound from "./component/NotFound";
 import VideoDetail from "./component/route/board/VideoDetail";
 import VideoWrite from "./component/route/VideoWrite";
 import FreeBoard from "./component/route/board/FreeBoard";
+import SubLoading from "./component/sub_loading";
 
 function App() {
 
@@ -29,7 +30,7 @@ function App() {
       <Route exact path="/register"><Template access="non-user"><Register/></Template></Route>
     
       
-      <Route exact path="/test"><Template><VideoWrite/></Template></Route>
+      <Route exact path="/test"><Template><SubLoading/></Template></Route>
       <Route exact path="/bbs/free"><Template><FreeBoard/></Template></Route>
       <Route exact path="/bbs/free/:id" render={(props)=>{ return <Template><VideoDetail {...props}/></Template>}} ></Route>
       <Route exact path="/bbs/video"><Template><VideoBoard/></Template></Route>

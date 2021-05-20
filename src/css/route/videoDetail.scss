@@ -1,19 +1,83 @@
+cl{
+    font-weight: bold;
+    position: relative;
+    a{
+        color: #7e7e7e;
+    }
+    &::before{
+        content: "";
+        position: absolute;
+        top:0px;
+        width: 30px;
+        border-top: 3px solid #efb730;
+    }
+}
+video-info{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    vi{
+        padding: 2px;
+        margin: 0 3px;
+        display: flex;
+        align-items: center;
+        svg{
+            font-size:20px;
+        }
+    }
+}
+userController{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .btn{
+        padding: 5px;
+        min-width: 100px;
+        background-color: #e24515;
+        border-radius: 5px;
+        font-weight: bold;
+        font-size: 13px;
+        cursor: pointer;
+        color: #fff;
+        border: 1px solid #e24515;
+        &:disabled{
+            background-color: #a1938f;  
+            border: 1px solid #a1938f;
+            cursor: not-allowed;
+            &:hover{
+                background-color: #a1938f;  
+            }
+        }
+        &:hover{
+            background-color: #ee5324;  
+        }
+        svg{
+            margin-right: 3px;
+            
+        }
+    }
+}
 .board_detail_wrap{
     width: 100%;
     padding: 10px;
     max-width: 1100px;
-    margin: 0 auto;
+    margin: 15px auto;
+    border: 10px solid #efb730;
+    min-height: 100vh;
+    border-radius: 5px;
+    h1{
+        border-bottom:4px solid #03036d;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        padding: 5px;
+    }
     .board_body{
-        display: flex;
-        align-items: center;
-        flex-direction: column;
-        justify-content: center;
+        margin: 0 auto;
         .board_video{   
-            max-width: 800px;
             width: 100%;
-            
             height: 100%;  
-            min-height: 500px;     
+            min-height: 600px;     
             position: relative;
             .iframeVideo{
                 position: absolute; 
@@ -21,6 +85,53 @@
              
                 width: 100%;  
                 height: 100%;
+            }
+        }
+        .board_main{
+            min-height: 350px;
+           
+            
+        }
+    }
+}
+@media screen and (max-width: 540px){
+    .board_detail_wrap{
+        h1{
+            font-size: 28px;
+        }
+        .board_body{
+            .board_video{      
+                min-height: 380px;     
+                
+              
+            }
+        }
+    }
+}
+@media screen and (max-width: 500px){
+    .board_detail_wrap{
+        h1{
+            font-size: 24px;
+        }
+        .board_body{
+            .board_video{      
+                min-height: 280px;     
+                
+              
+            }
+        }
+    }
+}
+@media screen and (max-width: 420px){
+    .board_detail_wrap{
+        h1{
+            font-size: 18px;
+        }
+        .board_body{
+            .board_video{      
+                min-height: 200px;     
+                
+              
             }
         }
     }
