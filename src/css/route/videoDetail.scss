@@ -1,4 +1,6 @@
+@import "../color.scss";
 cl{
+    display: block;
     font-weight: bold;
     position: relative;
     a{
@@ -57,16 +59,35 @@ userController{
         }
     }
 }
+user-comment{
+    display: block;
+    margin: 5px 0;
+    comment-write{
+        display: block;
+        position: relative;
+        writer{
+            strong{
+                font-size: 13px;
+            }
+            position: absolute;
+            top : 5px ;
+            right: 5px;
+            z-index: 1;
+            font-size: 12px;
+        }
+       
+    }
+}
 .board_detail_wrap{
     width: 100%;
     padding: 10px;
     max-width: 1100px;
-    margin: 15px auto;
-    border: 10px solid #efb730;
+    margin: 25px auto;
+    border: 2px solid $mushroom;
     min-height: 100vh;
     border-radius: 5px;
     h1{
-        border-bottom:4px solid #03036d;
+        border-bottom:2px solid rgba($mushroom , 0.85);
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;

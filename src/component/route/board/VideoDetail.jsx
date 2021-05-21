@@ -1,20 +1,29 @@
-
 import { useEffect, useState } from "react";
-import NotFound from "../../NotFound";
 import "../../../css/route/videoDetail.scss";
 import axios from "axios";
 import { useHistory } from "react-router";
 import { AiTwotoneLike } from 'react-icons/ai';
 import { GrFormView } from 'react-icons/gr';
+import WriteEditor from "../../part/write/WriteEditor";
+import useMember from "../../../customState/useMember";
+import Comment from "./Comment";
+import { EditorState,convertToRaw } from "draft-js";
+import draftToHtml from 'draftjs-to-html';
 export default function VideoDetail(props){
 
+    const member = useMember();
     const {params}= props.match;
     const history = useHistory();
     const [board_id, setBoardId] = useState();
     const [videoType, setVideoType] = useState("YOUTUBE");
     const [data,setData] = useState({});
     const [existence,setExistence] = useState(false);
+    const [content,setContent] = useState();
     const [videoUrl,setVideoUrl] = useState("")
+    const [comment,setComment] = useState([]);
+    const [editorState, setEditorState] = useState(EditorState.createEmpty());
+    const [context, setContext] = useState();
+    
     useEffect(()=>{    
        setBoardId(params.id);
        axios.get("/bbs/view/"+params.id)
@@ -23,18 +32,23 @@ export default function VideoDetail(props){
             setData(res.data || {});
             setVideoType(res.data.videoType);
             setVideoUrl(unique);
-            setExistence(true);
-            document.getElementById("content_field").innerHTML = res.data.description;
+            setExistence(true);   
+            setContent(res.data.description);
+            setComment(res.data.commentDTOList || []);
         })
         .catch(e=>{
-            console.log(e.response);
             setExistence(false);
             history.push("/bbs/video");
         })
     },[board_id])
 
-
-    
+    const onEditorStateChange = (es)=>{ 
+        setEditorState(es);  
+    }
+    useEffect(()=>{
+        const editorToHtml = draftToHtml(convertToRaw(editorState.getCurrentContent()));
+        setContext(editorToHtml);
+    },[editorState])
     return(
     <>
     <div className="board_detail_wrap">
@@ -71,13 +85,45 @@ export default function VideoDetail(props){
                 
             </div>
             <div className="board_main">    
-               <div id="content_field"></div>
+                <div id="content_field" dangerouslySetInnerHTML={{ __html : content}}/>
             </div>
             <userController>
                 <button type="button" className="btn" disabled={true}>
                     <AiTwotoneLike color="#fff"/>추천
                 </button>
             </userController>
+            <user-comment>
+                {
+                    member.logined ? (
+                    <comment-write>
+                        <writer><strong>작성자</strong> : {member.data.name}</writer>
+                        <WriteEditor isComment 
+                        editorState={editorState}
+                        onEditorStateChange={onEditorStateChange}
+                        />
+                        <div className="btn_wrap" >
+                            <button className="btn" onClick={(e)=>{
+                                const fd = new FormData();
+                                fd.append("description",context);
+                                axios.post(`/bbs/${board_id}/write/comment`,fd,{
+                                    headers : {
+                                        "Authorization" : member.SESSION_UID
+                                    }
+                                })
+                                .then(res=>{   
+                                    comment.push(res.data);
+                                    setComment(comment);
+                                    setEditorState(EditorState.createEmpty());
+                                }).catch(e=>{
+                                    console.log(e.response)
+                                })
+                            }}>작성</button>
+                        </div>
+                    </comment-write>
+                    ) : <div style={{textAlign:"center",margin:"10px"}}>로그인 후 이용할 수 있습니다.</div>
+                }
+               <Comment data={comment} />   
+            </user-comment>
         </div>
     </div>
     </>

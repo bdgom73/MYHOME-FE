@@ -3,10 +3,9 @@ import { useEffect, useState } from "react";
 import cityJson from "../../json/city_use.json";
 import cityList from "../../storage/cityList";
 import "../../css/part/weather/TotalWeather.scss";
-import { ResponsiveLine  } from '@nivo/line'
 import Loading from "./Loading";
 import TotalWeatherCard from "./weather/TotalWeatherCard";
-import { getWeatherIconUrl, hourFormat, timestampToDate2, timestampToHour, timestampToMonthAndDate, timestampToMonthAndDateAndHour } from "../../js/weather_conversion";
+import { hourFormat, timestampToDate2, timestampToHour, timestampToMonthAndDate, timestampToMonthAndDateAndHour } from "../../js/weather_conversion";
 import TotalWeatherGraph from "./weather/TotalWeatherGraph";
 import ChartMap from "../part/ChartMap";
 import { RiMapPinTimeLine } from 'react-icons/ri';

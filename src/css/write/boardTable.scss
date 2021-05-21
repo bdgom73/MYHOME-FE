@@ -1,20 +1,21 @@
 table.table, table.control{
     border-collapse: collapse;
     width: 100%;
+    font-size: 14px;   
     thead{
         th{
-            background-color: #03036d;
-            padding: 5px;
-            color : #fff;
+            background-color: rgba(#e2e1e1, 1);
+            padding: 10px 5px;
+            color : #000;
             border-bottom: 1px solid #bbb;
         }
     }
     tbody{
         tr{
             cursor: pointer;
-            &:hover{
-                background-color: #eeeeee;
-            }
+            // &:hover{
+            //     background-color: #eeeeee;
+            // }
             td{
                 white-space: nowrap;
                 text-overflow: ellipsis;
@@ -27,6 +28,15 @@ table.table, table.control{
                     border: 4px solid #ddd;
                     border-radius: 5px;
                 }
+            }
+            &:nth-child(2n){
+                background-color: #fcfcfc;
+            }
+            .link{
+                color : #8b4f05;
+                font-weight: bold;
+                text-decoration: underline;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             }
         }
     }

@@ -17,6 +17,7 @@ export default function FreeBoard(){
     const location = useLocation();
     const history = useHistory();
     const [total,setTotal] = useState(0);
+    const [loading,setLoading] = useState(true);
     const [page,setPage] = useState(qs.parse(location.search).page < 1 ? 0 : qs.parse(location.search).page-1 );
     const infiniteScroll = ()=>{
         const scrollHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
@@ -51,34 +52,38 @@ export default function FreeBoard(){
             setTotal(res.data)
         })
     },[]);
-    const _getUrl = ()=>{      
+    const _getUrl = ()=>{   
+        setLoading(true);   
         let url = types ? `/bbs/free/get?size=${40}&page=${page}` : `/bbs/free/get?size=${itemCount}&page=0`;
         axios.get(url)
         .then(res=>{
             setData(res.data);  
+            setLoading(false);    
            
-            if(types  && res.data.length < 1){
+            if(types  && qs.parse(location.search).page != 1 && res.data.length === 0){
                 window.location.href="?page=1";
-            }
+            } 
         }).catch(e=> console.log(e.response))
     }
     return (
         <>
         {
         types ? (
-        <Board style={{maxWidth:"800px",margin:"15px auto"}}>
+        <Board style={{maxWidth:"1100px",margin:"15px auto"}}>
         <h1>공유게시판</h1>
         <div className="board_controller">
             <span className="item" onClick={()=>{setTypes(true)}} title="리스트로 보기"><IoMdList size="22"/></span>
             <span className="item" onClick={()=>{setItemCount(40); setTypes(false)}} title="상세보기"><BsTable size="22"/></span>
         </div>
         <BoardTable 
-             data={data}
-             columnData={["No","제목","글쓴이","작성일","조회","추천"]}
-             linkColumn={"title"}
-             boardName="video"
-             columnDataKey={["id","title","writer","updated","views","recommend"]}
-             autoSize/>   
+            data={data}
+            columnData={["No","제목","글쓴이","작성일","조회","추천"]}
+            linkColumn={"title"}
+            boardName="video"
+            columnDataKey={["id","title","writer","updated","views","recommend"]}
+            autoSize
+            loading ={loading}
+            />   
         <ReactPaginate 
             pageCount={Math.ceil(total / 40)}
             pageRangeDisplayed={40}

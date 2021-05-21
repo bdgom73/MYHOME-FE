@@ -15,7 +15,7 @@ export default function VideoBoard(){
     const location = useLocation();
     const history = useHistory();
     const [data,setData] = useState([]);
-
+    const [loading,setLoading] = useState(true);
     const [itemCount, setItemCount] = useState(40);
     const [preItemCount, setPreItemCount] = useState(0);
     const [total,setTotal] = useState(0);
@@ -60,17 +60,19 @@ export default function VideoBoard(){
     },[]);
 
    // data가져오기
-    const _getUrl = ()=>{      
+    const _getUrl = ()=>{   
+        setLoading(true)   
         let url = types ? `/bbs/video/get?size=${40}&page=${page}` : `/bbs/video/get?size=${itemCount}&page=0`;
         axios.get(url)
         .then(res=>{
             setData(res.data);  
+            setLoading(false)
             if(res.data.length < itemCount){
                 setPermit(false);
             }
-            if(types  && res.data.length < 1){
+            if(types  && qs.parse(location.search).page != 1 && res.data.length === 0){
                 window.location.href="?page=1";
-            }
+            } 
         }).catch(e=> console.log(e.response))
     }
     
@@ -93,6 +95,7 @@ export default function VideoBoard(){
             dateColumn="updated"
             videoColumn="video_url"
             autoSize
+            loading={loading}
             />
          <ReactPaginate 
             pageCount={Math.ceil(total / 40)}

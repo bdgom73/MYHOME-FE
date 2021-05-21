@@ -16,6 +16,7 @@ export default function BoardTable(props){
         writerColumn,
         videoColumn,
         autoSize,
+        loading
      } = props;
 
     const history = useHistory();
@@ -36,7 +37,6 @@ export default function BoardTable(props){
                 <tr>
                 {
                     columnData.map((c,i)=>{
-                        console.log(videoColumn, c)
                         return <th key={c+i}>{c}</th>
                     })
                 }
@@ -44,7 +44,8 @@ export default function BoardTable(props){
             </thead>
             <tbody>
                 {
-                    data.length > 0?
+                    loading ?  <tr><td colSpan={columnData.length}><Loading/></td></tr> : 
+                    data.length > 0 ?
                     data.map((d,i)=>{
                         const unique = videoColumn && d[videoColumn]? d[videoColumn].split("https://youtu.be/")[1]: "";
                         const key = dataField();
@@ -55,7 +56,7 @@ export default function BoardTable(props){
                                        
                                         if(linkColumn){
                                             return (
-                                                <td key={k+i+j} onClick={k===linkColumn ? ()=>{onClickHandler(d.id)}:()=>{}}>
+                                                <td key={k+i+j} onClick={k===linkColumn ? ()=>{onClickHandler(d.id)}:()=>{}} className={k===linkColumn? "link" : ""}>
                                                     {dateColumn === k ? moment(d[dateColumn]).format("YYYY-MM-DD HH:mm") : 
                                                     videoColumn === k ? <img className="thumbnail" src={`https://i1.ytimg.com/vi/${unique}/1.jpg`} alt="youtube_video"/> :
                                                     d[k]}
@@ -94,7 +95,7 @@ export default function BoardTable(props){
                                
                             </tr>
                         )
-                    }) : <tr><td colSpan={columnData.length}><Loading/></td></tr>
+                    }) : <tr><td colSpan={columnData.length}>게시글이 없습니다 😂</td></tr>
                 }
             </tbody>
         </table>
