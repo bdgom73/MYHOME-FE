@@ -2,6 +2,7 @@ import "../../../css/write/board.scss";
 import { AiTwotoneLike } from 'react-icons/ai';
 import { GrFormView } from 'react-icons/gr';
 import { useHistory } from "react-router";
+import moment from "moment";
 
 export default function BoardCard(props){
 
@@ -12,7 +13,10 @@ export default function BoardCard(props){
         key,
         writer,
         recommend,
-        views
+        views,
+        rank,
+        created,
+        updated,
      } = props;
 
     const history = useHistory();
@@ -20,11 +24,33 @@ export default function BoardCard(props){
         <>
         <div className="card_wrap" key={key} onClick={()=>{history.push(`/bbs/free/${id}`)}}>
             <div className="card_preview">
-                <img src={imageUrl} alt="" />
+                {
+                    moment.duration(moment().diff(moment(created))).days() < 1 ?
+                    <div className="video_new"><pcon><span>NEW</span></pcon></div> :<></>
+                }
+                <time>
+                {
+                    moment(created).format("YYYY-MM-DD HH:mm") === moment(updated).format("YYYY-MM-DD HH:mm") ?
+                    moment(created).format("YYYY-MM-DD HH:mm") : <span><font >(수정됨)</font> {moment(updated).format("YYYY-MM-DD HH:mm")}</span>
+                }
+                </time>
+               
+                <img src={imageUrl ? imageUrl : "/no_thumbnail.png"} alt="" />
             </div>
             <div className="card_body">
+                
                 <div className="title" title={title}>{title}</div>
-                <div className="writer" title={writer}>{writer}</div>
+                <div className="writer" title={writer}>
+                    {
+                        rank === "ADMIN" ? 
+                        <pcon style={{backgroundColor:"#c4302b"}}>
+                            <span >운영자</span>  
+                        </pcon> :<></>
+                    }
+                    {writer}
+                   
+                </div>
+                <div className="fromnow">{ moment(created, "YYYY-MM-DD HH:mm:ss").fromNow()}</div>
                 <div className="info">
                     <span className="recommend" title={"추천수 : "+recommend}><AiTwotoneLike size="20" color="#3b5998"/> <span>{recommend}</span></span>
                     <span className="views" title={"조회수 : "+views}><GrFormView size="20"/> <span>{views}</span></span>

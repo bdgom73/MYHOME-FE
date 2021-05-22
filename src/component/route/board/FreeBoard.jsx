@@ -59,7 +59,7 @@ export default function FreeBoard(){
         .then(res=>{
             setData(res.data);  
             setLoading(false);    
-           
+         
             if(types  && qs.parse(location.search).page != 1 && res.data.length === 0){
                 window.location.href="?page=1";
             } 
@@ -80,9 +80,10 @@ export default function FreeBoard(){
             columnData={["No","제목","글쓴이","작성일","조회","추천"]}
             linkColumn={"title"}
             boardName="video"
-            columnDataKey={["id","title","writer","updated","views","recommend"]}
+            columnDataKey={["id","title","writer","created","views","recommend"]}
             autoSize
             loading ={loading}
+            writerColumn="writer"
             />   
         <ReactPaginate 
             pageCount={Math.ceil(total / 40)}
@@ -108,6 +109,7 @@ export default function FreeBoard(){
             <span className="item" onClick={()=>{setTypes(true)}} title="리스트로 보기"><IoMdList size="22"/></span>
             <span className="item" onClick={()=>{setTypes(false)}} title="상세보기"><BsTable size="22"/></span>
         </div>
+        <div className="card_board_wrap">
         {
             data.map(m=>{
                 return <BoardCard 
@@ -119,6 +121,7 @@ export default function FreeBoard(){
                     views = {m.hits}/>
             })
         }
+        </div>
         </Board>
         )
         }

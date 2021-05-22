@@ -9,6 +9,7 @@ import useMember from "../../../customState/useMember";
 import Comment from "./Comment";
 import { EditorState,convertToRaw } from "draft-js";
 import draftToHtml from 'draftjs-to-html';
+import moment from "moment";
 export default function VideoDetail(props){
 
     const member = useMember();
@@ -29,6 +30,7 @@ export default function VideoDetail(props){
        axios.get("/bbs/view/"+params.id)
         .then(res=>{
             const unique = res.data.video_url.split("https://youtu.be/")[1];
+            console.log(res.data)
             setData(res.data || {});
             setVideoType(res.data.videoType);
             setVideoUrl(unique);
@@ -57,8 +59,25 @@ export default function VideoDetail(props){
         </cl>
         <h1 title={data.title}>{data.title}</h1>
         <video-info>
-            <vi><GrFormView/> {data.views}</vi>
-            <vi><AiTwotoneLike color="#3b5998"/> {data.recommend}</vi>     
+            <info>
+                <vi><small>작성자 |</small><b>{data.writer}</b>              
+                {
+                    data.rank === "ADMIN" ? 
+                    <pcon style={{backgroundColor:"#c4302b"}}>
+                    <span >운영자</span>
+                    </pcon> :<></>
+                }
+                </vi> 
+                {
+                    moment(data.created).format("YYYY-MM-DD HH:mm") === moment(data.updated).format("YYYY-MM-DD HH:mm") ?
+                    <vi><small>작성일 | {moment(data.created).format("YYYY-MM-DD HH:mm")}</small></vi>: 
+                    <vi><small>작성일<small>(수정됨)</small> | {moment(data.updated).format("YYYY-MM-DD HH:mm")}</small></vi>
+                }             
+            </info>
+            <info>
+                <vi><GrFormView/> {data.views}</vi>
+                <vi><AiTwotoneLike color="#3b5998"/> {data.recommend}</vi>   
+            </info>  
         </video-info>
         <div className="board_body">
             <div className="board_video">
@@ -81,9 +100,9 @@ export default function VideoDetail(props){
                     </video> 
                     ) : <></>
                 }
-                
-                
+    
             </div>
+           
             <div className="board_main">    
                 <div id="content_field" dangerouslySetInnerHTML={{ __html : content}}/>
             </div>
@@ -91,7 +110,17 @@ export default function VideoDetail(props){
                 <button type="button" className="btn" disabled={true}>
                     <AiTwotoneLike color="#fff"/>추천
                 </button>
+                
             </userController>
+            <div className="btn_wrap">
+            {
+            (member.data.id === data.writer_id && data.writer_id && member.data.id) || member.data.rank === "ADMIN"? 
+            <controller>
+                <button type="button" className="btn">수정</button>
+                <button type="button" className="btn delete" >삭제</button>
+            </controller>   : <></>
+            }
+            </div>
             <user-comment>
                 {
                     member.logined ? (
@@ -118,11 +147,13 @@ export default function VideoDetail(props){
                                     console.log(e.response)
                                 })
                             }}>작성</button>
+                            
                         </div>
+                        
                     </comment-write>
                     ) : <div style={{textAlign:"center",margin:"10px"}}>로그인 후 이용할 수 있습니다.</div>
                 }
-               <Comment data={comment} />   
+               <Comment data={comment} writer_id={data.writer_id}/>   
             </user-comment>
         </div>
     </div>

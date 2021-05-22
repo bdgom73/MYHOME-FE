@@ -19,128 +19,166 @@ export default function VideoBoard(){
     const [itemCount, setItemCount] = useState(40);
     const [preItemCount, setPreItemCount] = useState(0);
     const [total,setTotal] = useState(0);
-    const [types, setTypes] = useState(true);
-    const [permit,setPermit] = useState(true);
-    const [page,setPage] = useState(qs.parse(location.search).page < 1 ? 0 : qs.parse(location.search).page-1 );
-
+    const [page,setPage] = useState(0);
+    const [totalPage,setTotalPage]=useState(0);
+    const [stop,setStop] = useState(false);
+    // const [test,setTest] = useState("test");
     /*
         TYPE이 테이블 일때 무한 스크롤
     */ 
     const infiniteScroll = ()=>{
         const scrollHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
-        const scrollTop = Math.max(Math.round(document.documentElement.scrollTop), Math.round(document.body.scrollTop));
+        const scrollTop = Math.max(document.documentElement.scrollTop, document.body.scrollTop);
         const clientHeight = document.documentElement.clientHeight; 
-        if(!types){
-            if(scrollTop + clientHeight === scrollHeight){  
-                setPreItemCount(itemCount);
-                setItemCount(itemCount + 40);    
-                return;
+        // setTest("a값 : " + (scrollTop + clientHeight-200) + " b 값 : " + scrollHeight);
+        if((scrollTop + clientHeight+500) >= scrollHeight){  
+            if(page === (totalPage)){
+                setStop(true);   
+            }else {       
+                setPage(page+1);   
+                setStop(false);  
+                
             }
-
         }
+        
     }
     useEffect(()=>{      
-        window.addEventListener("scroll",infiniteScroll,true);   
+        window.addEventListener("scroll",infiniteScroll);  
+        return ()=>{
+            window.removeEventListener("scroll",infiniteScroll)
+        }
+       
     })
-
+    
     //  TYPE이 테이블 일때 무한 스크롤
     useEffect(()=>{
-        if(itemCount !== preItemCount) _getUrl();
-    },[itemCount,permit,types])
-    useEffect(()=>{
-        _getUrl();
+       if(!stop) _getUrl();     
     },[page])
+
     // 총 size 가져오기
     useEffect(()=>{   
-        if(!(qs.parse(location.search).page)) window.location.href="?page=1"
         axios.get(`/bbs/video/size`)
         .then(res=>{
-            setTotal(res.data)
+            setTotal(res.data);
+            setTotalPage(Math.ceil(res.data / 40))
         })
+       
     },[]);
+
+
 
    // data가져오기
     const _getUrl = ()=>{   
-        setLoading(true)   
-        let url = types ? `/bbs/video/get?size=${40}&page=${page}` : `/bbs/video/get?size=${itemCount}&page=0`;
+        setLoading(true)    
+        let url =  `/bbs/video/get?size=${40}&page=${page}`;
         axios.get(url)
         .then(res=>{
-            setData(res.data);  
-            setLoading(false)
-            if(res.data.length < itemCount){
-                setPermit(false);
+            for(let i = 0 ; i < res.data.length ; i++ ){
+                data.push(res.data[i]);
             }
-            if(types  && qs.parse(location.search).page != 1 && res.data.length === 0){
-                window.location.href="?page=1";
-            } 
+            setData(data);  
+            setLoading(false)          
         }).catch(e=> console.log(e.response))
     }
     
-    return (
-        <>
-        {
-        types ? (
+   
+ 
+    return(
         <Board style={{maxWidth:"1100px",margin:"15px auto"}}>
         <h1>영상게시판</h1>
-        <div className="board_controller">
-            <span className="item" onClick={()=>{setTypes(true)}} title="리스트로 보기"><IoMdList size="22"/></span>
-            <span className="item" onClick={()=>{setItemCount(40); setData([]); setTypes(false); }} title="상세보기"><BsTable size="22"/></span>
-        </div>
-        <BoardTable 
-            data={data}
-            columnData={["No","영상","제목","글쓴이","작성일","조회","추천"]}
-            linkColumn={"title"}
-            boardName="video"
-            columnDataKey={["id","video_url","title","writer","updated","views","recommend"]}
-            dateColumn="updated"
-            videoColumn="video_url"
-            autoSize
-            loading={loading}
-            />
-         <ReactPaginate 
-            pageCount={Math.ceil(total / 40)}
-            pageRangeDisplayed={40}
-            marginPagesDisplayed={0}
-            breakLabel={""}
-            previousLabel={"이전"}
-            nextLabel={"다음"}
-            onPageChange={({selected})=>{   
-                setPage(Number(selected));     
-                history.replace(`?page=${Number(selected)+1}`);
-            }}
-            containerClassName={"pagination-ul"}
-            activeClassName={"currentPage"}
-            previousClassName={"pageLabel-btn"}
-            nextClassName={"pageLabel-btn"}
-        />     
-        </Board>
-        ) : (
-        <Board style={{maxWidth:"1100px",margin:"15px auto"}}>
-        <h1>영상게시판</h1>
-        <div className="board_controller">
-            <span className="item" onClick={()=>{window.location.href="?page=1"}} title="리스트로 보기"><IoMdList size="22"/></span>
-            <span className="item" onClick={()=>{setTypes(false)}} title="상세보기"><BsTable size="22"/></span>
-        </div>
-        <div className="card_board_wrpa">
+        {/* <div className="test">{test}</div> */}
+        <div className="card_board_wrap">
         {
-            data.map(m=>{
+            data.map((m,i)=>{
                 const unique = m.video_url ? m["video_url"].split("https://youtu.be/")[1]: "";
                 return <BoardCard 
                     id={m.id}
                     title={m.title}
-                    key = {m.title}
+                    key = {m.title+i}
                     writer = {m.writer}
                     recommend = {m.recommend}
                     views = {m.views}
-                    imageUrl={`https://i1.ytimg.com/vi/${unique}/0.jpg`}
+                    imageUrl={m.videoType ==="YOUTUBE" ? `https://i1.ytimg.com/vi/${unique}/0.jpg` : "/no_thumbnail.png"}
+                    rank = {m.rank}
+                    created = {m.created}
+                    updated = {m.updated}
                     />
             })
         }
         </div>
         </Board>
-        )
-        }
-        
-        </>
-    );
+    )
 }
+
+// return (
+//     <>
+//     {
+//     types ? (
+//     <Board style={{maxWidth:"1100px",margin:"15px auto"}}>
+//     <h1>영상게시판</h1>
+//     <div className="board_controller">
+//         <span className="item" onClick={()=>{onTypeClick(true)}} title="리스트로 보기"><IoMdList size="22"/></span>
+//         <span className="item" onClick={()=>{setItemCount(40); setData([]); onTypeClick(false); }} title="상세보기"><BsTable size="22"/></span>
+//     </div>
+//     <BoardTable 
+//         data={data}
+//         columnData={["No","영상","제목","글쓴이","작성일","조회","추천"]}
+//         linkColumn={"title"}
+//         boardName="video"
+//         columnDataKey={["id","video_url","title","writer","created","views","recommend"]}
+//         dateColumn="created"
+//         updatedColumn = "updated"
+//         videoColumn="video_url"
+//         autoSize
+//         loading={loading}
+//         writerColumn="writer"
+//         />
+//      <ReactPaginate 
+//         pageCount={Math.ceil(total / 40)}
+//         pageRangeDisplayed={40}
+//         marginPagesDisplayed={0}
+//         breakLabel={""}
+//         previousLabel={"이전"}
+//         nextLabel={"다음"}
+//         onPageChange={({selected})=>{   
+//             setPage(Number(selected));     
+//             history.replace(`?page=${Number(selected)+1}`);
+//         }}
+//         containerClassName={"pagination-ul"}
+//         activeClassName={"currentPage"}
+//         previousClassName={"pageLabel-btn"}
+//         nextClassName={"pageLabel-btn"}
+//     />     
+//     </Board>
+//     ) : (
+//     <Board style={{maxWidth:"1100px",margin:"15px auto"}}>
+//     <h1>영상게시판</h1>
+//     <div className="board_controller">
+//         <span className="item" onClick={()=>{onTypeClick(true,true)}} title="리스트로 보기"><IoMdList size="22"/></span>
+//         <span className="item" onClick={()=>{onTypeClick(false)}} title="상세보기"><BsTable size="22"/></span>
+//     </div>
+//     <div className="card_board_wrap">
+//     {
+//         data.map((m,i)=>{
+//             const unique = m.video_url ? m["video_url"].split("https://youtu.be/")[1]: "";
+//             return <BoardCard 
+//                 id={m.id}
+//                 title={m.title}
+//                 key = {m.title+i}
+//                 writer = {m.writer}
+//                 recommend = {m.recommend}
+//                 views = {m.views}
+//                 imageUrl={m.videoType ==="YOUTUBE" ? `https://i1.ytimg.com/vi/${unique}/0.jpg` : "/no_thumbnail.png"}
+//                 rank = {m.rank}
+//                 created = {m.created}
+//                 updated = {m.updated}
+//                 />
+//         })
+//     }
+//     </div>
+//     </Board>
+//     )
+//     }
+    
+//     </>
+// );

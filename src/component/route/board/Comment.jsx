@@ -3,14 +3,19 @@ import { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import "../../../css/write/comment.scss";
 import 'moment/locale/ko'
+import useMember from "../../../customState/useMember";
+import { FiMoreVertical } from 'react-icons/fi';
+
 export default function Comment(props){
 
     const {
-        data
+        data, writer_id
     } = props;
-
+    
     const [page,setPage] = useState(0);
     const [prePage,setPrePage] = useState(20);
+    const member = useMember();
+    console.log(member.data)
     return(
         <>
         {      
@@ -22,22 +27,45 @@ export default function Comment(props){
                     <comment key={`comment${i}${d.id}`}>
                         <div className="writer_info">
                             <profile>
-                                <avatar>
+                                <avatar>               
                                 {
                                 d.avatar_url ? <img src={d.avatar_url} alt={d.name+"이미지"}/> : 
                                 <>{d.name}</>
                                 }
                                 </avatar>
-                                <info>   
+                                <info>    
+                                    <c>
+                                        {d.name}
+                                        
+                                        {
+                                        writer_id && writer_id === d.member_id ? 
+                                        <pcon>
+                                            <span>작성자</span>
+                                        </pcon> : <></>   
+                                        }  
+                                        {
+                                            d.rank === "ADMIN" ? 
+                                            <pcon style={{backgroundColor:"#c4302b"}}>
+                                            <span >운영자</span>
+                                            </pcon> :<></>
+                                        }      
+                                    </c>  
                                     <c>
                                         { moment(d.updated, "YYYY-MM-DD HH:mm:ss").fromNow()}
                                         <small>({moment(d.updated).format("YYYY-MM-DD HH:mm")})</small>
-                                    </c>
-                                    <c>{d.name}</c>
+                                    </c>  
                                 </info>    
                             </profile>
                         </div>
-                        <content dangerouslySetInnerHTML={{__html : d.description }}/>    
+                        <content dangerouslySetInnerHTML={{__html : d.description }}/>
+                        {
+                            (member.data.id === d.member_id && d.member_id && member.data.id) || member.data.rank === "ADMIN" ? 
+                            <controller>
+                                <button type="button" className="btn">수정</button>
+                                <button type="button" className="btn delete" >삭제</button>
+                            </controller>   : <controller><FiMoreVertical/></controller>
+                        }
+                       
                     </comment>
                 )            
             }) 

@@ -1,4 +1,5 @@
 @import "../color.scss";
+
 cl{
     display: block;
     font-weight: bold;
@@ -17,22 +18,37 @@ cl{
 video-info{
     display: flex;
     align-items: center;
-    justify-content: flex-end;
-    vi{
-        padding: 2px;
-        margin: 0 3px;
+    justify-content: space-between;
+    info{
         display: flex;
         align-items: center;
-        svg{
-            font-size:20px;
+        vi{
+            small{
+                margin-right: 5px;
+                color : #9b9b9b;
+            }
+            b{
+                color : #363636;
+            }
+            font-weight: bold;
+            font-size: 13px;
+            padding: 2px;
+            margin: 0 3px;
+            display: flex;
+            align-items: center;
+            svg{
+                font-size:20px;
+            }
         }
     }
+   
 }
 userController{
     display: flex;
     align-items: center;
     justify-content: center;
     .btn{
+        margin: 5px 5px;
         padding: 5px;
         min-width: 100px;
         background-color: #e24515;
@@ -58,6 +74,7 @@ userController{
             
         }
     }
+    
 }
 user-comment{
     display: block;
@@ -110,10 +127,34 @@ user-comment{
         }
         .board_main{
             min-height: 350px;
-           
+            margin : 10px 0;
+            p{
+                margin: 0;
+            }
             
         }
     }
+}
+.test{
+    position: fixed;
+    top:0;
+    width: 100%;
+    height: 50px;
+    background-color: yellowgreen;
+    z-index: 9999;
+}
+pcon{
+    display: inline-block;
+    width: 38px;
+    text-align: center;
+    border:0;
+    padding: 1px 0;
+    color: #ffffff;
+    white-space: nowrap;
+    background-color: #6ba379;
+    border-radius: 10px;
+    font-size: 9px;
+    margin: 0 2px;
 }
 @media screen and (max-width: 540px){
     .board_detail_wrap{

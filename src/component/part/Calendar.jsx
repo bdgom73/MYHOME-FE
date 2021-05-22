@@ -161,7 +161,9 @@ export default function Calendar(props){
                     let isGrayed = current.format('MM') === today.format('MM') ? '' : 'grayed';            
                     return (         
                         <td key={i+Math.random().toString(36).substr(2, 9)} data-date={current.format("YYYY-MM-DD")}
-                            className={"date_td "+isSelected} onMouseDown={onMouseDownHandler}  onMouseEnter={onMouseEnterHandler} onMouseUp={onMouseUpHandler}              
+                            className={"date_td "+isSelected} 
+                            onMouseDown={onMouseDownHandler}  onMouseEnter={onMouseEnterHandler} onMouseUp={onMouseUpHandler} 
+                            onTouchStart={onMouseDownHandler}  onTouchMove={onMouseEnterHandler} onTouchEnd={onMouseUpHandler}    
                             >
                             <div className="date_day">
                                 <span className={`date  ${isGrayed}`} onClick={()=>{ 

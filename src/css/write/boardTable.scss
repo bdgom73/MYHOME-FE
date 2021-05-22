@@ -1,7 +1,14 @@
+.flex{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 table.table, table.control{
     border-collapse: collapse;
     width: 100%;
     font-size: 14px;   
+    
+ 
     thead{
         th{
             background-color: rgba(#e2e1e1, 1);
@@ -10,15 +17,22 @@ table.table, table.control{
             border-bottom: 1px solid #bbb;
         }
     }
+    
     tbody{
         tr{
+            position: relative;      
             cursor: pointer;
+            .new{
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
             // &:hover{
             //     background-color: #eeeeee;
             // }
             td{
-                white-space: nowrap;
-                text-overflow: ellipsis;
+                // white-space: nowrap;
+                // text-overflow: ellipsis;
                 padding: 5px;
                 border-bottom: 1px solid #bbb;
                 text-align: center;
@@ -27,6 +41,12 @@ table.table, table.control{
                     max-height: 90px;
                     border: 4px solid #ddd;
                     border-radius: 5px;
+                }
+                .updated{
+                    display: flex;
+                    flex-direction: column;
+                    font-size: 9px;
+                    color : #7e7e7e;
                 }
             }
             &:nth-child(2n){

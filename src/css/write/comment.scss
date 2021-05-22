@@ -4,7 +4,14 @@ comment{
     border-top : 1px solid #eee;
     margin: 5px 0;
     padding: 5px;
-
+    position: relative;
+    content{
+        display: block;
+        margin: 10px 0;
+        p{
+            margin: 0;
+        }
+    }
     profile{
         display: flex;
         align-items: flex-end;
@@ -41,6 +48,33 @@ comment{
                     margin-left: 5px;
                     color : rgba(#181010, 0.68)
                 }
+            }
+        }
+        
+    }
+    controller{
+        display: block;
+        position: absolute;
+        top : 5px;
+        right: 5px;
+        .btn{
+            padding: 2px 5px;
+            min-width: 45px;
+            margin: 0 2px;
+            background-color: #a36508;
+            border: 1px solid #eee;
+            border-radius: 5px;
+            color : #fff;
+            font-weight: bold;
+            cursor: pointer;
+            &:hover{
+                background-color: #c47f18;
+            }
+        }
+        .delete{
+            background-color: #cf0101;
+            &:hover{
+                background-color: #e22222;
             }
         }
     }
