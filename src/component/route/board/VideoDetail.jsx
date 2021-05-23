@@ -24,7 +24,7 @@ export default function VideoDetail(props){
     const [comment,setComment] = useState([]);
     const [editorState, setEditorState] = useState(EditorState.createEmpty());
     const [context, setContext] = useState();
-    
+    const [videoError,setVideoError] = useState(false);
     useEffect(()=>{    
        setBoardId(params.id);
        axios.get("/bbs/view/"+params.id)
@@ -80,7 +80,7 @@ export default function VideoDetail(props){
             </info>  
         </video-info>
         <div className="board_body">
-            <div className="board_video">
+            <div className="board_video" style={videoType === "NONE" ? {minHeight : "0px"}:{}}>
                 {
                     videoType === "YOUTUBE" ? (
                         <iframe 
@@ -95,10 +95,19 @@ export default function VideoDetail(props){
                         allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen"
                     ></iframe>
                     ) : videoType === "LOCAL" ? (
-                    <video controls>
-                    <source src={data.video_url}/>
-                    </video> 
-                    ) : <></>
+                        <>
+                        <video controls style={{width:"100%",height:"100%"}} onError={(e)=>{setVideoError(true);}}>
+                        {
+                            videoError ? 
+                            <></>:
+                            <source src={data.video_url} /> 
+                        }
+                        </video> 
+                        {
+                            videoError ?  <div className="video_error">재생할 수 없는 영상입니다.</div> : <></>
+                        }
+                        </>)
+                     : videoType === "NONE" ? <></> : <></>
                 }
     
             </div>

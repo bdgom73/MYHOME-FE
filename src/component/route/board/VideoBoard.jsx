@@ -10,14 +10,15 @@ import ReactPaginate from "react-paginate";
 import qs from "query-string";
 import { useHistory, useLocation } from "react-router";
 import "../../../css/pagination.scss";
+import SubLoading from "../../sub_loading";
 export default function VideoBoard(){
 
     const location = useLocation();
     const history = useHistory();
     const [data,setData] = useState([]);
     const [loading,setLoading] = useState(true);
-    const [itemCount, setItemCount] = useState(40);
-    const [preItemCount, setPreItemCount] = useState(0);
+    // const [itemCount, setItemCount] = useState(40);
+    // const [preItemCount, setPreItemCount] = useState(0);
     const [total,setTotal] = useState(0);
     const [page,setPage] = useState(0);
     const [totalPage,setTotalPage]=useState(0);
@@ -87,6 +88,7 @@ export default function VideoBoard(){
         <Board style={{maxWidth:"1100px",margin:"15px auto"}}>
         <h1>영상게시판</h1>
         {/* <div className="test">{test}</div> */}
+       
         <div className="card_board_wrap">
         {
             data.map((m,i)=>{
@@ -106,6 +108,7 @@ export default function VideoBoard(){
             })
         }
         </div>
+        {loading ? <SubLoading/> : <></> }
         </Board>
     )
 }

@@ -15,7 +15,7 @@ export default function Comment(props){
     const [page,setPage] = useState(0);
     const [prePage,setPrePage] = useState(20);
     const member = useMember();
-    console.log(member.data)
+    console.log(data)
     return(
         <>
         {      
@@ -81,7 +81,6 @@ export default function Comment(props){
                 previousLabel={"이전"}
                 nextLabel={"다음"}
                 onPageChange={({selected})=>{   
-                    console.log(selected)
                     setPrePage(page);   
                     setPage(Number(selected));    
                     if(selected === 0){

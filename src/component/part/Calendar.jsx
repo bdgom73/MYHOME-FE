@@ -56,7 +56,7 @@ export default function Calendar(props){
         const start_date = moment(year+"-"+month).clone().week(startWeek-1).format("YYYY-MM-DD");
         const end_date = moment(year+"-"+month).clone().week(endWeek).format("YYYY-MM-DD");
 
-       
+        
         axios.get(`/calendar/schedule?start_date=${start_date}&end_date=${end_date}&type=range`,{headers:{'Authorization': member.SESSION_UID}})
         .then(res=>{    
             setRangeEvent(res.data.range || []);
@@ -114,9 +114,10 @@ export default function Calendar(props){
 
     // 마우스가 해당일에 들어가실 시 종료일 변경
     const onMouseEnterHandler = (e)=>{
+        var regex = RegExp(/^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/);
         if(multSelect){
             if(range){
-                setEndDate(e.target.dataset.date);
+                setEndDate(e.target.dataset.date ? e.target.dataset.date : endDate);         
             }    
         }
     }
@@ -130,6 +131,8 @@ export default function Calendar(props){
             setRange(false);
         }
     }
+
+   
     useEffect(()=>{    
         if(multSelect){
             const date_td = document.getElementsByClassName("date_td");
@@ -137,12 +140,12 @@ export default function Calendar(props){
             for(let i = 0 ; i < date_td.length ; i++){
                 for(let j=0 ; j < ra.length ; j++){
                     if(date_td[i].dataset.date === ra[j]){
-                        date_td[i].style.backgroundColor = "#0000ff";            
+                        date_td[i].style.backgroundColor = "#bbbbbb";            
                     }
                 }
             }  
         }
-    },[range,startDate,endDate])
+    },[startDate,endDate,range,multSelect,eventModal])
     /** // 달력 범위 선택 */
   
     // 캘린더 생성
@@ -163,7 +166,7 @@ export default function Calendar(props){
                         <td key={i+Math.random().toString(36).substr(2, 9)} data-date={current.format("YYYY-MM-DD")}
                             className={"date_td "+isSelected} 
                             onMouseDown={onMouseDownHandler}  onMouseEnter={onMouseEnterHandler} onMouseUp={onMouseUpHandler} 
-                            onTouchStart={onMouseDownHandler}  onTouchMove={onMouseEnterHandler} onTouchEnd={onMouseUpHandler}    
+                            onTouchStart={onMouseDownHandler}  onTouchMove={onMouseEnterHandler}  onTouchEnd={onMouseUpHandler}
                             >
                             <div className="date_day">
                                 <span className={`date  ${isGrayed}`} onClick={()=>{ 
