@@ -29,11 +29,13 @@ comment{
             height: 35px;
             border: 1px solid #bbb;
             background-color: #eee;
-            font-size: 9px;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            overflow: hidden;
+            font-size: 9px;  
             font-weight: bold;
+            img{
+                padding :2px;
+                width: 100%;
+                height: 100%;
+            }
         }
         info{
             display: flex;

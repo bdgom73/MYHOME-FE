@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useCookies } from 'react-cookie';
 import DaumPostcode from 'react-daum-postcode';
 import { useHistory } from 'react-router';
+import { Link } from 'react-router-dom';
 import Modal from '../modal/modal';
 export default function Login(){
 
@@ -28,9 +29,9 @@ export default function Login(){
         <>
         <div className="write_wrap">
             <div className="sub_header">
-                <div className="logo">
+                {/* <div className="logo">
                     <img src="/image/logo.png" alt="LOGO" onClick={()=>{history.push("/")}}/>
-                </div>
+                </div> */}
                 <div className="title">로그인</div>
             </div>  
             <form onSubmit={onSubmitHandler}>
@@ -44,7 +45,7 @@ export default function Login(){
                 </div>           
                 <input type="submit" value="로그인"/>      
             </form>
-           
+            <p>계정이 없으신가요 ? <small><Link to="/register">회원가입</Link></small></p>
         </div>
         </>
     );

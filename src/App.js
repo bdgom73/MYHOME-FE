@@ -17,6 +17,7 @@ import SubLoading from "./component/sub_loading";
 
 function App() {
 
+  const history = useHistory();
 
   return (   
     <Switch>   
@@ -31,6 +32,8 @@ function App() {
     
       
       <Route exact path="/test"><Template><SubLoading/></Template></Route>
+      <Route exact path="/bbs/search=:id" render={(props)=>{ return <Template><SubLoading {...props}/></Template>}} ></Route>
+      <Route exact path="/bbs/search=" render={(props)=>{ return <Template><SubLoading {...props}/></Template>}} ></Route>
       <Route exact path="/bbs/free"><Template><FreeBoard/></Template></Route>
       <Route exact path="/bbs/free/:id" render={(props)=>{ return <Template><VideoDetail {...props}/></Template>}} ></Route>
       <Route exact path="/bbs/video"><Template><VideoBoard/></Template></Route>

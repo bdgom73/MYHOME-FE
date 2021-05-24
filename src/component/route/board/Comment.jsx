@@ -28,14 +28,13 @@ export default function Comment(props){
                         <div className="writer_info">
                             <profile>
                                 <avatar>               
-                                {
-                                d.avatar_url ? <img src={d.avatar_url} alt={d.name+"이미지"}/> : 
-                                <>{d.name}</>
-                                }
+                                
+                               <img src={d.avatar_url ? d.avatar_url : "/profile.png"} alt={d.name+"이미지"}/> : 
+                               
                                 </avatar>
                                 <info>    
                                     <c>
-                                        {d.name}
+                                        {d.nickname}
                                         
                                         {
                                         writer_id && writer_id === d.member_id ? 

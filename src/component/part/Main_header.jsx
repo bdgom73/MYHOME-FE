@@ -34,11 +34,10 @@ export default function Main_header(props){
                     <>
                     <div className="alert"><BsFillBellFill size={25} color="#32435F"/></div>
                     <div className="user_profile" >
-                        <div className="user_profile_main" onClick={onClickProfileHandler}>{data.avatar_url ? <img src={data.avatar_url} alt={data.name+"의 아바타"}/> : data.name}</div>
+                        <div className="user_profile_main" onClick={onClickProfileHandler}><img src={data.avatar_url ? data.avatar_url : "/profile.png"} alt={data.name+"의 아바타"}/></div>
                         {
                             profileAct ? (
-                                <div className="user_profile_detail">
-                                
+                                <div className="user_profile_detail"> 
                                 <span className="btn" onClick={()=>{removeCookie("SESSION_UID",{path:"/"}); window.location.reload()}}>Log-out</span>
                                 </div>
                             ) : <></>

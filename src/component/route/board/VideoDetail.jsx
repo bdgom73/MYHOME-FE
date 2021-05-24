@@ -60,7 +60,7 @@ export default function VideoDetail(props){
         <h1 title={data.title}>{data.title}</h1>
         <video-info>
             <info>
-                <vi><small>작성자 |</small><b>{data.writer}</b>              
+                <vi><small>작성자 |</small><b>{data.nickname}</b>              
                 {
                     data.rank === "ADMIN" ? 
                     <pcon style={{backgroundColor:"#c4302b"}}>
@@ -86,12 +86,13 @@ export default function VideoDetail(props){
                         <iframe 
                         title="Youtube video"
                         className="iframeVideo"
-                        src={`https://www.youtube.com/embed/${videoUrl}`}  
+                        src={`https://www.youtube.com/embed/${videoUrl}?autoplay=1`}  
                         allowfullscreen="allowfullscreen"
                         mozallowfullscreen="mozallowfullscreen" 
                         msallowfullscreen="msallowfullscreen" 
                         oallowfullscreen="oallowfullscreen" 
                         webkitallowfullscreen="webkitallowfullscreen"
+                        
                         allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen"
                     ></iframe>
                     ) : videoType === "LOCAL" ? (

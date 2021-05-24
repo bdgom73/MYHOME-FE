@@ -8,7 +8,12 @@ export default function Register(){
     const [modalIndex,setModalIndex] = useState(0);
     const [zipcode,setZipcode]=useState("");
     const [address,setAddress] = useState("");
+    const [firstPassword,setFirstPassword] = useState("");
+    const [secondPassword,setSecondPassword] = useState("");
     const [msg,setMsg] = useState("");
+    const [emailcheck,setEmailCheck] = useState(false);
+    const [mail,setMail] = useState(false);
+
     const history = useHistory();
 
     function openModal(){
@@ -45,45 +50,79 @@ export default function Register(){
         fd.append("password",target[1].value);
         fd.append("password2",target[2].value);
         fd.append("name",target[3].value);
-        fd.append("zipcode",target[4].value);
-        fd.append("address",target[6].value);
-        fd.append("detail_address",target[7].value);
+        fd.append("nickname",target[4].value);
+        fd.append("zipcode",target[5].value);
+        fd.append("address",target[7].value);
+        fd.append("detail_address",target[8].value);
 
         axios.post("/member/register",fd)
             .then(res=>{
                 history.push("/login");
             }).catch(e=>{
-                alert(e.response.message ? e.response.message : "알수 없는 오류로 인해 로그인에 실패했습니다.");
+                console.log(e.response)
+                alert(e.response.data.message ? e.response.data.message : "알수 없는 오류로 인해 로그인에 실패했습니다.");
             })
     }
 
-
+    const duplicatePasswordCheck = (e)=>{
+        const pass = e.target.value;
+        setSecondPassword(pass);
+        if(pass !== firstPassword){
+            e.nativeEvent.path[2].childNodes[0].childNodes[1].style.borderBottom="2px solid #fd5b50";
+            e.target.style.borderBottom="2px solid #fd5b50";
+        }else{
+            e.nativeEvent.path[2].childNodes[0].childNodes[1].style.borderBottom="1px solid #bbb";
+            e.target.style.borderBottom="1px solid #bbb";
+        }
+    }
+    const duplicatePasswordCheck2 = (e)=>{
+        const pass = e.target.value;
+        setFirstPassword(pass);
+        console.log( e.nativeEvent.path[2].childNodes[0].childNodes[1]);
+        if(pass !== secondPassword){
+            e.nativeEvent.path[2].childNodes[1].childNodes[1].style.borderBottom="2px solid #fd5b50";
+            e.target.style.borderBottom="2px solid #fd5b50";
+        }else{
+            e.nativeEvent.path[2].childNodes[1].childNodes[1].style.borderBottom="1px solid #bbb";
+            e.target.style.borderBottom="1px solid #bbb";
+        }
+    }
+ 
     return(
         <>
         {openModal()}
         <div className="write_wrap">
             <div className="sub_header">
-                <div className="logo">
+                {/* <div className="logo">
                     <img src="/image/logo.png" alt="LOGO" onClick={()=>{history.push("/")}}/>
-                </div>
+                </div> */}
                 <div className="title">회원가입</div>
             </div>   
             <form onSubmit={onSubmitHandler}> 
-                <div className="label_wrap">
+                <div className="label_wrap label_flex">
                     <label htmlFor="email">이메일</label>
                     <input type="email" required name="email" />
+                    <button type="button" className="btn">중복체크</button>
+                    <button type="button" className="btn delete">인증</button>
                 </div>
-                <div className="label_wrap">
-                    <label htmlFor="password">비밀번호</label>
-                    <input type="password" required name="password" />
-                </div>
-                <div className="label_wrap">
-                    <label htmlFor="password2">비밀번호확인</label>
-                    <input type="password" required name="password2" />
+                <message>사용가능한 이메일입니다.</message>
+                <div className="label_con">
+                    <div className="label_wrap">
+                        <label htmlFor="password">비밀번호</label>
+                        <input type="password" required name="password" onChange={duplicatePasswordCheck2}/>
+                    </div>
+                    <div className="label_wrap">
+                        <label htmlFor="password2">비밀번호확인</label>
+                        <input type="password" required name="password2" onChange={duplicatePasswordCheck} />
+                    </div>
                 </div>
                 <div className="label_wrap">
                     <label htmlFor="name">이름</label>
                     <input type="text" required name="name" />
+                </div>
+                <div className="label_wrap">
+                    <label htmlFor="nickname">닉네임</label>
+                    <input type="text" required name="nickname" maxLength="12" minLength="2"/>
                 </div>
                 <div className="address_wrap">
                     <div className="zipcode_wrap">

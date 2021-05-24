@@ -3,6 +3,7 @@ import { AiTwotoneLike } from 'react-icons/ai';
 import { GrFormView } from 'react-icons/gr';
 import { useHistory } from "react-router";
 import moment from "moment";
+import { Link } from "react-router-dom";
 
 export default function BoardCard(props){
 
@@ -22,8 +23,8 @@ export default function BoardCard(props){
     const history = useHistory();
     return(
         <>
-        <div className="card_wrap" key={key} onClick={()=>{history.push(`/bbs/free/${id}`)}}>
-            <div className="card_preview">
+        <div className="card_wrap" key={key} >
+            <div className="card_preview" >
                 {
                     moment.duration(moment().diff(moment(created))).days() < 1 ?
                     <div className="video_new"><pcon><span>NEW</span></pcon></div> :<></>
@@ -35,11 +36,11 @@ export default function BoardCard(props){
                 }
                 </time>
                
-                <img src={imageUrl ? imageUrl : "/no_thumbnail.png"} alt="" />
+                <img src={imageUrl ? imageUrl : "/no_thumbnail.png"} alt="" onClick={()=>{history.push(`/bbs/free/${id}`)}}/>
             </div>
             <div className="card_body">
                 
-                <div className="title" title={title}>{title}</div>
+                <div className="title" title={title}><Link to={`/bbs/free/${id}`}>{title}</Link></div>
                 <div className="writer" title={writer}>
                     {
                         rank === "ADMIN" ? 

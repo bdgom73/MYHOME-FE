@@ -6,8 +6,6 @@ import { BsTable } from 'react-icons/bs';
 import "../../../css/write/board.scss";
 import BoardCard from "../../part/write/BoardCard";
 import axios from "axios";
-import ReactPaginate from "react-paginate";
-import qs from "query-string";
 import { useHistory, useLocation } from "react-router";
 import "../../../css/pagination.scss";
 import SubLoading from "../../sub_loading";
@@ -97,7 +95,7 @@ export default function VideoBoard(){
                     id={m.id}
                     title={m.title}
                     key = {m.title+i}
-                    writer = {m.writer}
+                    writer = {m.nickname}
                     recommend = {m.recommend}
                     views = {m.views}
                     imageUrl={m.videoType ==="YOUTUBE" ? `https://i1.ytimg.com/vi/${unique}/0.jpg` : "/no_thumbnail.png"}
