@@ -1,4 +1,4 @@
-import { useState,useEffect } from 'react';
+import { useState,useEffect, useRef } from 'react';
 import { BsList,BsFillBellFill } from 'react-icons/bs';
 import { useHistory } from 'react-router';
 import "../../css/part/Main_header.scss";
@@ -13,32 +13,57 @@ export default function Main_header(props){
         setProfileAct(!profileAct);
     }
     const history = useHistory();
-    
+   
     const {data,logined,removeCookie} = useMember();
+    const searchRef = useRef(0);
 
+    const onFocusHandler = (e)=>{
+        searchRef.current = e.target
+    }
     return(
         <>
        
         <header>
             <div className="header_s1">
                 <div className="sub_menu">
-                    <BsList size={30} color="#32435F" onClick={props.subMenuHandler}/>
+                    <BsList size={30} onClick={props.subMenuHandler}/>
                 </div>
                 <div className="logo">
                     <img src="/image/logo.png" alt="LOGO" onClick={()=>{history.push("/")}}/>
                 </div>
             </div>
+            <div className="search">
+                <input type="text" name="search" onFocus={onFocusHandler}/>
+                <input type="button" value="검색" onClick={()=>{console.log(searchRef.current.value)}}/>
+            </div>
             <div className="user_info">
             {
                 logined ? (
                     <>
-                    <div className="alert"><BsFillBellFill size={25} color="#32435F"/></div>
+                    <div className="alert"><BsFillBellFill size={25} color="#fff"/></div>
                     <div className="user_profile" >
                         <div className="user_profile_main" onClick={onClickProfileHandler}><img src={data.avatar_url ? data.avatar_url : "/profile.png"} alt={data.name+"의 아바타"}/></div>
                         {
                             profileAct ? (
                                 <div className="user_profile_detail"> 
-                                <span className="btn" onClick={()=>{removeCookie("SESSION_UID",{path:"/"}); window.location.reload()}}>Log-out</span>
+                                <userinfo>
+                                    <uc>
+                                        <uh>이름</uh>
+                                        <ub title={data.name}>{data.name}</ub>
+                                    </uc>
+                                    <uc>
+                                        <uh>별명</uh>
+                                        <ub title={data.nickname}>{data.nickname}</ub>
+                                    </uc>
+                                    <uc>
+                                        <uh>이메일</uh>
+                                        <ub title={data.email}>{data.email}</ub>
+                                    </uc>
+                                </userinfo>
+                                <div style={{display:"flex",justifyContent:"space-between"}}>
+                                <span className="btn ">내정보</span>
+                                <span className="btn logout" onClick={()=>{removeCookie("SESSION_UID",{path:"/"}); window.location.reload()}}>Logout</span> 
+                                </div>
                                 </div>
                             ) : <></>
                         }

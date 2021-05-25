@@ -13,10 +13,18 @@ header{
         align-items: center;
         .sub_menu{
             cursor: pointer;
+            svg{
+                color : #fff;
+                &:hover{
+                    transform: scale(1.2);
+                }
+            }
         }
         .logo{
+            display: flex;
+            align-items: center;
             img{
-                width: 100px;
+                width: 120px;
                 cursor: pointer;
             }
             
@@ -28,26 +36,33 @@ header{
         animation: _opacity_ .5s ease-in;
         input[type="text"]{
             padding: 5px;
-            width: 320px;
+            width: 380px;
             height: 30px;
             border: 1px solid #bbb;
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+            
         }
         input[type="text"]:focus{
             outline: none;
         }
         input[type="button"]{
             height: 30px;
+            width: 40px;
             padding: 5px;
             border: 1px solid #bbb;
             border-left: 0;
-            font-size: 12px;
+            font-size: 14px;
             font-weight: bold;
             cursor: pointer;
-            color:#eee;
-            background-color:$thatch ;
+            color:#222;
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+            background-color:#dfdfdf ;
         }
         input[type="button"]:hover{
-            background-color: #b38982;   
+            background-color: #ee732b;   
+        
         }    
     }
     .user_info{
@@ -55,6 +70,10 @@ header{
         align-items: center;
         .alert{
             cursor: pointer;
+            &:hover{
+                -webkit-animation: vibrate-1 0.3s linear  both;
+	        animation: vibrate-1 0.3s linear  both;
+            }
         }
         .user_profile{
             margin-left: 10px;
@@ -72,6 +91,7 @@ header{
             font-size: 9px;
             font-weight: bold;
             position: relative;
+            
             .user_profile_main{
                 width: 100%;
                 height: 100%;
@@ -79,18 +99,21 @@ header{
                 display: flex;
                 align-items: center;
                 overflow: hidden;
-                justify-content: center;
+                justify-content: center;            
                 img{
                     padding :2px;
                     width: 100%;
                     height: 100%;
-                   
+                    &:hover{
+                        transform: scale(1.2);
+                    }
                 }
+                
             }
             .user_profile_detail{
                 position: absolute;
-                width: 100px;
-                height: 100px;
+                width: 150px;
+                min-height: 100px;
                 top : 55px;
                 right: 0px;
                 z-index: 12;
@@ -99,7 +122,7 @@ header{
                 border: 3px solid #bbb;
                 &::before{
                     bottom: 100%;
-                    left: 40%;
+                    left: 65%;
                     border: solid transparent;
                     content: "";
                     height: 0;
@@ -113,7 +136,7 @@ header{
                 }
                 &::after{
                     bottom: 100%;
-                    left: 40%;
+                    left: 65%;
                     border: solid transparent;
                     content: "";
                     height: 0;
@@ -146,7 +169,53 @@ header{
         }
     }  
 }
-@media screen and (max-width: 560px) {
+userinfo{
+    display: flex;
+    flex-direction: column;
+    // border: 1px solid #222222;
+    padding: 5px;
+    uc{
+        display: block; 
+        // white-space: normal;
+        uh{
+            font-weight: bold;
+            font-size: 12px;
+            display: block;
+            margin: 2px 0;
+            &::before{    
+                content: "✔";   
+                color : #099915; 
+                display: inline;
+                margin-right: 2px;
+            }
+        }
+        ub{   
+            display: block;    
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden; 
+        }
+    }
+}
+span.btn{
+    display: inline-block;
+    border: 1px solid #bbb;
+    padding: 2px 5px;
+    background-color: #099915;
+    border-radius: 10px;
+    color: #eee;
+    margin: 5px 0px -2px;
+    &:hover{
+        background-color: #1daa29;
+    }
+}
+span.logout{
+    background-color: #d61f1f;
+    &:hover{
+        background-color: #db3a3a;
+    }
+}
+@media screen and (max-width: 620px) {
     header{
         .search{
             display: none;     
@@ -161,3 +230,55 @@ header{
         opacity: 1;
     }
 }
+@-webkit-keyframes vibrate-1 {
+    0% {
+      -webkit-transform: translate(0);
+              transform: translate(0);
+    }
+    20% {
+      -webkit-transform: translate(-1px, 1px);
+              transform: translate(-1px, 1px);
+    }
+    40% {
+      -webkit-transform: translate(-1px, -1px);
+              transform: translate(-1px, -1px);
+    }
+    60% {
+      -webkit-transform: translate(1px, 1px);
+              transform: translate(1px, 1px);
+    }
+    80% {
+      -webkit-transform: translate(1px, -1px);
+              transform: translate(1px, -1px);
+    }
+    100% {
+      -webkit-transform: translate(0);
+              transform: translate(0);
+    }
+  }
+  @keyframes vibrate-1 {
+    0% {
+        -webkit-transform: translate(0);
+                transform: translate(0);
+      }
+      20% {
+        -webkit-transform: translate(-1px, 1px);
+                transform: translate(-1px, 1px);
+      }
+      40% {
+        -webkit-transform: translate(-1px, -1px);
+                transform: translate(-1px, -1px);
+      }
+      60% {
+        -webkit-transform: translate(1px, 1px);
+                transform: translate(1px, 1px);
+      }
+      80% {
+        -webkit-transform: translate(1px, -1px);
+                transform: translate(1px, -1px);
+      }
+      100% {
+        -webkit-transform: translate(0);
+                transform: translate(0);
+      }
+  }

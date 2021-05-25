@@ -1,80 +1,55 @@
 import { useEffect, useState } from "react";
 import Board from "../../part/write/Board";
 import BoardTable from "../../part/write/BoardTable";
-import { IoMdList } from 'react-icons/io';
-import { BsTable } from 'react-icons/bs';
 import "../../../css/write/board.scss";
-import BoardCard from "../../part/write/BoardCard";
 import axios from "axios";
 import qs from "query-string";
 import { useHistory, useLocation } from "react-router";
 import ReactPaginate from "react-paginate";
-export default function FreeBoard(){
+export default function FreeBoard(props){
 
-    
-    const [itemCount, setItemCount] = useState(40);
-    const [preItemCount, setPreItemCount] = useState(0);
+    // const [itemCount, setItemCount] = useState(40);
+    // const [preItemCount, setPreItemCount] = useState(0);
+    const {params} = props.match; 
     const location = useLocation();
     const history = useHistory();
     const [total,setTotal] = useState(0);
     const [loading,setLoading] = useState(true);
-    const [page,setPage] = useState(qs.parse(location.search).page < 1 ? 0 : qs.parse(location.search).page-1 );
-    const infiniteScroll = ()=>{
-        const scrollHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
-        const scrollTop = Math.max(Math.round(document.documentElement.scrollTop), Math.round(document.body.scrollTop));
-        const clientHeight = document.documentElement.clientHeight; 
-        if(!types){
-            if(scrollTop + clientHeight === scrollHeight){  
-                setPreItemCount(itemCount);
-                setItemCount(itemCount + 40);         
-                return;
-            }
-
-        }
-    }
-    
+    const [page,setPage] = useState(0);
     const [data,setData] = useState([]);
-    const [types, setTypes] = useState(true);
-    useEffect(()=>{
+    const [totalPage,setTotalPage] = useState(0);
+
+    useEffect(()=>{    
         _getUrl();
-    },[page,types])
-    useEffect(()=>{
-        if(itemCount !== preItemCount) _getUrl();
-    },[itemCount])
-    useEffect(()=>{
-        window.addEventListener("scroll",infiniteScroll,true)     
-    })
+        const {page : p} = params;
+        let pp = p;
+        pp *=1;
+        if(Number(p) <= 0 || !p || isNaN(pp) || totalPage+1 > page) history.push("/bbs/free/page=1") ;
+        setPage(p-1);
+    },[page])
+
+
      // 총 size 가져오기
-     useEffect(()=>{   
-        if(!(qs.parse(location.search).page)) window.location.href="?page=1"
+     useEffect(()=>{      
         axios.get(`/bbs/free/size`)
         .then(res=>{
             setTotal(res.data)
+            setTotalPage(Math.ceil(res.data / 40));
         })
     },[]);
     const _getUrl = ()=>{   
         setLoading(true);   
-        let url = types ? `/bbs/free/get?size=${40}&page=${page}` : `/bbs/free/get?size=${itemCount}&page=0`;
+        let url =  `/bbs/free/get?size=${40}&page=${page}` 
         axios.get(url)
         .then(res=>{
             setData(res.data);  
-            setLoading(false);    
-         
-            if(types  && qs.parse(location.search).page != 1 && res.data.length === 0){
-                window.location.href="?page=1";
-            } 
+            setLoading(false);        
         }).catch(e=> console.log(e.response))
     }
     return (
-        <>
-        {
-        types ? (
+        <>   
         <Board style={{maxWidth:"1100px",margin:"15px auto"}}>
-        <h1>공유게시판</h1>
-        <div className="board_controller">
-            <span className="item" onClick={()=>{setTypes(true)}} title="리스트로 보기"><IoMdList size="22"/></span>
-            <span className="item" onClick={()=>{setItemCount(40); setTypes(false)}} title="상세보기"><BsTable size="22"/></span>
-        </div>
+        <h1>자유게시판</h1>  
         <BoardTable 
             data={data}
             columnData={["No","제목","글쓴이","작성일","조회","추천"]}
@@ -93,39 +68,15 @@ export default function FreeBoard(){
             previousLabel={"이전"}
             nextLabel={"다음"}
             onPageChange={({selected})=>{   
-                setPage(Number(selected));     
-                history.replace(`?page=${Number(selected)+1}`);
+                setPage(Number(selected));   
+                history.push(`/bbs/free/page=${Number(selected)+1}`);
             }}
             containerClassName={"pagination-ul"}
             activeClassName={"currentPage"}
             previousClassName={"pageLabel-btn"}
             nextClassName={"pageLabel-btn"}
         />
-        </Board>
-        ) : (
-        <Board style={{maxWidth:"1100px",margin:"15px auto"}}>
-        <h1>공유게시판</h1>
-        <div className="board_controller">
-            <span className="item" onClick={()=>{setTypes(true)}} title="리스트로 보기"><IoMdList size="22"/></span>
-            <span className="item" onClick={()=>{setTypes(false)}} title="상세보기"><BsTable size="22"/></span>
-        </div>
-        <div className="card_board_wrap">
-        {
-            data.map(m=>{
-                return <BoardCard 
-                    id={m.id}
-                    title={m.title}
-                    key = {m.title}
-                    writer = {m.writer}
-                    recommend = {m.recommend}
-                    views = {m.hits}/>
-            })
-        }
-        </div>
-        </Board>
-        )
-        }
-        
+        </Board>  
         </>
     );
 }

@@ -11,28 +11,7 @@
        
         width: 500px;
         height: 100%;
-        .weather_map{
-            border-radius: 10px;
-            svg{
-                text{
-                    font-size: 16px;
-                    font-weight: bold;
-                }
-            }
-            .weather_map_top{
-                background-color: #fff;
-                border-top-left-radius: 10px;
-                border-top-right-radius: 10px;
-                border:1px solid #bbb;
-                padding: 15px 10px;
-                margin: -5px -5px 5px;
-                font-weight: bold;
-                font-size: 21px;
-                span{
-                    margin-left: 20px;
-                }
-            }
-        }
+        
     }
     .weather_control{
         width: 100%;
@@ -72,6 +51,11 @@
             .title{
                 font-size: 16px;
                 font-weight: bold;
+                padding: 5px;
+                color: #793406;
+                svg{
+                    margin-right: 5px;
+                }
             }
             .chartIcon{           
                 display: flex; 
@@ -96,6 +80,11 @@
             .title{
                 font-size: 16px;
                 font-weight: bold;
+                padding: 5px;
+                color: #793406;
+                svg{
+                    margin-right: 5px;
+                }
             }
         }
        
@@ -112,10 +101,11 @@
             border-radius: 10px;
             padding: 7px;
             .title{
+                margin: -7px;
                 padding: 10px;     
                 font-size: 18px;    
                 font-weight: bold;
-                border-bottom: 3px solid #bbb;
+                border-bottom: 1px solid #bbb;
             }
         }
         .totalWeather_c1{
@@ -246,7 +236,28 @@
         }
     }
 }
-
+.weather_map{
+    border-radius: 10px;
+    svg{
+        text{
+            font-size: 16px;
+            font-weight: bold;
+        }
+    }
+    .weather_map_top{
+        background-color: #fff;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border:1px solid #bbb;
+        padding: 15px 10px;
+        margin: -5px -5px 5px;
+        font-weight: bold;
+        font-size: 21px;
+        span{
+            margin-left: 20px;
+        }
+    }
+}
 @media screen and (max-width: 950px){
     .totalWeather_wrap{
         .totalWeather{      

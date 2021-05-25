@@ -5,7 +5,7 @@ import cityList from "../../storage/cityList";
 import "../../css/part/weather_onecall.scss";
 import { ResponsiveLine  } from '@nivo/line'
 import Loading from "./Loading";
-import { getWeatherIconUrl, hourFormat, timestampToDate, timestampToDate2, timeFormat,timestampToDate3, timestampToHour, timestampToMonth, timestampToMonthAndDate, timestampToMonthAndDateAndHour } from "../../js/weather_conversion";
+import { getWeatherIconUrl, hourFormat, timestampToDate, timestampToDate2, timestampToHour, timestampToMonthAndDateAndHour } from "../../js/weather_conversion";
 import ChartMap from "./ChartMap";
 import { AiOutlineReload } from 'react-icons/ai';
 

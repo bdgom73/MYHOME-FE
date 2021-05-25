@@ -23,23 +23,35 @@ function App() {
     <Switch>   
       <Route exact path="/" ><Template><Home /></Template></Route>
       
+      {/* MEMBERSHIP SERVICE */}
       <Route exact path="/weather" ><Template access="user"><TotalWeather/></Template></Route>
       <Route exact path="/schedule" ><Template access="user"><Calendar view/></Template></Route>
       <Route exact path="/map" ><Template access="user"><GoogleMap/></Template></Route>  
 
+      {/* JOIN SERVICE */}
       <Route exact path="/login" ><Template access="non-user"><Login/></Template></Route>
       <Route exact path="/register"><Template access="non-user"><Register/></Template></Route>
-    
-      
-      <Route exact path="/test"><Template><SubLoading/></Template></Route>
+     
+      {/* Search Service */}
       <Route exact path="/bbs/search=:id" render={(props)=>{ return <Template><SubLoading {...props}/></Template>}} ></Route>
       <Route exact path="/bbs/search=" render={(props)=>{ return <Template><SubLoading {...props}/></Template>}} ></Route>
-      <Route exact path="/bbs/free"><Template><FreeBoard/></Template></Route>
+
+      {/* Free Board Service */}
+      <Route exact path="/bbs/free/page=" render={(props)=>{ return <Template><FreeBoard {...props}/></Template>}} ></Route>
+      <Route exact path="/bbs/free/page=:page"  render={(props)=>{ return <Template><FreeBoard {...props}/></Template>}} ></Route>
       <Route exact path="/bbs/free/:id" render={(props)=>{ return <Template><VideoDetail {...props}/></Template>}} ></Route>
+      {/* Video Board Service */}
       <Route exact path="/bbs/video"><Template><VideoBoard/></Template></Route>
       <Route exact path="/bbs/video/:id" render={(props)=>{ return <Template><VideoDetail {...props}/></Template>}} ></Route>
-      <Route exact path="/bbs/write"><Template><VideoWrite/></Template></Route>
+
+      {/* Write Service */}
+      <Route exact path="/bbs/write/video"><Template access="user"><VideoWrite/></Template></Route>
+      <Route exact path="/bbs/write/free"><Template access="user"><VideoWrite/></Template></Route>
+      <Route exact path="/bbs/write/photo"><Template access="user"><VideoWrite/></Template></Route>
       
+      {/* TEST */}
+      <Route exact path="/test"><Template><SubLoading/></Template></Route>
+      {/* NOT FOUND SERVICE */}
       <Route path="/"><NotFound/></Route>
     </Switch> 
   );

@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { useHistory } from "react-router";
 import "../../../css/write/boardTable.scss";
 import useMember from "../../../customState/useMember";
+import SubLoading from "../../sub_loading";
 
 import Loading from "../Loading";
 export default function BoardTable(props){
@@ -47,7 +48,7 @@ export default function BoardTable(props){
             </thead>
             <tbody>        
                 {
-                    loading ?  <tr><td colSpan={columnData.length}><Loading/></td></tr> : 
+                    loading ?  <tr><td colSpan={columnData.length}><SubLoading/></td></tr> : 
                     data.length > 0 ?
                     data.map((d,i)=>{
                         const unique = videoColumn && d[videoColumn]? d[videoColumn].split("https://youtu.be/")[1]: "";

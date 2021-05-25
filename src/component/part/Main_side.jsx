@@ -4,7 +4,7 @@ import { TiWeatherSunny } from 'react-icons/ti';
 import { AiFillPicture } from 'react-icons/ai';
 import { AiFillSchedule } from 'react-icons/ai';
 import { FaVideo } from 'react-icons/fa';
-import { GrMap } from 'react-icons/gr';
+import { BiMapPin } from 'react-icons/bi';
 import { CgBoard } from 'react-icons/cg';
 
 import { useHistory } from "react-router";
@@ -21,7 +21,7 @@ export default function Main_side(props){
         <>
         <div className="side_nav">
             <div className="sub_menu" >
-                <BsList size={30} color="#32435F" onClick={props.subMenuHandler}/>
+                <BsList size={30}  onClick={props.subMenuHandler}/>
                 <img src="/image/logo.png" alt="LOGO" onClick={()=>{routePush("/")}}/>
             </div>
             <ul>
@@ -33,7 +33,7 @@ export default function Main_side(props){
                     일정
                 </li>
                 <li onClick={()=>{routePush("/map")}}>
-                    <GrMap/>
+                    <BiMapPin/>
                     지도
                 </li>
             </ul>

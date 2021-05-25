@@ -18,13 +18,15 @@ export default function VideoDetail(props){
     const [board_id, setBoardId] = useState();
     const [videoType, setVideoType] = useState("YOUTUBE");
     const [data,setData] = useState({});
-    const [existence,setExistence] = useState(false);
     const [content,setContent] = useState();
     const [videoUrl,setVideoUrl] = useState("")
     const [comment,setComment] = useState([]);
     const [editorState, setEditorState] = useState(EditorState.createEmpty());
     const [context, setContext] = useState();
     const [videoError,setVideoError] = useState(false);
+    const [recommendState,setRecommendState] = useState(false);
+    const [recommend, setRecommend] = useState(0);
+
     useEffect(()=>{    
        setBoardId(params.id);
        axios.get("/bbs/view/"+params.id)
@@ -33,24 +35,58 @@ export default function VideoDetail(props){
             console.log(res.data)
             setData(res.data || {});
             setVideoType(res.data.videoType);
-            setVideoUrl(unique);
-            setExistence(true);   
+            setVideoUrl(unique); 
             setContent(res.data.description);
             setComment(res.data.commentDTOList || []);
+            setRecommend(res.data.recommend);
+            
         })
         .catch(e=>{
-            setExistence(false);
             history.push("/bbs/video");
-        })
+        });
+
+        if(!member.logined) setRecommendState(true);
     },[board_id])
 
-    const onEditorStateChange = (es)=>{ 
-        setEditorState(es);  
-    }
+    useEffect(()=>{      
+        axios.get(`/bbs/${params.id}/check/recommend`,{
+            headers : {
+                "Authorization" : member.SESSION_UID
+            }
+        }).then(res=> {     
+           setRecommendState(!res.data);
+        })
+        .catch(e=>{
+            console.log(e.response);
+            setRecommendState(true);
+        })
+    },[])
+  
     useEffect(()=>{
         const editorToHtml = draftToHtml(convertToRaw(editorState.getCurrentContent()));
         setContext(editorToHtml);
     },[editorState])
+
+    const onEditorStateChange = (es)=>{ 
+        setEditorState(es);  
+    }
+
+    const Recommend = ()=>{
+        axios.get(`/bbs/${params.id}/recommend`,{
+            headers : {
+                "Authorization" : member.SESSION_UID
+            }
+        })
+        .then(res=>{
+            alert("현재글을 추천 했습니다")
+            setRecommendState(true)
+            setRecommend(recommend+1)
+        }).catch(e=>{
+
+            console.log(e.response)
+        })
+    }
+
     return(
     <>
     <div className="board_detail_wrap">
@@ -76,7 +112,7 @@ export default function VideoDetail(props){
             </info>
             <info>
                 <vi><GrFormView/> {data.views}</vi>
-                <vi><AiTwotoneLike color="#3b5998"/> {data.recommend}</vi>   
+                <vi><AiTwotoneLike color="#3b5998"/> {recommend}</vi>   
             </info>  
         </video-info>
         <div className="board_body">
@@ -97,7 +133,7 @@ export default function VideoDetail(props){
                     ></iframe>
                     ) : videoType === "LOCAL" ? (
                         <>
-                        <video controls style={{width:"100%",height:"100%"}} onError={(e)=>{setVideoError(true);}}>
+                        <video controls style={{width:"100%",height:"100%"}} onError={()=>{setVideoError(true);}}>
                         {
                             videoError ? 
                             <></>:
@@ -117,7 +153,7 @@ export default function VideoDetail(props){
                 <div id="content_field" dangerouslySetInnerHTML={{ __html : content}}/>
             </div>
             <userController>
-                <button type="button" className="btn" disabled={true}>
+                <button type="button" className="btn" disabled={recommendState} onClick={Recommend}>
                     <AiTwotoneLike color="#fff"/>추천
                 </button>
                 

@@ -29,12 +29,18 @@
                 display: flex;
                 justify-content: flex-start;
                 align-items: center;
+                z-index: 999;
                 img{
                     width: 100px;
                     cursor: pointer;
                 }
                 svg{
                     margin-right: 14px;
+                    color :#cccbcb;
+                    cursor: pointer;
+                    &:hover{
+                      color :#fff;
+                    }
                 }
             }
             ul{
@@ -48,13 +54,16 @@
                     display: flex;
                     align-items: center;   
                     font-size: 16px;   
-                    color : #1d1d1d;
+                    color : #cccbcb;
                     font-weight: bold;
                     &:hover{
-                     color : $gunmetal;
+                     color : #fff;
+                    }
+                    &:hover svg{
+                      color : #fff;
                     }
                     svg{
-                      color : #222;
+                      color : #cccbcb;
                       margin-right: 5px;
                     }
                 }

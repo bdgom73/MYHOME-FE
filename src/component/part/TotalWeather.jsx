@@ -5,7 +5,7 @@ import cityList from "../../storage/cityList";
 import "../../css/part/weather/TotalWeather.scss";
 import Loading from "./Loading";
 import TotalWeatherCard from "./weather/TotalWeatherCard";
-import { hourFormat, timestampToDate2, timestampToHour, timestampToMonthAndDate, timestampToMonthAndDateAndHour } from "../../js/weather_conversion";
+import { hourFormat, timestampToDate2, timestampToHour, timestampToMonthAndDateAndHour } from "../../js/weather_conversion";
 import TotalWeatherGraph from "./weather/TotalWeatherGraph";
 import ChartMap from "../part/ChartMap";
 import { RiMapPinTimeLine } from 'react-icons/ri';
