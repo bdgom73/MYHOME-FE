@@ -36,11 +36,11 @@ export default function BoardCard(props){
                 }
                 </time>
                
-                <img src={imageUrl ? imageUrl : "/no_thumbnail.png"} alt="" onClick={()=>{history.push(`/bbs/free/${id}`)}}/>
+                <img src={imageUrl ? imageUrl : "/no_thumbnail.png"} alt="" onClick={()=>{history.push(`/bbs/video/${id}`)}}/>
             </div>
             <div className="card_body">
                 
-                <div className="title" title={title}><Link to={`/bbs/free/${id}`}>{title}</Link></div>
+                <div className="title" title={title}><Link to={`/bbs/video/${id}`}>{title}</Link></div>
                 <div className="writer" title={writer}>
                     {
                         rank === "ADMIN" ? 

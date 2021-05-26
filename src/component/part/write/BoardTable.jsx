@@ -9,6 +9,7 @@ import Loading from "../Loading";
 export default function BoardTable(props){
 
     const member = useMember();
+    const [col, setCol] = useState([]);
     const { 
         columnData ,
         data,
@@ -20,23 +21,36 @@ export default function BoardTable(props){
         writerColumn,
         videoColumn,
         autoSize,
-        loading
+        loading,
+        colgroup,
+        imageColumn
      } = props;
     
     const history = useHistory();
    
+    useEffect(()=>{
+        const col = colgroup.split(" ")
+        setCol(col || []);
+    },[])
 
     const dataField = ()=>{
         const key= Object.keys(data[0]);
         return key;
     }
-
+  
     const onClickHandler=(id)=>{
         history.push(`/bbs/${boardName ? boardName : "free"}/${id}`)
     }
     return(
         <>
         <table className={autoSize ? "control" : "table"}>    
+            <colgroup>
+            {
+                col.map((c,i)=>{
+                    return <col width={c} key={i+c}/>    
+                })
+            }
+            </colgroup>
             <thead>
                 <tr>
                 {
@@ -76,6 +90,7 @@ export default function BoardTable(props){
                                                 <div className="flex"><pcon style={{backgroundColor:"#c4302b"}}>
                                                     <span >운영자</span>  
                                                 </pcon>{d[k]}</div> :
+                                                 imageColumn === k ?  <img className="thumbnail" src={`/no_thumbnail.png`} alt="youtube_video"/> :
                                                 d[k]}
                                                 {
                                                     dateColumn === k && updatedColumn && moment(d[dateColumn]).format("YYYY-MM-DD HH:mm") !== moment(d[updatedColumn]).format("YYYY-MM-DD HH:mm") ? 

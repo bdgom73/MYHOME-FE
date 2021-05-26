@@ -4,9 +4,11 @@ import { useCookies } from 'react-cookie';
 import DaumPostcode from 'react-daum-postcode';
 import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
+import useTitle from '../../customState/useTitle';
 import Modal from '../modal/modal';
 export default function Login(){
 
+    useTitle(`MYDOMUS | LOGIN`);
     const history = useHistory();
     const [cookies , setCookies] = useCookies();
     function onSubmitHandler(e){

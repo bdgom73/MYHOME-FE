@@ -6,13 +6,17 @@ import axios from "axios";
 import { useHistory, useLocation } from "react-router";
 import "../../../css/pagination.scss";
 import SubLoading from "../../sub_loading";
+import useTitle from "../../../customState/useTitle";
 export default function VideoBoard(){
+
+    useTitle(`MYDOMUS | VIDEO`);
 
     const [data,setData] = useState([]);
     const [loading,setLoading] = useState(true);
     const [page,setPage] = useState(0);
     const [totalPage,setTotalPage]=useState(0);
     const [stop,setStop] = useState(false);
+
     /*
         TYPE이 테이블 일때 무한 스크롤
     */ 

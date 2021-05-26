@@ -11,7 +11,7 @@ import { EditorState,convertToRaw } from "draft-js";
 import draftToHtml from 'draftjs-to-html';
 import moment from "moment";
 import useTitle from "../../../customState/useTitle";
-export default function VideoDetail(props){
+export default function FreeDetail(props){
 
     const {refTitle} = useTitle();
 
@@ -19,34 +19,27 @@ export default function VideoDetail(props){
     const {params}= props.match;
     const history = useHistory();
     const [board_id, setBoardId] = useState();
-    const [videoType, setVideoType] = useState("YOUTUBE");
     const [data,setData] = useState({});
     const [content,setContent] = useState();
-    const [videoUrl,setVideoUrl] = useState("")
     const [comment,setComment] = useState([]);
     const [editorState, setEditorState] = useState(EditorState.createEmpty());
     const [context, setContext] = useState();
-    const [videoError,setVideoError] = useState(false);
     const [recommendState,setRecommendState] = useState(false);
     const [recommend, setRecommend] = useState(0);
     
     useEffect(()=>{    
        setBoardId(params.id);
-       axios.get("/bbs/view/"+params.id+"/video")
-        .then(res=>{
-            
-            const unique = res.data.video_url ? res.data.video_url.split("https://youtu.be/")[1] : "";
+       axios.get("/bbs/view/"+params.id+"/free")
+        .then(res=>{   
             setData(res.data || {});
-            setVideoType(res.data.videoType);
-            setVideoUrl(unique); 
             setContent(res.data.description);
             setComment(res.data.commentDTOList || []);
             setRecommend(res.data.recommend);
-            refTitle.innerHTML = `MYDOMUS | ${res.data.title ? res.data.title : "VIDEO"}`
+            refTitle.innerHTML = `MYDOMUS | ${res.data.title ? res.data.title : "FREE"}`
         })
         .catch(e=>{
-            console.log(e);
-            history.push("/bbs/video");
+            console.log(e.response);
+            history.push("/bbs/free/page=1");
         });
 
         if(!member.logined) setRecommendState(true);
@@ -95,7 +88,7 @@ export default function VideoDetail(props){
     <>
     <div className="board_detail_wrap">
         <cl>
-            board &#62; <a href="/bbs/video?page=1">video</a>
+            board &#62; <a href="/bbs/free/page=1">free</a>
         </cl>
         <h1 title={data.title}>{data.title}</h1>
         <video-info>
@@ -120,39 +113,6 @@ export default function VideoDetail(props){
             </info>  
         </video-info>
         <div className="board_body">
-            <div className="board_video" style={videoType === "NONE" ? {minHeight : "0px"}:{}}>
-                {
-                    videoType === "YOUTUBE" ? (
-                        <iframe 
-                        title="Youtube video"
-                        className="iframeVideo"
-                        src={`https://www.youtube.com/embed/${videoUrl}?autoplay=1`}  
-                        allowfullscreen="allowfullscreen"
-                        mozallowfullscreen="mozallowfullscreen" 
-                        msallowfullscreen="msallowfullscreen" 
-                        oallowfullscreen="oallowfullscreen" 
-                        webkitallowfullscreen="webkitallowfullscreen"
-                        
-                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen"
-                    ></iframe>
-                    ) : videoType === "LOCAL" ? (
-                        <>
-                        <video controls style={{width:"100%",height:"100%"}} onError={()=>{setVideoError(true);}}>
-                        {
-                            videoError ? 
-                            <></>:
-                            <source src={data.video_url} /> 
-                        }
-                        </video> 
-                        {
-                            videoError ?  <div className="video_error">재생할 수 없는 영상입니다.</div> : <></>
-                        }
-                        </>)
-                     : videoType === "NONE" ? <></> : <></>
-                }
-    
-            </div>
-           
             <div className="board_main">    
                 <div id="content_field" dangerouslySetInnerHTML={{ __html : content}}/>
             </div>

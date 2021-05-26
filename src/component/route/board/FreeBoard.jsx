@@ -6,8 +6,10 @@ import axios from "axios";
 import qs from "query-string";
 import { useHistory, useLocation } from "react-router";
 import ReactPaginate from "react-paginate";
+import useTitle from "../../../customState/useTitle";
 export default function FreeBoard(props){
 
+    useTitle(`MYDOMUS | FREE`)
     // const [itemCount, setItemCount] = useState(40);
     // const [preItemCount, setPreItemCount] = useState(0);
     const {params} = props.match; 
@@ -44,21 +46,23 @@ export default function FreeBoard(props){
         .then(res=>{
             setData(res.data);  
             setLoading(false);        
-        }).catch(e=> console.log(e.response))
+        }).catch(e=> {console.log(e.response)})
     }
     return (
         <>   
         <Board style={{maxWidth:"1100px",margin:"15px auto"}}>
-        <h1>자유게시판</h1>  
+        <h1>자유게시판</h1> 
         <BoardTable 
             data={data}
             columnData={["No","제목","글쓴이","작성일","조회","추천"]}
             linkColumn={"title"}
-            boardName="video"
+            boardName="free"
             columnDataKey={["id","title","writer","created","views","recommend"]}
             autoSize
             loading ={loading}
             writerColumn="writer"
+            dateColumn="created"
+            colgroup={"10% 35% 20% 20% 10% 10%"}
             />   
         <ReactPaginate 
             pageCount={Math.ceil(total / 40)}

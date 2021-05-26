@@ -20,6 +20,7 @@ export default function Main_header(props){
     const onFocusHandler = (e)=>{
         searchRef.current = e.target
     }
+    
     return(
         <>
        

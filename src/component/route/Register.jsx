@@ -2,9 +2,11 @@ import axios from 'axios';
 import { useState } from 'react';
 import DaumPostcode from 'react-daum-postcode';
 import { useHistory } from 'react-router';
+import useTitle from '../../customState/useTitle';
 import Modal from '../modal/modal';
 export default function Register(){
 
+    useTitle(`MYDOMUS | JOIN`);
     const [modalIndex,setModalIndex] = useState(0);
     const [zipcode,setZipcode]=useState("");
     const [address,setAddress] = useState("");

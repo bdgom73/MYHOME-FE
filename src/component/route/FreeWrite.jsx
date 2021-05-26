@@ -13,14 +13,12 @@ import axios from "axios";
 import { useHistory } from "react-router";
 import useTitle from "../../customState/useTitle";
 
-export default function VideoWrite(props){
+export default function FreeWrite(props){
 
-    useTitle(`MYDOMUS | WRITE - VIDEO`);
+    useTitle(`MYDOMUS | WRITE - FREE`);
     const history = useHistory();
     const modal = useModal();
     const member = useMember();
-    const [videoType,setVideoType] = useState(false);
-    const [videoName,setVideoName]= useState("");
     const [desc,setDesc] = useState("");
     function onModalHandler(){
         if(modal.modal === 1){
@@ -29,26 +27,13 @@ export default function VideoWrite(props){
     }
     const onSubmitHandler = (e)=>{
         e.preventDefault();
-       
-        console.log(e);
-        const fd = new FormData();
-        if(e.target[2].checked){
-            fd.append("video",e.target[4].files[0]);
-        }else{
-            const url = e.target[3].value;
-            const unique = url.split("https://youtu.be/")[1];
-            if(!unique){
-                modal.setModal(1)
-            }
-            fd.append("video_url",e.target[3].value);
-        }
-       
+        const fd = new FormData();    
         fd.append("title",e.target[0].value);
         fd.append("description",desc);
         
-        axios.post("/bbs/write?category=video",fd,{headers:{'Content-Type': 'multipart/form-data',"Authorization" : member.SESSION_UID}})
+        axios.post("/bbs/write?category=free",fd,{headers:{'Content-Type': 'multipart/form-data',"Authorization" : member.SESSION_UID}})
             .then(res=>{
-                history.push(`/bbs/video/${res.data}`)
+                history.push(`/bbs/free/${res.data}`)
             }).catch(e=>console.log(e.response))
     }
 
@@ -68,25 +53,7 @@ export default function VideoWrite(props){
                         <td colSpan='2'>
                             <input type="text" className="writer" readOnly defaultValue={member.data.name}/>
                         </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            동영상
-                            <p>직접선택<input type="checkbox" value="url" onChange={(e)=>{setVideoType(e.target.checked);}}/></p>
-                        </th>
-                        <td>
-                            {
-                                videoType ?  (
-                                    <div className="file_wrap">
-                                        <input type="text" readOnly placeholder="영상을 선택해주세요" defaultValue={videoName}/>
-                                        <input type="file" id="video_url" onChange={(e)=>{setVideoName(e.target.files[0].name)}}/>
-                                        <label htmlFor="video_url"><RiPhoneFindLine size="20"/></label>
-                                    </div> 
-                                ): <input type="text" className="video_file_text" defaultValue="https://"/> 
-                                         
-                            }      
-                        </td>
-                    </tr>
+                    </tr>    
                     <tr>
                         <td colSpan='2'>
                            <WriteEditor onChange={(ed)=>{setDesc(ed)}} />

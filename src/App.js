@@ -14,6 +14,9 @@ import VideoDetail from "./component/route/board/VideoDetail";
 import VideoWrite from "./component/route/VideoWrite";
 import FreeBoard from "./component/route/board/FreeBoard";
 import SubLoading from "./component/sub_loading";
+import FreeWrite from "./component/route/FreeWrite";
+import FreeDetail from "./component/route/board/FreeDetail";
+import Test from "./component/test";
 
 function App() {
 
@@ -37,20 +40,26 @@ function App() {
       <Route exact path="/bbs/search=" render={(props)=>{ return <Template><SubLoading {...props}/></Template>}} ></Route>
 
       {/* Free Board Service */}
+      <Route exact path="/bbs/free/" render={(props)=>{ return <Template><FreeBoard {...props}/></Template>}} ></Route>
       <Route exact path="/bbs/free/page=" render={(props)=>{ return <Template><FreeBoard {...props}/></Template>}} ></Route>
       <Route exact path="/bbs/free/page=:page"  render={(props)=>{ return <Template><FreeBoard {...props}/></Template>}} ></Route>
-      <Route exact path="/bbs/free/:id" render={(props)=>{ return <Template><VideoDetail {...props}/></Template>}} ></Route>
+      <Route exact path="/bbs/free/:id" render={(props)=>{ return <Template><FreeDetail {...props}/></Template>}} ></Route>
+
       {/* Video Board Service */}
       <Route exact path="/bbs/video"><Template><VideoBoard/></Template></Route>
       <Route exact path="/bbs/video/:id" render={(props)=>{ return <Template><VideoDetail {...props}/></Template>}} ></Route>
 
+       {/* Photo Board Service */}
+       <Route exact path="/bbs/video"><Template><VideoBoard/></Template></Route>
+      <Route exact path="/bbs/video/:id" render={(props)=>{ return <Template><VideoDetail {...props}/></Template>}} ></Route>
+
       {/* Write Service */}
       <Route exact path="/bbs/write/video"><Template access="user"><VideoWrite/></Template></Route>
-      <Route exact path="/bbs/write/free"><Template access="user"><VideoWrite/></Template></Route>
+      <Route exact path="/bbs/write/free"><Template access="user"><FreeWrite/></Template></Route>
       <Route exact path="/bbs/write/photo"><Template access="user"><VideoWrite/></Template></Route>
       
       {/* TEST */}
-      <Route exact path="/test"><Template><SubLoading/></Template></Route>
+      <Route exact path="/test"><Template><Test/></Template></Route>
       {/* NOT FOUND SERVICE */}
       <Route path="/"><NotFound/></Route>
     </Switch> 
