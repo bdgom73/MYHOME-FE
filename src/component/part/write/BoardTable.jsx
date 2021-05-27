@@ -23,13 +23,14 @@ export default function BoardTable(props){
         autoSize,
         loading,
         colgroup,
-        imageColumn
+        imageColumn,
      } = props;
     
+   
     const history = useHistory();
    
     useEffect(()=>{
-        const col = colgroup.split(" ")
+        const col = colgroup ? colgroup.split(" ") : []
         setCol(col || []);
     },[])
 
@@ -76,6 +77,7 @@ export default function BoardTable(props){
                                       
                                         return (
                                             <td key={k+i+j} onClick={k===linkColumn ? ()=>{onClickHandler(d.id)}:()=>{}} className={k===linkColumn? "link" : ""}>
+                                          
                                                 {          
                                                 k === "id" && moment.duration(moment().diff(moment(d[dateColumn]))).days() < 1 ?
                                                 <div className="new"><pcon><span>NEW</span></pcon>{d[k]}</div> :
@@ -90,7 +92,7 @@ export default function BoardTable(props){
                                                 <div className="flex"><pcon style={{backgroundColor:"#c4302b"}}>
                                                     <span >운영자</span>  
                                                 </pcon>{d[k]}</div> :
-                                                 imageColumn === k ?  <img className="thumbnail" src={`/no_thumbnail.png`} alt="youtube_video"/> :
+                                                imageColumn === k ?  <img className="thumbnail" src={d.imageList[0] ? d.imageList[0].image_url : `/no_thumbnail.png`} alt="youtube_video"/> :
                                                 d[k]}
                                                 {
                                                     dateColumn === k && updatedColumn && moment(d[dateColumn]).format("YYYY-MM-DD HH:mm") !== moment(d[updatedColumn]).format("YYYY-MM-DD HH:mm") ? 

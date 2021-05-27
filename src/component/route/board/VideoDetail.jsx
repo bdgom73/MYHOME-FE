@@ -91,6 +91,18 @@ export default function VideoDetail(props){
         })
     }
 
+    const onClickDeleteHandler = ()=>{
+        if(window.confirm("정말 삭제하시겠습니까?")){
+            axios.delete("/bbs/delete?id="+params.id)
+            .then(res=>{
+                history.push("/bbs/video")
+            })
+            .catch(e=>{
+                alert(e.response.data.message ? e.response.data.message : "해당 게시글 삭제에 실패했습니다." )
+            });
+        }
+       
+    }
     return(
     <>
     <div className="board_detail_wrap">
@@ -167,7 +179,7 @@ export default function VideoDetail(props){
             (member.data.id === data.writer_id && data.writer_id && member.data.id) || member.data.rank === "ADMIN"? 
             <controller>
                 <button type="button" className="btn">수정</button>
-                <button type="button" className="btn delete" >삭제</button>
+                <button type="button" className="btn delete" onClick={onClickDeleteHandler}>삭제</button>
             </controller>   : <></>
             }
             </div>

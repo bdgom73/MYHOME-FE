@@ -15,8 +15,10 @@ import VideoWrite from "./component/route/VideoWrite";
 import FreeBoard from "./component/route/board/FreeBoard";
 import SubLoading from "./component/sub_loading";
 import FreeWrite from "./component/route/FreeWrite";
+import PhotoWrite from "./component/route/PhotoWrite";
 import FreeDetail from "./component/route/board/FreeDetail";
 import Test from "./component/test";
+import PhotoBoard from "./component/route/board/PhotoBoard";
 
 function App() {
 
@@ -50,13 +52,15 @@ function App() {
       <Route exact path="/bbs/video/:id" render={(props)=>{ return <Template><VideoDetail {...props}/></Template>}} ></Route>
 
        {/* Photo Board Service */}
-       <Route exact path="/bbs/video"><Template><VideoBoard/></Template></Route>
-      <Route exact path="/bbs/video/:id" render={(props)=>{ return <Template><VideoDetail {...props}/></Template>}} ></Route>
+      <Route exact path="/bbs/photo" render={(props)=>{ return <Template><PhotoBoard {...props}/></Template>}} ></Route>
+      <Route exact path="/bbs/photo/page=" render={(props)=>{ return <Template><PhotoBoard {...props}/></Template>}} ></Route>
+      <Route exact path="/bbs/photo/page=:page"  render={(props)=>{ return <Template><PhotoBoard {...props}/></Template>}} ></Route>
+      <Route exact path="/bbs/photo/:id" render={(props)=>{ return <Template><FreeDetail {...props}/></Template>}} ></Route>
 
       {/* Write Service */}
       <Route exact path="/bbs/write/video"><Template access="user"><VideoWrite/></Template></Route>
       <Route exact path="/bbs/write/free"><Template access="user"><FreeWrite/></Template></Route>
-      <Route exact path="/bbs/write/photo"><Template access="user"><VideoWrite/></Template></Route>
+      <Route exact path="/bbs/write/photo"><Template access="user"><PhotoWrite/></Template></Route>
       
       {/* TEST */}
       <Route exact path="/test"><Template><Test/></Template></Route>
