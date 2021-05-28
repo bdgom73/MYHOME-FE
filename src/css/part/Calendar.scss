@@ -1,14 +1,18 @@
 @import "../color.scss";
 .calendar_wrap{
     width: 100%;
-    padding: 10px;
+    max-width: 1100px;
+    margin: 10px auto;
+     padding: 10px;
+    border-radius: 10px;
     -ms-user-select: none; 
     -moz-user-select: -moz-none;
     -khtml-user-select: none;
     -webkit-user-select: none;
     user-select: none;
-    .calendar_top{
-        
+    background: rgb(255,255,255);
+    background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(109,1,110,1) 100%);
+    .calendar_top{      
         display: flex;
         align-items: center;
         justify-content: space-around;
@@ -25,6 +29,7 @@
             }
         }
         .current_date{
+            color: #ffffff;
             font-size: 18px;
             font-weight: bold;
             display: flex;
@@ -40,6 +45,7 @@
                 top:35px;
                 right:-5px;
                 border-radius: 5px;
+                z-index: 99;
                 &::before{
                     content: "";
                     position: absolute;
@@ -85,6 +91,7 @@
                         border-radius: 5px;
                         cursor: pointer;
                         font-size: 10px;
+                        margin-left: 5px;
                     }
                 }
             }
@@ -94,6 +101,8 @@
         width: 100%;
         padding: 5px;
         border-collapse: collapse;
+        position: relative;
+        
         thead{
             tr{
                 background-color: #f0f0f0;
@@ -117,6 +126,8 @@
                     border :1px double #f06a1c;
                 }
                 td{     
+                    overflow: visible;
+                    margin-left: calc(-50vw + 50%);  
                     background-color: #fff;
                     height: 50px;  
                     border:1px solid #bbb;
@@ -147,12 +158,13 @@
                         position: relative;
                         padding: 0;
                         margin: 0;
-                        overflow: visible;
                         
                         .status{  
+                            display: ruby;
                             position: absolute; 
                             top: -20px;      
                             width:60%;
+                            
                             height: 20px;    
                             border-radius: 10px;
                             background-color: #133d74;
@@ -163,7 +175,7 @@
 
                             display: flex;
                             align-items: center;
-                          text-overflow: ellipsis;
+                            text-overflow: ellipsis;
                             white-space: nowrap;
                             overflow: hidden;
                             &:hover{
@@ -172,23 +184,24 @@
                         }
                        
                         .range_status{ 
-                            position: relative;                               
+                            position: relative;
+                            float: left;                  
                             padding: 2px 5px;                       
                             margin: 5px 0;  
                             width: 100%; 
-                            height: 20px;       
-                            float: left;    
+                            height: 20px;         
                             background-color: #0e4bbd; 
                             border-radius: 5px;
                             color: #fff ; 
-                            // text-overflow: ellipsis;
-                            // white-space: nowrap;
-                            // overflow: hidden;
-                            font-size: 12px;   
-                            z-index: 9;
-                           
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                            overflow: hidden;
+                            font-size: 20px;
+                            z-index: 9; 
+                            clear: both;
                             span{
                                 position: absolute;
+                                font-size: 12px;   
                             }       
                         }
                         
@@ -202,6 +215,10 @@
     .grayed{
         color :#ccc;
     }
+    
+}
+#select{
+    background-color: #c7d2e7 !important;
 }
 .calendar_btn_wrap{
     margin: 5px;
@@ -215,6 +232,25 @@
         cursor: pointer;
     }
 }
+table.weekc{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top:70px;
+    left: 0px;
+    tbody{
+        tr{
+            td{
+                display: block;
+                border: 0 !important;
+                background-color: rgba( #000000, 0.2) !important;
+                min-height: 30px !important;
+                max-height: 140px !important;      
+            }
+           
+        }
+    }
+}
 @media screen and (max-width: 930px){
     .calendar_wrap{
         .calendar_table{
@@ -225,6 +261,8 @@
                            
                             .range_status{
                                 width: 103%;
+                                position: relative;
+                                z-index: 99;
                             }
                         }
                 
@@ -286,6 +324,64 @@
                 
                     }
                 }
+            }
+        }
+        
+    }
+}
+
+.calendar{
+    width: 100%;
+    .calendar_table{
+        width: 100%;
+        .week_calendar{
+            display: flex;
+            div{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+                height: 100%;
+                padding: 10px;
+                font-weight: bold;
+                border: 1px solid #bbb;
+                &:not(:nth-child(1)){
+                    border-left: 0; 
+                }
+            }
+        }
+        .calendar_body{
+            width: 100%;
+            #week{
+                display: flex;
+                width: 100%;             
+                .date_td{
+                    width: 100%;
+                    height: 100%;
+                    padding: 10px;
+                    font-weight: bold;
+                    border: 1px solid #bbb;
+                    &:not(:nth-child(1)){
+                        border-left: 0;       
+                    }
+                    border-top:0;
+                    .date_day{
+                        display: flex;
+                        align-items: center;
+                        justify-content: flex-end;
+                        
+                        
+                    }
+                    .date_content{
+                        min-height: 150px;
+                        position: relative;
+                        .range_status{
+                            position: absolute;
+                            left: -10px;
+                        }
+                    }
+                }
+                
             }
         }
         

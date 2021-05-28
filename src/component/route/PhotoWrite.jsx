@@ -15,28 +15,35 @@ import useTitle from "../../customState/useTitle";
 
 export default function PhotoWrite(props){
 
-    useTitle(`MYDOMUS | WRITE - VIDEO`);
+    useTitle(`MYDOMUS | WRITE - PHOTO`);
     const history = useHistory();
     const modal = useModal();
     const member = useMember();
     const [desc,setDesc] = useState("");
     const [files, setFiles] = useState([]);
+    const [change,setChange] = useState(true);
     function onModalHandler(){
         if(modal.modal === 1){
             return <Modal close={modal.close}>잘못된 URL입니다.</Modal>
         }
     }
-
     function onChangeFileHandler(e){
-        console.log(e)
-        for(let i = 0 ; i < e.target.files.length ; i++){
-            files.push(e.target.files[i]);
-            readImage(e.target,i)
-        }
-        setFiles(files);   
+        if(files.length + e.target.files.length <= 10){
+            for(let i = 0 ; i < e.target.files.length ; i++){
+                files.push(e.target.files[i]);
+                readImage(e.target,i)   
+            }
+            setFiles(files);  
+            if(files.length >= 10) setChange(false);  
+            else setChange(true);
+        }else{
+            alert("이미지 10개이상 업로드는 불가능합니다.");    
+        }   
     }
+
+ 
     function readImage(input,i) {
-        if(input.files && input.files[i]) {
+        if(input.files && input.files[i]) { 
             const reader = new FileReader();
             reader.onload = e => {
                 const previewImage = document.getElementById("target");
@@ -47,17 +54,18 @@ export default function PhotoWrite(props){
                 img.classList.add("imagefile");
                 inline.innerHTML="❌";
                 inline.classList.add("close");  
-                inline.onclick=()=>{
-                    for(let a = 0; a < files.length; a++) {
-                        if(files[a].name){
-                            if(files[a].name === input.files[i].name) {
-                                files.splice(a, 1);
-                                a--;
-                            }
-                        }
-                        
+                inline.dataset.filename = input.files[i].name;
+                inline.dataset.modified = input.files[i].lastModified;               
+                inline.onclick=(e)=>{   
+                    for(let a = 0; a < files.length; a++) {           
+                        if(files[a].name === e.target.dataset.filename) {
+                            files.splice(a, 1); 
+                            break;         
+                        }      
                     } 
-                    setFiles(files);    
+                    setFiles(files); 
+                    if(files.length >= 10) setChange(false);  
+                    else setChange(true);
                     previewImage.removeChild(div);              
                 }
                 div.appendChild(inline);
@@ -104,9 +112,9 @@ export default function PhotoWrite(props){
                         </td>
                     </tr>
                     <tr>
-                        <th colSpan="2" className="target_th">                 
+                        <th colSpan="2" className="target_th">        
                             <div className="target" id="target">    
-                                <div className="target_file" style={files.length > 10 ? {display:"none"} : {display:"flex"}}>
+                                <div className="target_file"  style={!change ? {display:"none"} : {display:"flex"}}>
                                     <input multiple="multiple" type="file" name="images[]" id="images" onChange={onChangeFileHandler}/>
                                     <label for="images">➕</label>
                                 </div>

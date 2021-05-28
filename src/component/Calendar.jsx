@@ -2,15 +2,15 @@ import { useEffect, useState } from "react";
 import moment, { weekdaysMin } from 'moment';
 import { AiOutlineArrowLeft,AiOutlineArrowRight } from 'react-icons/ai';
 import { MdDateRange } from 'react-icons/md';
-import "../../css/part/Calendar.scss";
-import CalendarMemo from "../modal/form/calendar_memo";
-import Modal from "../modal/modal";
-import CalendarView from "../modal/form/calendar_view";
-import { dateRange } from "../../js/date";
-import CalendarMemoRange from "../modal/form/calendar_memo_range";
-import CalendarViewRange from "../modal/form/calendar_view_range";
+import "../css/part/Calendar.scss";
+import CalendarMemo from "./modal/form/calendar_memo";
+import Modal from "./modal/modal";
+import CalendarView from "./modal/form/calendar_view";
+import { dateRange } from "../js/date";
+import CalendarMemoRange from "./modal/form/calendar_memo_range";
+import CalendarViewRange from "./modal/form/calendar_view_range";
 import axios from "axios";
-import useMember from "../../customState/useMember";
+import useMember from "../customState/useMember";
 
 
 export default function Calendar(props){
@@ -46,18 +46,8 @@ export default function Calendar(props){
 
     const [multSelect, setMultSelect] = useState(false);
 
-    const [weeks , setWeeks] = useState([]);
-
-    useEffect(()=>{
-        const today = moment(year+"-"+month+"-"+day);
-        const startWeek = today.clone().startOf('month').week();
-        const endWeek = today.clone().endOf('month').week() === 1 ? 53 : today.clone().endOf('month').week();
-      
-        for (let week = startWeek; week <= endWeek; week++) {  
-            weeks.push(week);
-        }
-        setWeeks(weeks);
-    },[year,day,month])
+   
+   
     // 캘린더 정보 가져오기
     const member = useMember();
     useEffect(()=>{ 
@@ -152,7 +142,7 @@ export default function Calendar(props){
                     }
                 }
             }  
-        }  
+        }
     })
     /** // 달력 범위 선택 */
   
@@ -164,15 +154,15 @@ export default function Calendar(props){
         let calendar = [];
         for (let week = startWeek; week <= endWeek; week++) {      
           calendar.push(    
-            <tr key={week+"week"} data-week={week} id="week">
+            <div key={week+"week"} data-week={week} id="week">
               {
-                Array(7).fill(0).map((n, c) => {
-                    let current = moment(year+"-"+month).clone().week(week).startOf('week').add(n + c, 'day');
+                Array(7).fill(0).map((n, i) => {
+                    let current = moment(year+"-"+month).clone().week(week).startOf('week').add(n + i, 'day');
                     let isSelected = moment().format('YYYYMMDD') === current.format('YYYYMMDD') ? 'selected' : '';
                     let isGrayed = current.format('MM') === today.format('MM') ? '' : 'grayed';            
                     return (         
-                        <td key={c+Math.random().toString(36).substr(2, 9)} data-date={current.format("YYYY-MM-DD")}
-                            className={"date_td"+isSelected} 
+                        <div key={i+Math.random().toString(36).substr(2, 9)} data-date={current.format("YYYY-MM-DD")}
+                            className={"date_td "+isSelected} 
                             onMouseDown={onMouseDownHandler} onMouseEnter={onMouseEnterHandler} onMouseUp={onMouseUpHandler} 
                             >
                             <div className="date_day">
@@ -181,11 +171,11 @@ export default function Calendar(props){
                                         onEventMemoHandler(current.format('YYYY-MM-DD'),1); 
                                         return;
                                     }
-                                    for(let ia = 0; ia < singleEvent.length ; ia++){  
-                                        if(singleEvent[ia].date !== current.format("YYYY-MM-DD")){    
+                                    for(let i = 0; i < singleEvent.length ; i++){  
+                                        if(singleEvent[i].date !== current.format("YYYY-MM-DD")){    
                                             onEventMemoHandler(current.format('YYYY-MM-DD'),1);      
                                         }
-                                        if(singleEvent[ia].date === current.format("YYYY-MM-DD")){
+                                        if(singleEvent[i].date === current.format("YYYY-MM-DD")){
                                             setEventModal(0);    
                                             break;
                                         }
@@ -193,23 +183,24 @@ export default function Calendar(props){
                                     }
                                 }}>{current.format('D')}</span>
                             </div>
-                            {
-                                props.view ?
+                         
                                 <div className="date_content" >  
                                     {
                                         rangeEvent.map((m,j)=>{    
+                                            const date_td = document.getElementsByClassName("date_td");
                                             const dr = dateRange(m.start_date, m.end_date);   
                                             const color = colorEvent[j % 6];
-                                            let width = "100%";
-                                            let i = 0;                                                                              
-                                            while(i < dr.length){           
+                                            let width = date_td[0] ? date_td[0].offsetWidth : "0px";
+                                            let i = 0 ;  
+                                            while(i < dr.length){            
                                                 // 일정이 한 주 이내일때.
-                                                if(moment(dr[0]).week() === moment(dr[dr.length-1]).week()){   
+                                                if(moment(dr[0]).week() === moment(dr[dr.length-1]).week()){    
                                                     if(dr[0] === current.format("YYYY-MM-DD")){ 
-                                                        width = moment(dr[dr.length-1]).weekday() - moment(dr[0]).weekday();
-                                                        width = ((width + 1 ) * 100) + "%";                                       
+                                                        const b = moment(dr[dr.length-1]).weekday() - moment(dr[0]).weekday();
+                                                        width = ((b + 1 ) * width) + "px";             
                                                         return (
                                                         <div 
+                                                            
                                                             className={ "range_status" } 
                                                             key={j+Math.random().toString(36).substr(2, 9)} 
                                                             title={m.title} 
@@ -221,12 +212,12 @@ export default function Calendar(props){
                                                 }  
 
                                                 // 일정이 한주 이상이면 시작일부터 그 주 전부 표시
-                                                if(dr[0] === current.format("YYYY-MM-DD")){ 
-                                                           
-                                                    width = 5 - moment(dr[0]).weekday();
-                                                    width = ((width + 2 ) * 100) + "%";   
+                                                if(dr[0] === current.format("YYYY-MM-DD")){            
+                                                    const b = 5 - moment(dr[0]).weekday();
+                                                    width = ((b + 2 ) * width) + "px";   
                                                     return (
-                                                        <div 
+                                                        <div
+                                                            
                                                             className={ "range_status" } 
                                                             key={j+Math.random().toString(36).substr(2, 9)} 
                                                             title={m.title} 
@@ -240,9 +231,10 @@ export default function Calendar(props){
                                                 // 일정이 3주 이상일 경우.
                                                 if(moment(dr[dr.length-1]).week() !== moment(dr[i]).week() && moment(dr[0]).week() !== moment(dr[i]).week()){                     
                                                     if(moment(dr[i]).weekday() === 0 && dr[i] ===current.format("YYYY-MM-DD") ){    
-                                                        width = 700+"%";       
+                                                        width = width*7+"px";       
                                                         return (
                                                             <div 
+                                                          
                                                                 className={ "range_status" } 
                                                                 key={j+Math.random().toString(36).substr(2, 9)} 
                                                                 title={m.title} 
@@ -254,8 +246,8 @@ export default function Calendar(props){
                                                 }
                                                 // 일정이 3주 이상일 경우 중간 주 전부 표시
                                                 if(moment(dr[i]).weekday() === 0 && dr[i] === current.format("YYYY-MM-DD") ){
-                                                    width = moment(dr[dr.length-1]).weekday() - moment(dr[i]).weekday();
-                                                    width = ((width + 1 ) * 100) + "%";       
+                                                    const b = moment(dr[dr.length-1]).weekday() - moment(dr[i]).weekday();
+                                                    width = ((b + 1 ) * width) + "px";       
                                                     return (
                                                         <div 
                                                             className={ "range_status" } 
@@ -265,17 +257,9 @@ export default function Calendar(props){
                                                             onClick={()=>{onEventMemoViewHandler(m,4);}}>
                                                             <span>{dr[i] === current.format("YYYY-MM-DD") ? m.title : ""}  </span>        
                                                         </div>);  
-                                                }
-                                                
-                                                
-                                                
-                                                
-                                                                                             
+                                                }                                                                                               
                                                 i++;                       
-                                            }
-                                           
-                                           
-                                           
+                                            }      
                                         })
                                     }
                                   
@@ -290,15 +274,14 @@ export default function Calendar(props){
                                         })
                                     }
                                 </div>
-                                : <></>
-                            }
-                        </td>              
+                            
+                        </div>              
                        
                     );
                 })
               }
              
-            </tr>
+            </div>
             
           )
         }
@@ -384,35 +367,22 @@ export default function Calendar(props){
                 </div>) : <></>
             }
             <div className="calendar">
-                <table className="calendar_table">
-                    <colgroup>
-                        <col width="13%"></col>
-                        <col width="13%"></col>
-                        <col width="13%"></col>
-                        <col width="13%"></col>
-                        <col width="13%"></col>
-                        <col width="13%"></col>
-                        <col width="13%"></col>
-                    </colgroup>
-                    <thead>
-                        <tr>
-                            <th>일</th>
-                            <th>월</th>
-                            <th>화</th>
-                            <th>수</th>
-                            <th>목</th>
-                            <th>금</th>
-                            <th>토</th>
-                        </tr>
-                    </thead>
-                    <tbody>      
-                        {generate()}
-                    </tbody>
-                   
-            </table>
-           
-        </div>
-       
+                <div className="calendar_table"> 
+                    <div className="week_calendar">
+                        <div style={{color : "#b42323"}}>일</div>
+                        <div>월</div>
+                        <div>화</div>
+                        <div>수</div>
+                        <div>목</div>
+                        <div>금</div>
+                        <div style={{color : "#121fd6"}}>토</div>
+                    </div>                      
+                    <div className="calendar_body">      
+                    {generate()}
+                    </div>
+                    
+                </div> 
+            </div>
         </div>
         </>
     );

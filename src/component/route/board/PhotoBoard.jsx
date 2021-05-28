@@ -44,7 +44,6 @@ export default function PhotoBoard(props){
         let url =  `/bbs/photo/get?size=${40}&page=${page}` 
         axios.get(url)
         .then(res=>{
-            console.log(res.data);
             setData(res.data);   
             setLoading(false);        
         }).catch(e=> {console.log(e.response)})
@@ -64,7 +63,6 @@ export default function PhotoBoard(props){
             imageColumn="image"
             writerColumn="writer"
             dateColumn="created"
-            // colgroup={"10% 35% 20% 20% 10% 10%"}
             />   
         <ReactPaginate 
             pageCount={Math.ceil(total / 40)}

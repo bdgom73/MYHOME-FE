@@ -19,6 +19,7 @@ import PhotoWrite from "./component/route/PhotoWrite";
 import FreeDetail from "./component/route/board/FreeDetail";
 import Test from "./component/test";
 import PhotoBoard from "./component/route/board/PhotoBoard";
+import PhotoDetail from "./component/route/board/PhotoDetail";
 
 function App() {
 
@@ -55,7 +56,7 @@ function App() {
       <Route exact path="/bbs/photo" render={(props)=>{ return <Template><PhotoBoard {...props}/></Template>}} ></Route>
       <Route exact path="/bbs/photo/page=" render={(props)=>{ return <Template><PhotoBoard {...props}/></Template>}} ></Route>
       <Route exact path="/bbs/photo/page=:page"  render={(props)=>{ return <Template><PhotoBoard {...props}/></Template>}} ></Route>
-      <Route exact path="/bbs/photo/:id" render={(props)=>{ return <Template><FreeDetail {...props}/></Template>}} ></Route>
+      <Route exact path="/bbs/photo/:id" render={(props)=>{ return <Template><PhotoDetail {...props}/></Template>}} ></Route>
 
       {/* Write Service */}
       <Route exact path="/bbs/write/video"><Template access="user"><VideoWrite/></Template></Route>
