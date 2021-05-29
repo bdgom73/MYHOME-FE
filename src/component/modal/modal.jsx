@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { AiFillCloseCircle } from 'react-icons/ai';
 import "../../css/modal/modal.scss";
-export default function Modal({children,title,width,close}) {
+export default function Modal({children,title,width,style,close}) {
     
     useEffect(()=>{
         const body = document.body;
@@ -11,7 +11,7 @@ export default function Modal({children,title,width,close}) {
     return(
         <>
         <div className="modal_wrap">
-            <div className="modal" style={width ? {width} : {width : "auto"}}>
+            <div className="modal" style={style ? style : width ? {width : width} : {width : "auto"}} >
                 <div className="modal_top">
                     <span>{title ? title : "알림"}</span>
                     <AiFillCloseCircle size="30" onClick={close}/>

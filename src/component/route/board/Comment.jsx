@@ -15,7 +15,7 @@ export default function Comment(props){
     const [page,setPage] = useState(0);
     const [prePage,setPrePage] = useState(20);
     const member = useMember();
-    console.log(data)
+
     return(
         <>
         {      

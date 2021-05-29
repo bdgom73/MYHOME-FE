@@ -197,6 +197,17 @@ pcon{
     background: #ffffff;
     }
 }
+
+ul.files{
+    li{
+        font-size: 13px;
+        cursor: pointer;
+        &:hover{
+            color : #793e08;
+            text-decoration: underline;
+        }
+    }
+}
 @media screen and (max-width: 540px){
     .board_detail_wrap{
         h1{

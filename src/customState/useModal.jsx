@@ -3,7 +3,6 @@ import { useState } from "react";
 export default function useModal(){
 
     const [modal, setModal] = useState(0);
- 
     const onCloseHandler = ()=>{
         setModal(0);
         const body = document.body;
@@ -13,6 +12,6 @@ export default function useModal(){
     return{
         setModal,
         close : onCloseHandler,
-        modal
+        modal,
     }
 }

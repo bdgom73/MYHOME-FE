@@ -124,7 +124,24 @@
     }
 }
 
-   
+#target{
+    table{
+        position: absolute;
+        top:38px;
+        left: 17px;
+        width: 80% !important;
+        max-width: 300px;
+        color : #fff;
+        font-size: 12px;
+        background-color: rgba($color: #000000, $alpha: .5);
+        tr{
+            th{
+                border-right: 1px solid #fff;
+                font-size: 10px;
+            }
+        }
+    }
+}
 .target{ 
     width: 100%;
     display: flex;
@@ -150,7 +167,7 @@
             justify-content: center;
         }
     }
-    
+   
 }
 .preview_img{
     margin: 2px;

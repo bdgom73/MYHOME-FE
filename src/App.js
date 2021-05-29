@@ -1,4 +1,4 @@
-import {  Route, Switch, useHistory } from "react-router-dom";
+import {  Route, Switch } from "react-router-dom";
 import Template from "./component/part/Main_template";
 import "./App.css";
 import Calendar from "./component/part/Calendar";
@@ -7,23 +7,20 @@ import GoogleMap from "./component/part/googleMap";
 import TotalWeather from "./component/part/TotalWeather";
 import Register from "./component/route/Register";
 import Login from "./component/route/Login";
-import useMember from "./customState/useMember";
-import VideoBoard from "./component/route/board/VideoBoard";
+import VideoBoard from "./component/route/board/list/VideoBoard";
 import NotFound from "./component/NotFound";
-import VideoDetail from "./component/route/board/VideoDetail";
-import VideoWrite from "./component/route/VideoWrite";
-import FreeBoard from "./component/route/board/FreeBoard";
+import VideoDetail from "./component/route/board/detail/VideoDetail";
+import FreeBoard from "./component/route/board/list/FreeBoard";
 import SubLoading from "./component/sub_loading";
-import FreeWrite from "./component/route/FreeWrite";
-import PhotoWrite from "./component/route/PhotoWrite";
-import FreeDetail from "./component/route/board/FreeDetail";
+import FreeDetail from "./component/route/board/detail/FreeDetail";
 import Test from "./component/test";
-import PhotoBoard from "./component/route/board/PhotoBoard";
-import PhotoDetail from "./component/route/board/PhotoDetail";
+import PhotoBoard from "./component/route/board/list/PhotoBoard";
+import PhotoDetail from "./component/route/board/detail/PhotoDetail";
+import VideoWrite from "./component/route/board/write/VideoWrite";
+import FreeWrite from "./component/route/board/write/FreeWrite";
+import PhotoWrite from "./component/route/board/write/PhotoWrite";
 
 function App() {
-
-  const history = useHistory();
 
   return (   
     <Switch>   
