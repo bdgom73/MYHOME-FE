@@ -7,6 +7,7 @@ import useTitle from "../../../../customState/useTitle";
 import Modal from "../../../modal/modal";
 import WriteEditor from "../../../part/write/WriteEditor";
 import "../../../../css/route/VideoWrite.scss";
+import CKEditor5 from "../../../part/write/CKEditor/CKEditor5";
 
 export default function FreeWrite(props){
 
@@ -50,8 +51,9 @@ export default function FreeWrite(props){
                         </td>
                     </tr>    
                     <tr>
-                        <td colSpan='2'>
-                           <WriteEditor onChange={(ed)=>{setDesc(ed)}} />
+                        <td colSpan='2' style={{padding : 5, margin:"0 auto"}}>
+                           {/* <WriteEditor onChange={(ed)=>{setDesc(ed)}} /> */}
+                           <CKEditor5 onChange={(ed)=>{setDesc(ed)}}/>
                         </td>
                     </tr>
                     </tbody>

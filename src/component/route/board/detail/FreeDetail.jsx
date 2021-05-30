@@ -12,6 +12,7 @@ import draftToHtml from 'draftjs-to-html';
 import moment from "moment";
 import useTitle from "../../../../customState/useTitle";
 import WriteEditor from "../../../part/write/WriteEditor";
+import CKEditor5 from "../../../part/write/CKEditor/CKEditor5";
 export default function FreeDetail(props){
 
     const {refTitle} = useTitle();
@@ -27,7 +28,8 @@ export default function FreeDetail(props){
     const [context, setContext] = useState();
     const [recommendState,setRecommendState] = useState(false);
     const [recommend, setRecommend] = useState(0);
-    
+    const [editorContent, setEditorContent] = useState("");
+
     useEffect(()=>{    
        setBoardId(params.id);
        axios.get("/bbs/view/"+params.id+"/free")
@@ -60,14 +62,14 @@ export default function FreeDetail(props){
         })
     },[])
   
-    useEffect(()=>{
-        const editorToHtml = draftToHtml(convertToRaw(editorState.getCurrentContent()));
-        setContext(editorToHtml);
-    },[editorState])
+    // useEffect(()=>{
+    //     const editorToHtml = draftToHtml(convertToRaw(editorState.getCurrentContent()));
+    //     setContext(editorToHtml);
+    // },[editorState])
 
-    const onEditorStateChange = (es)=>{ 
-        setEditorState(es);  
-    }
+    // const onEditorStateChange = (es)=>{ 
+    //     setEditorState(es);  
+    // }
 
     const Recommend = ()=>{
         axios.get(`/bbs/${params.id}/recommend`,{
@@ -149,9 +151,14 @@ export default function FreeDetail(props){
                     member.logined ? (
                     <comment-write>
                         <writer><strong>작성자</strong> : {member.data.name}</writer>
-                        <WriteEditor isComment 
+                        {/* <WriteEditor isComment 
                         editorState={editorState}
                         onEditorStateChange={onEditorStateChange}
+                        /> */}
+                        <CKEditor5 
+                            onlyComments 
+                            onChange={(value)=>{setEditorContent(value)}}
+                            data = {editorContent}
                         />
                         <div className="btn_wrap" >
                             <button className="btn" onClick={(e)=>{
@@ -165,7 +172,7 @@ export default function FreeDetail(props){
                                 .then(res=>{   
                                     comment.push(res.data);
                                     setComment(comment);
-                                    setEditorState(EditorState.createEmpty());
+                                    setEditorContent("");
                                 }).catch(e=>{
                                     console.log(e.response)
                                 })

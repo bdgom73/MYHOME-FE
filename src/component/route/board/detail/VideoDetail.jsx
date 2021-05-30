@@ -11,6 +11,7 @@ import draftToHtml from 'draftjs-to-html';
 import moment from "moment";
 import useTitle from "../../../../customState/useTitle";
 import WriteEditor from "../../../part/write/WriteEditor";
+import CKEditor5 from "../../../part/write/CKEditor/CKEditor5";
 
 export default function VideoDetail(props){
 
@@ -30,7 +31,7 @@ export default function VideoDetail(props){
     const [videoError,setVideoError] = useState(false);
     const [recommendState,setRecommendState] = useState(false);
     const [recommend, setRecommend] = useState(0);
-    
+    const [editorContent, setEditorContent] = useState("");
     useEffect(()=>{    
        setBoardId(params.id);
        axios.get("/bbs/view/"+params.id+"/video")
@@ -189,14 +190,19 @@ export default function VideoDetail(props){
                     member.logined ? (
                     <comment-write>
                         <writer><strong>작성자</strong> : {member.data.name}</writer>
-                        <WriteEditor isComment 
+                        {/* <WriteEditor isComment 
                         editorState={editorState}
                         onEditorStateChange={onEditorStateChange}
+                        /> */}
+                        <CKEditor5 
+                            onlyComments 
+                            onChange={(value)=>{setEditorContent(value)}}
+                            data = {editorContent}
                         />
                         <div className="btn_wrap" >
                             <button className="btn" onClick={(e)=>{
                                 const fd = new FormData();
-                                fd.append("description",context);
+                                fd.append("description",editorContent);
                                 axios.post(`/bbs/${board_id}/write/comment`,fd,{
                                     headers : {
                                         "Authorization" : member.SESSION_UID
@@ -205,7 +211,7 @@ export default function VideoDetail(props){
                                 .then(res=>{   
                                     comment.push(res.data);
                                     setComment(comment);
-                                    setEditorState(EditorState.createEmpty());
+                                    setEditorContent("");
                                 }).catch(e=>{
                                     console.log(e.response)
                                 })

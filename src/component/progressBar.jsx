@@ -10,8 +10,9 @@ export default function ProgressBar({total, loaded, loadend}){
 
     return(
         <>
-            <div className="progress">       
-                <div className="bar" style={{width : (a)+"%"}}><span>{a.toFixed(0)+"%"}</span></div>
+            <div className="progress">
+                <span>{a.toFixed(0)+"%"}</span>      
+                <div className="bar" style={{width : (a)+"%"}}></div>
             </div>
         </>
     );

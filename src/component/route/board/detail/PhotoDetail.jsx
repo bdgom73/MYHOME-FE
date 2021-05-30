@@ -13,6 +13,7 @@ import useTitle from "../../../../customState/useTitle";
 import useModal from "../../../../customState/useModal";
 import Modal from "../../../modal/modal";
 import useMember from "../../../../customState/useMember";
+import CKEditor5 from "../../../part/write/CKEditor/CKEditor5";
 
 export default function PhotoDetail(props){
 
@@ -31,7 +32,7 @@ export default function PhotoDetail(props){
     const [recommend, setRecommend] = useState(0);
     const [imageList,setImageList] = useState([]);
     const [currentImage,setCurrentImage] = useState({});
-
+    const [editorContent, setEditorContent] = useState("");
     const activeModal = ()=>{
         if(modal === 1){
             return (
@@ -212,26 +213,20 @@ export default function PhotoDetail(props){
                     </div>
                 ) : <></>
             }
-            {/* <ul className="files">
-            {
-                imageList[0] ? (                
-                    imageList.map((m,i)=>{
-                        return <li key={m.id+i} onClick={(e)=>{
-                            downloadURI(m.image_url, m.filename);
-                        }}>{m.filename}</li>
-                    }) 
-
-                ) : <></>
-            }
-            </ul> */}
+           
             <user-comment>
                 {
                     member.logined ? (
                     <comment-write>
                         <writer><strong>작성자</strong> : {member.data.name}</writer>
-                        <WriteEditor isComment 
+                        {/* <WriteEditor isComment 
                         editorState={editorState}
                         onEditorStateChange={onEditorStateChange}
+                        /> */}
+                        <CKEditor5 
+                            onlyComments 
+                            onChange={(value)=>{setEditorContent(value)}}
+                            data = {editorContent}
                         />
                         <div className="btn_wrap" >
                             <button className="btn" onClick={(e)=>{
@@ -245,7 +240,7 @@ export default function PhotoDetail(props){
                                 .then(res=>{   
                                     comment.push(res.data);
                                     setComment(comment);
-                                    setEditorState(EditorState.createEmpty());
+                                    setEditorContent("")
                                 }).catch(e=>{
                                     console.log(e.response)
                                 })

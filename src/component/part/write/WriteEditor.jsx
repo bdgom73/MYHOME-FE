@@ -8,8 +8,10 @@ import { useCallback, useEffect, useState } from "react";
 export default function WriteEditor(props){
 
     const {onChange, isComment, editorState : es , onEditorStateChange : onesc}= props;
+
+   
     const [editorState, setEditorState] = useState(EditorState.createEmpty());
-    
+    const [test, setTest] = useState("");
     const uploadCallback = useCallback((file)=>{
         return new Promise(
             (resolve, reject)=>{
@@ -38,8 +40,10 @@ export default function WriteEditor(props){
     const options = ['inline', 'blockType', 'fontSize', 'fontFamily', 'list', 'textAlign', 'colorPicker', 'link', 'embedded', 'emoji', 'image', 'remove', 'history'];
     useEffect(()=>{
         const editorToHtml = draftToHtml(convertToRaw(editorState.getCurrentContent()));
+        
         if(onChange) onChange(editorToHtml);
-    },[editorState])
+        
+    },[editorState,test])
 
     
     return(
@@ -48,8 +52,7 @@ export default function WriteEditor(props){
             locale: 'ko',
         }}
         editorClassName={isComment ? "editor_comment" : "editor_save"}
-        editorState = {es ? es : editorState}   
-        onTab={(a)=>{console.log(a)}}
+        editorState = {es ? es : editorState}    
         wrapperClassName="editor_main_wrapper"
         toolbar ={{
             options : isComment ? ["inline",'emoji'] : options,
@@ -68,10 +71,12 @@ export default function WriteEditor(props){
                
             }
 
-        }}
-        
+        }}   
         toolbarHidden={false}
         onEditorStateChange={onesc ? onesc : onEditorStateChange}   
+        onChange={(e)=>{
+            console.log(e)
+        }}
         />
         
     )

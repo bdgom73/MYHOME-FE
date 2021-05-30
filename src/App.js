@@ -19,6 +19,8 @@ import PhotoDetail from "./component/route/board/detail/PhotoDetail";
 import VideoWrite from "./component/route/board/write/VideoWrite";
 import FreeWrite from "./component/route/board/write/FreeWrite";
 import PhotoWrite from "./component/route/board/write/PhotoWrite";
+import CKEditor5 from "./component/part/write/CKEditor/CKEditor5";
+
 
 function App() {
 
@@ -61,7 +63,7 @@ function App() {
       <Route exact path="/bbs/write/photo"><Template access="user"><PhotoWrite/></Template></Route>
       
       {/* TEST */}
-      <Route exact path="/test"><Template><Test/></Template></Route>
+      <Route exact path="/test"><Template><CKEditor5 onlyComments/></Template></Route>
       {/* NOT FOUND SERVICE */}
       <Route path="/"><NotFound/></Route>
     </Switch> 

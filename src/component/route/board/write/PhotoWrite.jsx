@@ -8,6 +8,7 @@ import Modal from "../../../modal/modal";
 import WriteEditor from "../../../part/write/WriteEditor";
 import "../../../../css/route/VideoWrite.scss";
 import { byte } from "../../../../js/common";
+import CKEditor5 from "../../../part/write/CKEditor/CKEditor5";
 
 export default function PhotoWrite(props){
 
@@ -56,7 +57,6 @@ export default function PhotoWrite(props){
         let size = filesize;
         console.log(size)
         if(input.files && input.files[i]) { 
-   
             const reader = new FileReader();
             reader.onload = e => {
                 const previewImage = document.getElementById("target");
@@ -140,8 +140,9 @@ export default function PhotoWrite(props){
                         </th>      
                     </tr>
                     <tr>
-                        <td colSpan='2'>
-                           <WriteEditor onChange={(ed)=>{setDesc(ed)}} />
+                        <td colSpan='2' style={{padding : 5, margin:"0 auto"}}>
+                           {/* <WriteEditor onChange={(ed)=>{setDesc(ed)}}  /> */}
+                           <CKEditor5 onChange={(ed)=>{setDesc(ed)}}/>
                         </td>
                     </tr>
                     </tbody>

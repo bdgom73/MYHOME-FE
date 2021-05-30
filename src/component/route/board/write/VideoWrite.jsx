@@ -12,6 +12,7 @@ import { byte } from "../../../../js/common";
 import moment from "moment";
 import SubLoading from "../../../sub_loading";
 import ProgressBar from "../../../progressBar";
+import CKEditor5 from "../../../part/write/CKEditor/CKEditor5";
 export default function VideoWrite(props){
 
     useTitle(`MYDOMUS | WRITE - VIDEO`);
@@ -201,8 +202,9 @@ export default function VideoWrite(props){
                        
                     </tr>
                     <tr>
-                        <td colSpan='2'>
-                           <WriteEditor onChange={(ed)=>{setDesc(ed)}} />
+                        <td colSpan='2' style={{padding : 5, margin:"0 auto"}}>
+                           {/* <WriteEditor onChange={(ed)=>{setDesc(ed)}} /> */}
+                           <CKEditor5 onChange={(ed)=>{setDesc(ed)}}/>
                         </td>
                     </tr>
                     </tbody>
