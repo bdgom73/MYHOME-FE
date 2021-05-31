@@ -1,1 +1,16 @@
-# 풀 캘린더 및 일정 날씨 게시판
+# [MYHOME] PORTFOLIO 
+
+## 진행사항
+- [x] HOME
+- [x] MEMBERSHIP SERVICE
+- [x] WEATHER
+- [x] SCHEDULE
+- [x] MAP
+- [x] LOGIN
+- [x] REGISTER
+- [ ] SEARCH SERVICE
+- [ ] FREE BOARD
+- [ ] PHOTO BOARD
+- [ ] VIDEO BOARD
+- [x] WRITE
+- [x] NOTFOUND
