@@ -117,16 +117,22 @@ user-comment{
                 max-width: 100%;
             }
         }
-        .board_video{   
-            width: 100%;
-            height: 100%;  
-            min-height: 530px;     
-            position: relative;
+        .board_video{position:relative;padding-bottom:56.25%;padding-top:30px;height:0;overflow:hidden;} 
+        .board_video iframe,.video-container object,.video-container embed{position:absolute;top:0;left:0;width:100%;height:100%;} 
+        .board_video{     
+            video{
+                position: absolute;
+                top:0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+            }    
             .iframeVideo{
                 position: absolute; 
                 top:0;
                 width: 100%;  
                 height: 100%;
+                z-index: 10;
             }
             
         }
@@ -141,7 +147,7 @@ user-comment{
             color : #fff;
             z-index: 99;
             font-size: 23px;
-            background-color: rgba(#000000 , 0.85);
+            background-color: rgba(#292929 , 1);
         }
         .board_main{
             min-height: 350px;
@@ -213,13 +219,7 @@ ul.files{
         h1{
             font-size: 28px;
         }
-        .board_body{
-            .board_video{      
-                min-height: 380px;     
-                
-              
-            }
-        }
+        
     }
 }
 @media screen and (max-width: 500px){
@@ -227,13 +227,31 @@ ul.files{
         h1{
             font-size: 24px;
         }
-        .board_body{
-            .board_video{      
-                min-height: 280px;     
-                
-              
+        
+    }
+    video-info{    
+        flex-direction: column;
+        info{     
+            vi{
+                small{
+                    margin-right: 5px;
+                    color : #9b9b9b;
+                }
+                b{
+                    color : #363636;
+                }
+                font-weight: bold;
+                font-size: 13px;
+                padding: 2px;
+                margin: 0 3px;
+                display: flex;
+                align-items: center;
+                svg{
+                    font-size:20px;
+                }
             }
         }
+       
     }
 }
 @media screen and (max-width: 420px){

@@ -7,7 +7,6 @@
  */
 export function byte(fileSize, fixed) {
     var str
-
     //MB 단위 이상일때 MB 단위로 환산
     if (fileSize >= 1024 * 1024) {
         fileSize = fileSize / (1024 * 1024);
@@ -37,9 +36,9 @@ export function byte(fileSize, fixed) {
     return str;
 }
 
+
 function commaNum(fileSize){
     var len, point, str; 
-    fileSize = fileSize.indexOf(".",0) != -1 ? fileSize.split(".") : fileSize ;
     fileSize = fileSize + ""; 
     point = fileSize.length % 3 ;
     len = fileSize.length; 

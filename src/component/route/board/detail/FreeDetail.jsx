@@ -141,7 +141,7 @@ export default function FreeDetail(props){
             {
             (member.data.id === data.writer_id && data.writer_id && member.data.id) || member.data.rank === "ADMIN"? 
             <controller>
-                <button type="button" className="btn">수정</button>
+                <button type="button" className="btn" onClick={()=> history.push(`/bbs/update/free/${board_id}`)}>수정</button>
                 <button type="button" className="btn delete" onClick={onClickDeleteHandler}>삭제</button>
             </controller>   : <></>
             }
@@ -150,11 +150,7 @@ export default function FreeDetail(props){
                 {
                     member.logined ? (
                     <comment-write>
-                        <writer><strong>작성자</strong> : {member.data.name}</writer>
-                        {/* <WriteEditor isComment 
-                        editorState={editorState}
-                        onEditorStateChange={onEditorStateChange}
-                        /> */}
+                        <writer><strong>작성자</strong> : {member.data.name}</writer>       
                         <CKEditor5 
                             onlyComments 
                             onChange={(value)=>{setEditorContent(value)}}
@@ -163,7 +159,7 @@ export default function FreeDetail(props){
                         <div className="btn_wrap" >
                             <button className="btn" onClick={(e)=>{
                                 const fd = new FormData();
-                                fd.append("description",context);
+                                fd.append("description",editorContent);
                                 axios.post(`/bbs/${board_id}/write/comment`,fd,{
                                     headers : {
                                         "Authorization" : member.SESSION_UID
@@ -177,7 +173,7 @@ export default function FreeDetail(props){
                                     console.log(e.response)
                                 })
                             }}>작성</button>
-                            
+                           
                         </div>
                         
                     </comment-write>

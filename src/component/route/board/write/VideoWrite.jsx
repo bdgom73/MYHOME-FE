@@ -5,14 +5,17 @@ import useMember from "../../../../customState/useMember";
 import useModal from "../../../../customState/useModal";
 import useTitle from "../../../../customState/useTitle";
 import Modal from "../../../modal/modal";
-import WriteEditor from "../../../part/write/WriteEditor";
 import "../../../../css/route/VideoWrite.scss";
 import { RiPhoneFindLine } from 'react-icons/ri';
 import { byte } from "../../../../js/common";
 import moment from "moment";
-import SubLoading from "../../../sub_loading";
 import ProgressBar from "../../../progressBar";
 import CKEditor5 from "../../../part/write/CKEditor/CKEditor5";
+import { AiFillYoutube } from 'react-icons/ai';
+import { ImTwitch } from 'react-icons/im';
+import { afreecatv } from "../../../../afreecatv";
+import Loading from "../../../part/Loading";
+
 export default function VideoWrite(props){
 
     useTitle(`MYDOMUS | WRITE - VIDEO`);
@@ -27,7 +30,10 @@ export default function VideoWrite(props){
     const [videoLoading,setVideoLoading] = useState(false);
     const [loaded,setLoaded] = useState(0);
     const [total,setTotal] = useState(0);
-    const [loadend,setLoadend] = useState(false);
+    const [platform,setPlatform] = useState("youtube");
+    const [etcUrl , setETCUrl] = useState("");
+    const [preUrl,setPreUrl] = useState("");
+    const [uploadLoading, setUploadLoading] = useState(false);
     function onModalHandler(){
         if(modal.modal === 1){
             return <Modal close={modal.close}>잘못된 URL입니다.</Modal>
@@ -39,13 +45,9 @@ export default function VideoWrite(props){
             setTotal(input.files[0].size)  
             reader.onprogress = e=>{
                 setLoaded(e.loaded);   
-                console.log(e);
             }
-            reader.onloadstart = e=>{
-                console.log(e);
-            }
+          
             reader.onloadend = e =>{
-                setLoadend(true);
                 setVideoLoading(false) 
             }
             reader.onload = e => {                                
@@ -79,32 +81,59 @@ export default function VideoWrite(props){
     }
 
     const onSubmitHandler = (e)=>{
-        e.preventDefault();     
+        e.preventDefault();    
+
+        setUploadLoading(true); 
         const fd = new FormData();
         if(e.target[2].checked){
             fd.append("video",file);
         }else{
             const url = e.target[3].value;
-            const unique = url.split("https://youtu.be/")[1];
-            if(!unique){
-                modal.setModal(1)
+            if(platform === "youtube"){
+                if(url.indexOf("https://youtu.be/") !== -1){
+                    const unique = url.split("https://youtu.be/")[1];
+                    if(!unique){
+                        modal.setModal(1)
+                    }
+                    fd.append("video_url",e.target[3].value);
+                    fd.append("category_type","YOUTUBE");
+                }
+            }else if(platform === "twitch"){
+                fd.append("video_url",e.target[3].value);
+                fd.append("category_type","TWITCH");
+            }else if(platform === "afreeca"){
+                if(etcUrl.indexOf("https://vod.afreecatv.com/ST/") !== -1){
+                    const unique = etcUrl.split("https://vod.afreecatv.com/ST/")[1];
+                    if(!unique){
+                        modal.setModal(1)
+                    }
+                    fd.append("video_url",e.target[3].value);
+                    fd.append("category_type","AFREECA");
+                }
             }
-            fd.append("video_url",e.target[3].value);
         }
        
         fd.append("title",e.target[0].value);
         fd.append("description",desc);
         
-        axios.post("/bbs/write?category=video",fd,{headers:{'Content-Type': 'multipart/form-data',"Authorization" : member.SESSION_UID}})
+        
+        axios.post("/bbs/write?category=video",fd,
+        {headers:{'Content-Type': 'multipart/form-data',"Authorization" : member.SESSION_UID}})
             .then(res=>{
-                if(res.status === 200) history.push(`/bbs/video/${res.data}`)
+                e.preventDefault();
+                if(res.status === 200) {
+                    setUploadLoading(false)
+                    history.push(`/bbs/video/${res.data}`)
+                }            
             }).catch(e=>console.log(e.response))
+
     }
 
    
     return(
         <>
         {onModalHandler()}
+        {uploadLoading ? <Loading/> : <></>}
         <div className="v_write_wrap">
             <form onSubmit={onSubmitHandler}>
                 <table>
@@ -150,16 +179,48 @@ export default function VideoWrite(props){
                                     </div> 
                                 ): (
                                 <>
-                                <input type="text" className="video_file_text" defaultValue={"https://youtu.be/"+url}
+                                <div style={{position:"relative"}}>
+                                <input type="text" className="video_file_text" placeholder="영상 주소를 입력해주세요"
+                                value={preUrl}
                                 onChange={(e)=>{
-                                    if(e.target.value.indexOf("https://youtu.be/") != -1) {
-                                        const u = e.target.value.split("https://youtu.be/")[1];
-                                        setUrl(u);
-                                    } else {
-                                        setUrl("");
-                                    }
+                                    setPreUrl(e.target.value)
+                                    if(platform === "youtube"){
+                                        if(e.target.value.indexOf("https://youtu.be/") != -1) {
+                                            const u = e.target.value.split("https://youtu.be/")[1];
+                                            setUrl(u);
+                                            console.log(u);
+                                        } else {
+                                            setUrl("");
+                                        }
+                                    }else if(platform==="twitch"){
+                                        setETCUrl(e.target.value)
+                                    }else if(platform==="afreeca"){
+                                        console.log("affre")
+                                        if(e.target.value.indexOf("https://vod.afreecatv.com/ST/") != -1) {
+                                            const u = e.target.value.split("https://vod.afreecatv.com/ST/")[1];
+                                            console.log(u)
+                                            setETCUrl(u)
+                                        } else {
+                                            setUrl("");
+                                        }
+                                       
+                                    }     
                                 }}
-                                />      
+                                />  
+                                <div className="select_video-type">
+                                    <AiFillYoutube className={platform === "youtube" ? "youtube" : "youtube notselected"} onClick={e=>{
+                                        setPlatform("youtube");
+                                        setETCUrl("");
+                                    }}/> 
+                                    <ImTwitch title="점검중" className={platform === "twitch" ? "twitch" : "twitch notselected"} onClick={e=>{
+                                        // setPlatform("twitch");
+                                    }}/> 
+                                    <img src={afreecatv.logo} alt="afreecaTV LOGO" className={platform === "afreeca" ? "afreecatv_logo" : "afreecatv_logo notselected"} onClick={e=>{
+                                        setPlatform("afreeca");                        
+                                        setUrl("");
+                                    }}/>
+                                </div> 
+                                </div>
                                 </>
                                 )
                                          
@@ -168,13 +229,30 @@ export default function VideoWrite(props){
                     </tr>    
                     <tr style={videoType ? {display:"none"} : {display:"table-row"}}>
                         <th colSpan="2">
-                            <iframe 
-                                style={url !== "" ? {display : "block" , margin : "0 auto", width:"100%", height:"300px"} : {display : "none"}}
-                                title="Youtube video"
-                                className="iframeVideo"
-                                allowFullScreen = {false}
-                                src={`https://www.youtube.com/embed/${url}`}                                                       
-                            ></iframe>
+                            {
+                                platform === "youtube" ? (
+                                    <iframe 
+                                    style={url !== "" ? {display : "block" , margin : "0 auto", width:"100%", height:"300px"} : {display : "none"}}
+                                    title="Youtube video"
+                                    className="iframeVideo"
+                                    allowFullScreen = {false}
+                                    src={`https://www.youtube.com/embed/${url}`}/>
+                                ) : platform === "twicth" ? (
+                                     <iframe 
+                                        title="Twitch clips"
+                                        src={"https://clips.twitch.tv/AstuteVibrantMilkEleGiggle-eJ3UKsq_0_hIqsPY"}  
+                                        frameborder="0" allowfullscreen="true" scrolling="no" width="100%" />
+                               
+                                ) : platform === "afreeca" ? (
+                                <iframe title="afreeca"
+                                    style={etcUrl !== "" ? {display : "block" , margin : "0 auto", width:"100%", height:"300px"} : {display : "none"}}
+                                    id="afreecatv_player_video"  
+                                    src= {`//vod.afreecatv.com/embed.php?type=station&isAfreeca=false&autoPlay=false&showChat=true&mutePlay=false&szBjId=wnd2qud&nStationNo=18382776&nBbsNo=69072228&nTitleNo=${etcUrl}&szCategory=00010000&szVodCategory=00040066&szPart=CLIP&szVodType=STATION&nPlaylistIdx=0&isEmbedautoPlay=false&szSysType=html5`}
+                                    frameborder="0" allowfullscreen="true"/>
+                                ) : <></>
+                                
+                            }
+                           
                         </th>
                     </tr> 
                     <tr style={videoType ? {display:"table-row"} : {display:"none"} }>
@@ -205,14 +283,15 @@ export default function VideoWrite(props){
                         <td colSpan='2' style={{padding : 5, margin:"0 auto"}}>
                            {/* <WriteEditor onChange={(ed)=>{setDesc(ed)}} /> */}
                            <CKEditor5 onChange={(ed)=>{setDesc(ed)}}/>
+                            <div className="btn_wrap">
+                                <input type="submit" className="btn" value="글쓰기"/>
+                                <button className="btn">목록</button>
+                            </div> 
                         </td>
                     </tr>
                     </tbody>
                 </table>  
-                <div className="btn_wrap">
-                    <input type="submit" className="btn" value="글쓰기"/>
-                    <button className="btn">목록</button>
-                </div>    
+                  
             </form>
         </div>
         </>

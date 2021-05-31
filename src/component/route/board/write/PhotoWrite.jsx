@@ -143,14 +143,15 @@ export default function PhotoWrite(props){
                         <td colSpan='2' style={{padding : 5, margin:"0 auto"}}>
                            {/* <WriteEditor onChange={(ed)=>{setDesc(ed)}}  /> */}
                            <CKEditor5 onChange={(ed)=>{setDesc(ed)}}/>
+                            <div className="btn_wrap">
+                                <input type="submit" className="btn" value="글쓰기"/>
+                                <button className="btn">목록</button>
+                            </div>   
                         </td>
                     </tr>
                     </tbody>
                 </table>  
-                <div className="btn_wrap">
-                    <input type="submit" className="btn" value="글쓰기"/>
-                    <button className="btn">목록</button>
-                </div>    
+                 
             </form>
         </div>
         </>

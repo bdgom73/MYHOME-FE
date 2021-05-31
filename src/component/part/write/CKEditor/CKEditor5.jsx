@@ -1,54 +1,47 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import "../../../../css/CKEditor.scss"
+const comments_config = ['bold','italic','link','undo','redo'];
+const basic_config = ['heading','|','bold','italic','link','bulletedList','numberedList','|','blockQuote','insertTable','|','imageUpload','undo','redo'];
 function CKEditor5({onlyComments, onChange, data}){
-    const custom_config = {
-        extraPlugins: [ MyCustomUploadAdapterPlugin ],
-        toolbar: {
-          items: onlyComments ? [        
-            'bold',
-            'italic',
-            'link',         
-            'undo',
-            'redo'
-          ] :[
-            'heading',
-            '|',
-            'bold',
-            'italic',
-            'link',
-            'bulletedList',
-            'numberedList',
-            '|',
-            'blockQuote',
-            'insertTable',
-            '|',
-            'imageUpload',
-            'undo',
-            'redo'
-          ]
-        },
-        table: {
-          contentToolbar: [ 'tableColumn', 'tableRow', 'mergeTableCells' ]
-        }
-      }
-        return (
-            <div className="CKEditor_custom">
-              <CKEditor
-                required
-                editor={ClassicEditor}
-                config={custom_config}
-                data={data}
-                onChange={(event, editor) => {
-                  const data = editor.getData();
-                  onChange(data)
-                }}   
-                
-            />
-                
-            </div>
-        );
+  
+  const custom_config = {
+    extraPlugins: [ MyCustomUploadAdapterPlugin ],
+    toolbar: {
+      items: onlyComments ? comments_config :basic_config
+    },
+    table: {
+      contentToolbar: [ 'tableColumn', 'tableRow', 'mergeTableCells' ]
+    }
+  }
+
+  
+
+      
+  return (
+      <div className="CKEditor_custom">
+        <CKEditor
+          required
+          editor={ClassicEditor}
+          config={custom_config}
+          data={data}
+          onChange={(event, editor) => {
+            const data = editor.getData();
+            onChange(data)
+          }}  
+          onReady ={(editor) => {
+            if(editor){
+              editor.editing.view.change((writer) => {         
+                writer.setStyle("height", onlyComments ? "100px" : "500px", editor.editing.view.document.getRoot());
+              });
+            }
+           
+        }}       
+      />
+          
+      </div>
+  );
     
 }
 

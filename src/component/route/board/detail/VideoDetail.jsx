@@ -36,8 +36,8 @@ export default function VideoDetail(props){
        setBoardId(params.id);
        axios.get("/bbs/view/"+params.id+"/video")
         .then(res=>{
-            
-            const unique = res.data.video_url ? res.data.video_url.split("https://youtu.be/")[1] : "";
+            console.log(res)
+            const unique = res.data.video_url && res.data.videoType ==="YOUTUBE" ? res.data.video_url.split("https://youtu.be/")[1] : res.data.video_url;
             setData(res.data || {});
             setVideoType(res.data.videoType);
             setVideoUrl(unique); 
@@ -134,7 +134,9 @@ export default function VideoDetail(props){
             </info>  
         </video-info>
         <div className="board_body">
-            <div className="board_video" style={videoType === "NONE" ? {minHeight : "0px"}:{}}>
+            <div className="board_video" 
+            style={videoType === "NONE" && !videoUrl ? {display : "none"}: {}}
+            >
                 {
                     videoType === "YOUTUBE" ? (
                         <iframe 
@@ -151,7 +153,7 @@ export default function VideoDetail(props){
                     ></iframe>
                     ) : videoType === "LOCAL" ? (
                         <>
-                        <video controls style={{width:"100%",height:"100%"}} onError={()=>{setVideoError(true);}}>
+                        <video controls onError={()=>{setVideoError(true);}}>
                         {
                             videoError ? 
                             <></>:
@@ -162,7 +164,23 @@ export default function VideoDetail(props){
                             videoError ?  <div className="video_error">재생할 수 없는 영상입니다.</div> : <></>
                         }
                         </>)
-                     : videoType === "NONE" ? <></> : <></>
+                     : videoType === "TWITCH" ? (
+                        <>
+                        {/* <iframe 
+                            title="Twitch clips"
+                            // src={"https://clips.twitch.tv/AstuteVibrantMilkEleGiggle-eJ3UKsq_0_hIqsPY"}
+                            // src="https://clips.twitch.tv/embed?clip=AstuteVibrantMilkEleGiggle-eJ3UKsq_0_hIqsPY&parent=www.example.com"
+                            frameborder="0" allowfullscreen="true" scrolling="no" width="100%" />
+                        </> */}
+                        </>
+                        ) : videoType === "AFREECA" ? (
+                            <>
+                             <iframe title="afreeca"
+                                id="afreecatv_player_video"  
+                                src= {`//vod.afreecatv.com/embed.php?type=station&isAfreeca=false&autoPlay=false&showChat=true&mutePlay=false&szBjId=wnd2qud&nStationNo=18382776&nBbsNo=69072228&nTitleNo=${videoUrl}&szCategory=00010000&szVodCategory=00040066&szPart=CLIP&szVodType=STATION&nPlaylistIdx=0&isEmbedautoPlay=false&szSysType=html5`}
+                                frameborder="0" allowfullscreen="true"/>
+                            </>
+                        ) : <></>
                 }
     
             </div>

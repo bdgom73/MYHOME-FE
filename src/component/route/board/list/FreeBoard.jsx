@@ -65,7 +65,6 @@ export default function FreeBoard(props){
             loading ={loading}
             writerColumn="writer"
             dateColumn="created"
-            colgroup={"10% 35% 20% 20% 10% 10%"}
             />   
         <ReactPaginate 
             pageCount={Math.ceil(total / 40)}

@@ -8,7 +8,6 @@ table.table, table.control{
     width: 100%;
     font-size: 14px;   
     
- 
     thead{
         th{
             background-color: rgba(#e2e1e1, 1);
@@ -36,6 +35,7 @@ table.table, table.control{
                 padding: 5px;
                 border-bottom: 1px solid #bbb;
                 text-align: center;
+               
                 .thumbnail{
                     max-width: 120px;
                     max-height: 90px;
@@ -110,17 +110,20 @@ table.table, table.control{
     table.control{
         thead{
             th{
+                width: auto;
               &:nth-last-child(3) {
                 display: none;
-                visibility: collapse;        
+                // visibility: collapse;        
+              
               }
             }
         }
         tbody{ 
             td{
+                width: auto;
                 &:nth-last-child(3) {
-                    display: none;
-                    visibility: collapse;  
+                    display: none;               
+                    // visibility: collapse;  
                 } 
                 .thumbnail{
                     width: 80px;

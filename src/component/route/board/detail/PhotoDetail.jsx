@@ -65,7 +65,7 @@ export default function PhotoDetail(props){
             setContent(res.data.description);
             setComment(res.data.commentDTOList || []);
             setRecommend(res.data.recommend);
-            
+            console.log(res)
             refTitle.innerHTML = `MYDOMUS | ${res.data.title ? res.data.title : "PHOTO"}`
         })
         .catch(e=>{
@@ -231,7 +231,7 @@ export default function PhotoDetail(props){
                         <div className="btn_wrap" >
                             <button className="btn" onClick={(e)=>{
                                 const fd = new FormData();
-                                fd.append("description",context);
+                                fd.append("description",editorContent);
                                 axios.post(`/bbs/${board_id}/write/comment`,fd,{
                                     headers : {
                                         "Authorization" : member.SESSION_UID

@@ -76,7 +76,8 @@ export default function BoardTable(props){
                                     if(linkColumn){
                                       
                                         return (
-                                            <td key={k+i+j} onClick={k===linkColumn ? ()=>{onClickHandler(d.id)}:()=>{}} className={k===linkColumn? "link" : ""}>
+                                            <td key={k+i+j} onClick={k===linkColumn ? ()=>{onClickHandler(d.id)}:()=>{}} 
+                                            className={k===linkColumn? "link" : ""} style={k==="title" ? {width : "40%"} : {}}>
                                           
                                                 {          
                                                 k === "id" && moment.duration(moment().diff(moment(d[dateColumn]))).days() < 1 ?
@@ -102,7 +103,7 @@ export default function BoardTable(props){
                                         )
                                     }else{ 
                                         return (
-                                            <td key={k+i+j} onClick={()=>{onClickHandler(d.id)}}>
+                                            <td key={k+i+j} onClick={()=>{onClickHandler(d.id)}} style={k==="title" ? {width : "40%"} : {}}>
                                                  {          
                                                 k === "id" && moment.duration(moment().diff(moment(d[dateColumn]))).days() < 1 ?
                                                 <div className="new"><pcon><span>NEW</span></pcon>{d[k]}</div> :
@@ -116,7 +117,7 @@ export default function BoardTable(props){
                                                 writerColumn === k && d.rank==="ADMIN" ?  
                                                 <div className="flex"><pcon style={{backgroundColor:"#c4302b"}}>
                                                     <span >운영자</span>  
-                                                </pcon>{d[k]}</div> :
+                                                </pcon>{d[k]}</div> : 
                                                 d[k]}
                                                 {
                                                     dateColumn === k && updatedColumn && moment(d[dateColumn]).format("YYYY-MM-DD HH:mm") !== moment(d[updatedColumn]).format("YYYY-MM-DD HH:mm") ? 
@@ -129,7 +130,7 @@ export default function BoardTable(props){
                                 }) : key.map((k,j)=>{
                                     if(linkColumn){
                                         return (
-                                            <td key={k+i+j} onClick={k===linkColumn ? ()=>{onClickHandler(d.id)}:()=>{}}>
+                                            <td key={k+i+j} onClick={k===linkColumn ? ()=>{onClickHandler(d.id)}:()=>{}} style={k==="title" ? {width : "40%"} : {}}>
                                              {          
                                                 k === "id" && moment.duration(moment().diff(moment(d[dateColumn]))).days() < 1 ?
                                                 <div className="new"><pcon><span>NEW</span></pcon>{d[k]}</div> :
@@ -153,7 +154,7 @@ export default function BoardTable(props){
                                         )
                                     }else{
                                         return (
-                                            <td key={k+i+j} onClick={()=>{onClickHandler(d.id)}}>
+                                            <td key={k+i+j} onClick={()=>{onClickHandler(d.id)}} style={k==="title" ? {width : "40%"} : {}}>
                                                  {          
                                                 k === "id" && moment.duration(moment().diff(moment(d[dateColumn]))).days() < 1 ?
                                                 <div className="new"><pcon><span>NEW</span></pcon>{d[k]}</div> :

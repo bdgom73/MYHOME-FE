@@ -1,8 +1,8 @@
 .CKEditor_custom{
-    width: 100%; 
+    width: 100%;
     .ck-editor{
         width: 100%;
-        margin:  0 auto;
+        margin: 0 auto;
         transition: all .1s;
     }
     // .ck-content{
@@ -52,24 +52,66 @@
 //         }
 //     }
 // }
-// @media screen and (max-width: 500px){
-//     .CKEditor_custom{
-//         .ck-editor{
-//             width: 350px;  
-//         }
-//     }
-// }
-// @media screen and (max-width: 400px){
-//     .CKEditor_custom{
-//         .ck-editor{
-//             width: 300px;  
-//         }
-//     }
-// }
-// @media screen and (max-width: 480px){
-//     .CKEditor_custom{
-//         .ck-editor{
-//             width: 300px;  
-//         }
-//     }
-// }
+@media screen and (max-width: 528px){
+    .CKEditor_custom{
+        .ck-editor{
+            width: 480px;  
+        }
+    }
+}
+@media screen and (max-width: 506px){
+    .CKEditor_custom{
+        .ck-editor{
+            width: 450px;  
+        }
+    }
+}
+@media screen and (max-width: 480px){
+    .CKEditor_custom{
+        .ck-editor{
+            width: 430px;  
+        }
+    }
+}
+@media screen and (max-width: 448px){
+    .CKEditor_custom{
+        .ck-editor{
+            width: 400px;  
+        }
+    }
+}
+@media screen and (max-width: 418px){
+    .CKEditor_custom{
+        .ck-editor{
+            width: 380px;  
+        }
+    }
+}
+@media screen and (max-width: 405px){
+    .CKEditor_custom{
+        .ck-editor{
+            width: 360px;  
+        }
+    }
+}
+@media screen and (max-width: 386px){
+    .CKEditor_custom{
+        .ck-editor{
+            width: 340px;  
+        }
+    }
+}
+@media screen and (max-width: 366px){
+    .CKEditor_custom{
+        .ck-editor{
+            width: 320px;  
+        }
+    }
+}
+@media screen and (max-width: 346px){
+    .CKEditor_custom{
+        .ck-editor{
+            width: 300px;  
+        }
+    }
+}

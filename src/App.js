@@ -20,6 +20,7 @@ import VideoWrite from "./component/route/board/write/VideoWrite";
 import FreeWrite from "./component/route/board/write/FreeWrite";
 import PhotoWrite from "./component/route/board/write/PhotoWrite";
 import CKEditor5 from "./component/part/write/CKEditor/CKEditor5";
+import FreeUpdate from "./component/route/board/update/FreeUpdate";
 
 
 function App() {
@@ -46,6 +47,7 @@ function App() {
       <Route exact path="/bbs/free/page=" render={(props)=>{ return <Template><FreeBoard {...props}/></Template>}} ></Route>
       <Route exact path="/bbs/free/page=:page"  render={(props)=>{ return <Template><FreeBoard {...props}/></Template>}} ></Route>
       <Route exact path="/bbs/free/:id" render={(props)=>{ return <Template><FreeDetail {...props}/></Template>}} ></Route>
+      <Route exact path="/bbs/update/free/:id" render={(props)=>{ return <Template access="user"><FreeUpdate {...props}/></Template>}} ></Route>
 
       {/* Video Board Service */}
       <Route exact path="/bbs/video"><Template><VideoBoard/></Template></Route>

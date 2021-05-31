@@ -1,3 +1,4 @@
+
 export function dateRange(startDate,endDate){
     let date1 = new Date(startDate);
     let date2 = new Date(endDate);
@@ -16,6 +17,3 @@ export function dateRange(startDate,endDate){
 
 }
 
-export function dateCompare(){
-    
-}
