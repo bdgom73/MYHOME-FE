@@ -29,8 +29,9 @@ export default function Main_header(props){
                 <div className="sub_menu">
                     <BsList size={30} onClick={props.subMenuHandler}/>
                 </div>
-                <div className="logo">
-                    <img src="/image/logo.png" alt="LOGO" onClick={()=>{history.push("/")}}/>
+                <div className="logo" style={{position:"relative"}} onClick={()=>{history.push("/")}} >
+                    <img src="/logo.png" alt="LOGO" style={{width:"30px",position:"absolute",bottom:"0px",left:"0px"}}/>
+                    <img src="/image/logo.png" alt="LOGO" style={{width:"100px",marginLeft:"15px",marginBottom:"-10px"}}/>
                 </div>
             </div>
             <div className="search">

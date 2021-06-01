@@ -19,9 +19,10 @@ import PhotoDetail from "./component/route/board/detail/PhotoDetail";
 import VideoWrite from "./component/route/board/write/VideoWrite";
 import FreeWrite from "./component/route/board/write/FreeWrite";
 import PhotoWrite from "./component/route/board/write/PhotoWrite";
+import PhotoUpdate from "./component/route/board/update/PhotoUpdate";
 import CKEditor5 from "./component/part/write/CKEditor/CKEditor5";
 import FreeUpdate from "./component/route/board/update/FreeUpdate";
-
+import Notice from "./component/route/notice/Notice"
 
 function App() {
 
@@ -42,6 +43,13 @@ function App() {
       <Route exact path="/bbs/search=:id" render={(props)=>{ return <Template><SubLoading {...props}/></Template>}} ></Route>
       <Route exact path="/bbs/search=" render={(props)=>{ return <Template><SubLoading {...props}/></Template>}} ></Route>
 
+      {/* Notice Service */}
+      <Route exact path="/bbs/notice" render={(props)=>{ return <Template><Notice {...props}/></Template>}} ></Route>
+      <Route exact path="/bbs/notice/page=" render={(props)=>{ return <Template><Notice {...props}/></Template>}} ></Route>
+      <Route exact path="/bbs/notice/page=:page"  render={(props)=>{ return <Template><Notice {...props}/></Template>}} ></Route>
+      <Route exact path="/bbs/notice/:id" render={(props)=>{ return <Template><FreeDetail {...props}/></Template>}} ></Route>
+      <Route exact path="/bbs/notice/update/:id" render={(props)=>{ return <Template access="user"><FreeUpdate {...props}/></Template>}} ></Route>
+
       {/* Free Board Service */}
       <Route exact path="/bbs/free/" render={(props)=>{ return <Template><FreeBoard {...props}/></Template>}} ></Route>
       <Route exact path="/bbs/free/page=" render={(props)=>{ return <Template><FreeBoard {...props}/></Template>}} ></Route>
@@ -53,11 +61,12 @@ function App() {
       <Route exact path="/bbs/video"><Template><VideoBoard/></Template></Route>
       <Route exact path="/bbs/video/:id" render={(props)=>{ return <Template><VideoDetail {...props}/></Template>}} ></Route>
 
-       {/* Photo Board Service */}
+      {/* Photo Board Service */}
       <Route exact path="/bbs/photo" render={(props)=>{ return <Template><PhotoBoard {...props}/></Template>}} ></Route>
       <Route exact path="/bbs/photo/page=" render={(props)=>{ return <Template><PhotoBoard {...props}/></Template>}} ></Route>
       <Route exact path="/bbs/photo/page=:page"  render={(props)=>{ return <Template><PhotoBoard {...props}/></Template>}} ></Route>
       <Route exact path="/bbs/photo/:id" render={(props)=>{ return <Template><PhotoDetail {...props}/></Template>}} ></Route>
+      <Route exact path="/bbs/update/photo/:id" render={(props)=>{ return <Template access="user"><PhotoUpdate {...props}/></Template>}} ></Route>
 
       {/* Write Service */}
       <Route exact path="/bbs/write/video"><Template access="user"><VideoWrite/></Template></Route>

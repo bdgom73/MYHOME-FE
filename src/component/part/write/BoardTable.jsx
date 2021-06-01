@@ -8,7 +8,6 @@ import SubLoading from "../../sub_loading";
 import Loading from "../Loading";
 export default function BoardTable(props){
 
-    const member = useMember();
     const [col, setCol] = useState([]);
     const { 
         columnData ,
@@ -26,10 +25,11 @@ export default function BoardTable(props){
         imageColumn,
      } = props;
     
-   
+     
     const history = useHistory();
-   
+     console.log(data)
     useEffect(()=>{
+        
         const col = colgroup ? colgroup.split(" ") : []
         setCol(col || []);
     },[])
@@ -54,17 +54,18 @@ export default function BoardTable(props){
             </colgroup>
             <thead>
                 <tr>
-                {
+                {   
+                    columnData ? 
                     columnData.map((c,i)=>{
                         return <th key={c+i}>{c}</th>
-                    })
+                    }):<></>
                 }
                 </tr>
             </thead>
             <tbody>        
                 {
-                    loading ?  <tr><td colSpan={columnData.length}><SubLoading/></td></tr> : 
-                    data.length > 0 ?
+                    loading ?  <tr><td colSpan={columnData ? columnData.length : 0}><SubLoading/></td></tr> : 
+                    data ?
                     data.map((d,i)=>{
                         const unique = videoColumn && d[videoColumn]? d[videoColumn].split("https://youtu.be/")[1]: "";
                         const key = dataField();

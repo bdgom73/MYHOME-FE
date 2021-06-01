@@ -180,6 +180,9 @@ pcon{
     white-space:nowrap;
     padding: 5px 5px 10px; 
     border-radius: 10px;
+    div{
+        display: contents;
+    }
     img{
         width: 100px;
         height: 100px;

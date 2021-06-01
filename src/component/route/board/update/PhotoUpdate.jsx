@@ -9,18 +9,41 @@ import "../../../../css/route/VideoWrite.scss";
 import { byte } from "../../../../js/common";
 import CKEditor5 from "../../../part/write/CKEditor/CKEditor5";
 
-export default function PhotoWrite(props){
+export default function PhotoUpdate(props){
 
-    useTitle(`MYDOMUS | WRITE - PHOTO`);
     const [clickEvent, setClickEvent] = useState(0);
+    const {params}= props.match;
     const history = useHistory();
+    const {refTitle} = useTitle();
     const modal = useModal();
     const member = useMember();
     const [desc,setDesc] = useState("");
     const [files, setFiles] = useState([]);
+    const [image,setImage] = useState([]);
     const [filesize, setFilesize] = useState(0);
     const [change,setChange] = useState(true);
-   
+    const [data, setData] = useState({});  
+    const [title,setTitle] = useState("");
+    const [writer,setWriter] = useState("");
+    const [board_id, setBoardId] = useState();
+    useEffect(()=>{    
+        setBoardId(params.id);
+        axios.get("/bbs/view/"+params.id+"/photo")
+         .then(res=>{ 
+             console.log(res)
+            setData(res.data); 
+            setTitle(res.data.title);
+            setWriter(res.data.nickname);
+            setDesc(res.data.description);
+            setImage(res.data.imageList);
+            refTitle.innerHTML = `MYDOMUS | ${res.data.title ? res.data.title : "Update"}` 
+         })
+         .catch(e=>{
+            console.log(e.response);
+            history.push("/bbs/photo/page=1");
+         });
+ 
+     },[board_id])
 
     useEffect(()=>{
         let size = 0;
@@ -53,8 +76,6 @@ export default function PhotoWrite(props){
     }
 
     function readImage(input,i) {
-        let size = filesize;
-        console.log(size)
         if(input.files && input.files[i]) { 
             const reader = new FileReader();
             reader.onload = e => {
@@ -117,40 +138,59 @@ export default function PhotoWrite(props){
             <form onSubmit={onSubmitHandler}>
                 <table>
                     <tbody>
-                    <tr>
-                        <td colSpan='2'>
-                            <input type="text" className="w_title" placeholder="제목을 입력해주세요" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colSpan='2'>
-                            <input type="text" className="writer" readOnly defaultValue={member.data.name}/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th colSpan="2" className="target_th">        
-                            <div className="target" id="target">    
-                                <div className="target_file"  style={!change ? {display:"none"} : {display:"flex"}}>
-                                    <input multiple="multiple" type="file" name="images[]" id="images" onChange={onChangeFileHandler}/>
-                                    <label for="images">➕</label>
-                                </div>
-                            </div> 
-                            {filesize === 0 ? "": byte(filesize)}   
-                        </th>      
-                    </tr>
-                    <tr>
-                        <td colSpan='2' style={{padding : 5, margin:"0 auto"}}>
-                           <CKEditor5 onChange={(ed)=>{setDesc(ed)}}/>
-                            <div className="btn_wrap">
-                                <input type="submit" className="btn" value="글쓰기"/>
-                                <button className="btn">목록</button>
-                            </div>   
-                        </td>
-                    </tr>
+                        <tr>
+                            <td colSpan='2'>
+                                <input type="text" className="w_title" placeholder="제목을 입력해주세요" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colSpan='2'>
+                                <input type="text" className="writer" readOnly defaultValue={member.data.name}/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div className="images_list">
+                <span className="title"><font color="#bbb">이전이미지</font></span>
+                {
+                    image[0] ?
+                    image.map(m=>{
+                        return (
+                            <>                                        
+                            <img src={m.image_url} alt={m.filename}  key={m.filename+m.image_url}/>              
+                            </>
+                        )
+                    }) : <></>         
+                }
+                </div>
+                <table>
+                    <tbody>   
+                        <tr>
+                            <th colSpan="2" className="target_th">        
+                                <div className="target" id="target">    
+                                    <div className="target_file"  style={!change ? {display:"none"} : {display:"flex"}}>
+                                        <input multiple="multiple" type="file" name="images[]" id="images" onChange={onChangeFileHandler}/>
+                                        <label for="images">➕</label>
+                                    </div>
+                                </div> 
+                                {filesize === 0 ? "": byte(filesize)}   
+                            </th>      
+                        </tr>
+                        <tr>
+                            <td colSpan='2' style={{padding : 5, margin:"0 auto"}}>
+                            {/* <WriteEditor onChange={(ed)=>{setDesc(ed)}}  /> */}
+                            <CKEditor5 onChange={(ed)=>{setDesc(ed)}}/>
+                                <div className="btn_wrap">
+                                    <input type="submit" className="btn" value="글쓰기"/>
+                                    <button className="btn">목록</button>
+                                </div>   
+                            </td>
+                        </tr>
                     </tbody>
                 </table>  
                  
             </form>
+           
         </div>
         </>
     );

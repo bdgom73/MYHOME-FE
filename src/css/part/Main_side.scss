@@ -47,6 +47,15 @@
                 list-style: none;
                 padding: 0;  
                 border-top:1px solid #aaa ; 
+                tl{
+                  display: list-item;
+                  margin-top: 5px;
+                  padding: 10px;
+                  font-size: 20px;
+                  color: #fff;
+                  font-weight: bold;
+
+                }
                 li{
                     padding: 10px;
                     font-size: 13px;  
@@ -58,6 +67,7 @@
                     font-weight: bold;
                     &:hover{
                      color : #fff;
+                     background-color: #984199;
                     }
                     &:hover svg{
                       color : #fff;

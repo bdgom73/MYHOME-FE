@@ -3,7 +3,12 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import "../../../../css/CKEditor.scss"
 const comments_config = ['bold','italic','link','undo','redo'];
-const basic_config = ['heading','|','bold','italic','link','bulletedList','numberedList','|','blockQuote','insertTable','|','imageUpload','undo','redo'];
+const basic_config = [
+  'heading','|','bold','italic','link','bulletedList','numberedList','|',
+  'blockQuote','insertTable','|','imageUpload','undo','redo', 'imageStyle:full',
+  'imageStyle:side',
+  '|',
+  'imageTextAlternative'];
 function CKEditor5({onlyComments, onChange, data}){
   
   const custom_config = {
@@ -101,7 +106,7 @@ class MyUploadAdapter {
           // If the upload is successful, resolve the upload promise with an object containing
           // at least the "default" URL, pointing to the image on the server.
           resolve({
-              default: response.s3Url
+              default: response.url
           });
       } );
 
