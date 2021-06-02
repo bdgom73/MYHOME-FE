@@ -173,6 +173,49 @@ pcon{
     font-size: 9px;
     margin: 0 2px;
 }
+.pre_images_list{
+    border-right: 1px solid #bbb;
+    border-left: 1px solid #bbb;
+    max-width: 1100px;
+    margin: 0px auto;
+    overflow-x: scroll;
+    white-space:nowrap;
+    padding: 5px 5px; 
+    // border-radius: 10px;
+    .pre_image{
+        display: inline-block;
+        width: 100px;
+        height: 100px;
+        border: 3px solid #9b9b9b;
+        margin: 2px;
+        position: relative;
+        img{
+            width: 100%;
+            height: 100%;
+        }
+        .close{
+            position: absolute;
+            top:2px;
+            right: 2px;
+            background-color: rgba($mushroom , 0);
+            border: 0;
+            border-radius: 50%;
+        }
+        .delete_image{
+            position: absolute;
+            top:0px;
+            left: 0px;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color : #222222;
+            font-weight: bold;
+            background-color: rgba(#cc0000,0.7);
+        }
+    }
+}
 .images_list{
     max-width: 1000px;
     margin: 5px auto;
@@ -180,9 +223,6 @@ pcon{
     white-space:nowrap;
     padding: 5px 5px 10px; 
     border-radius: 10px;
-    div{
-        display: contents;
-    }
     img{
         width: 100px;
         height: 100px;
@@ -190,6 +230,8 @@ pcon{
         margin: 2px;
         
     }
+    
+   
     &::-webkit-scrollbar {
         width: 8px;
         height: 8px;
@@ -206,6 +248,37 @@ pcon{
     background: #ffffff;
     }
 }
+.update_preview{   
+    .board_video{
+        position:relative;
+        padding-bottom:56.25%;
+        padding-top:30px;
+        height:0;
+        overflow:hidden;
+        iframe,.video-container object,.video-container embed{
+            position:absolute;
+            top:0px;
+            left:0px;
+            width:100%;
+            height:100%;
+        } 
+        video{
+            position: absolute;
+            top:0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }    
+        .iframeVideo{
+            position: absolute; 
+            top:0;
+            width: 100%;  
+            height: 100%;
+            z-index: 10;
+        }
+    } 
+    
+}
 
 ul.files{
     li{
@@ -216,6 +289,48 @@ ul.files{
             text-decoration: underline;
         }
     }
+}
+.update_info{
+    
+    .youtube{
+        width: 50px;
+        height: 50px;
+        color: #c4302b;
+    }
+    .twitch{
+        width: 50px;
+        height: 50px;
+        color : #6441a5;
+    }
+    svg, .afreecatv_logo{
+        width: 50px;
+        height: 50px;
+        padding: 2px;
+        margin: 0 3px;
+        cursor: pointer;
+    }
+    .update_info_child{
+        display: flex;
+        align-items: center;
+        t{
+            display: inline-block;
+            font-size: 13px;
+            font-weight: bold;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        c{
+            margin-left: 2px;
+            display: inline-block;
+            font-size: 12px;
+            font-weight: normal;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+   
 }
 @media screen and (max-width: 540px){
     .board_detail_wrap{

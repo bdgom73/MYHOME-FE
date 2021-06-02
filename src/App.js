@@ -23,6 +23,9 @@ import PhotoUpdate from "./component/route/board/update/PhotoUpdate";
 import CKEditor5 from "./component/part/write/CKEditor/CKEditor5";
 import FreeUpdate from "./component/route/board/update/FreeUpdate";
 import Notice from "./component/route/notice/Notice"
+import VideoUpdate from "./component/route/board/update/VideoUpdate";
+import Modal from "./component/modal/modal";
+import VideoUpload from "./component/route/board/update/VideoUpload";
 
 function App() {
 
@@ -60,7 +63,8 @@ function App() {
       {/* Video Board Service */}
       <Route exact path="/bbs/video"><Template><VideoBoard/></Template></Route>
       <Route exact path="/bbs/video/:id" render={(props)=>{ return <Template><VideoDetail {...props}/></Template>}} ></Route>
-
+      <Route exact path="/bbs/update/video/:id" render={(props)=>{ return <Template access="user"><VideoUpdate {...props}/></Template>}} ></Route>
+      
       {/* Photo Board Service */}
       <Route exact path="/bbs/photo" render={(props)=>{ return <Template><PhotoBoard {...props}/></Template>}} ></Route>
       <Route exact path="/bbs/photo/page=" render={(props)=>{ return <Template><PhotoBoard {...props}/></Template>}} ></Route>
@@ -74,7 +78,7 @@ function App() {
       <Route exact path="/bbs/write/photo"><Template access="user"><PhotoWrite/></Template></Route>
       
       {/* TEST */}
-      <Route exact path="/test"><Template><CKEditor5 onlyComments/></Template></Route>
+      <Route exact path="/test"><Modal><VideoUpload/></Modal></Route>
       {/* NOT FOUND SERVICE */}
       <Route path="/"><NotFound/></Route>
     </Switch> 

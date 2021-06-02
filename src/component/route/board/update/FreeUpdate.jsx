@@ -87,7 +87,7 @@ export default function FreeUpdate(props){
                     </tr>    
                     <tr>
                         <td colSpan='2' style={{padding : 5, margin:"0 auto"}}>
-                           <CKEditor5 onChange={(ed)=>{setDesc(ed); console.log(ed)}} data={desc} />
+                           <CKEditor5 onChange={(ed)=>{setDesc(ed);}} data={desc} />
                            <div className="btn_wrap">
                                 <input type="submit" className="btn" value="수정"/>
                                 <button className="btn">목록</button>

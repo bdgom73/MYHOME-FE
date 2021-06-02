@@ -191,7 +191,7 @@ export default function PhotoDetail(props){
             {
             (member.data.id === data.writer_id && data.writer_id && member.data.id) || member.data.rank === "ADMIN"? 
             <controller>
-                <button type="button" className="btn">수정</button>
+                <button type="button" className="btn" onClick={()=>{history.push(`/bbs/update/photo/${board_id}`)}}>수정</button>
                 <button type="button" className="btn delete" onClick={onClickDeleteHandler}>삭제</button>
             </controller>   : <></>
             }
@@ -219,10 +219,7 @@ export default function PhotoDetail(props){
                     member.logined ? (
                     <comment-write>
                         <writer><strong>작성자</strong> : {member.data.name}</writer>
-                        {/* <WriteEditor isComment 
-                        editorState={editorState}
-                        onEditorStateChange={onEditorStateChange}
-                        /> */}
+                      
                         <CKEditor5 
                             onlyComments 
                             onChange={(value)=>{setEditorContent(value)}}

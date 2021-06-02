@@ -65,9 +65,7 @@ export default function VideoWrite(props){
                     previewVideo.removeChild(div);  
                     setFile({});  
                     setVideoName("");
-                    input.value = "";  
-                    console.log(file);  
-                    
+                    input.value = "";               
                 }
                 div.appendChild(inline);
                 div.appendChild(video);

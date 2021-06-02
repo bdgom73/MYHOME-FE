@@ -27,8 +27,7 @@ export default function PhotoWrite(props){
         for(let i = 0 ; i < files.length ; i++){
             size += files[i].size;
         }
-        setFilesize(size);
-       
+        setFilesize(size);    
     },[clickEvent,filesize,files])
 
     function onModalHandler(){

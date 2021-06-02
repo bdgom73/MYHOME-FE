@@ -26,6 +26,16 @@ export default function PhotoUpdate(props){
     const [title,setTitle] = useState("");
     const [writer,setWriter] = useState("");
     const [board_id, setBoardId] = useState();
+    const [deleteImages, setDeleteImages]= useState([]);
+
+    useEffect(()=>{    
+        if(data.writer_id && member.data.id){
+            if(data.writer_id !== member.data.id){
+                history.push("/bbs/photo/"+board_id)
+            }
+        }  
+        
+    },[data])
     useEffect(()=>{    
         setBoardId(params.id);
         axios.get("/bbs/view/"+params.id+"/photo")
@@ -60,7 +70,7 @@ export default function PhotoUpdate(props){
         }
     }
     function onChangeFileHandler(e){     
-        if(files.length + e.target.files.length <= 10){
+        if(files.length + e.target.files.length + image.length - deleteImages.length <= 10){
             let size = filesize;
             for(let i = 0 ; i < e.target.files.length ; i++){
                 files.push(e.target.files[i]);
@@ -71,6 +81,7 @@ export default function PhotoUpdate(props){
             if(files.length >= 10) setChange(false);  
             else setChange(true);
         }else{
+             setChange(false);
             alert("이미지 10개이상 업로드는 불가능합니다.");    
         }   
     }
@@ -118,6 +129,11 @@ export default function PhotoUpdate(props){
         const fd = new FormData();     
         fd.append("title",e.target[0].value);
         fd.append("description",desc);
+        const preImage = new Array(deleteImages);
+        fd.append("pre_image",preImage);
+      
+        fd.append("category","photo");
+        fd.append("id", params.id);
         let list = new DataTransfer();  
         for(let i = 0; i < files.length; i++) {
             list.items.add(files[i]);
@@ -126,9 +142,9 @@ export default function PhotoUpdate(props){
             fd.append("images[]", list.files[i])
         }
       
-        axios.post("/bbs/write?category=photo",fd,{headers:{'Content-Type': 'multipart/form-data',"Authorization" : member.SESSION_UID}})
+        axios.put("/bbs/update",fd,{headers:{'Content-Type': 'multipart/form-data',"Authorization" : member.SESSION_UID}})
             .then(res=>{
-                if(res.status === 200) history.push(`/bbs/photo/${res.data}`)
+                if(res.status === 200) history.push(`/bbs/photo/${board_id}`)
             }).catch(e=>console.log(e.response))
     }
     return(
@@ -140,24 +156,44 @@ export default function PhotoUpdate(props){
                     <tbody>
                         <tr>
                             <td colSpan='2'>
-                                <input type="text" className="w_title" placeholder="제목을 입력해주세요" />
+                                <input type="text" className="w_title" placeholder="제목을 입력해주세요" defaultValue={title ? title : ""} />
                             </td>
                         </tr>
                         <tr>
                             <td colSpan='2'>
-                                <input type="text" className="writer" readOnly defaultValue={member.data.name}/>
+                                <input type="text" className="writer" readOnly defaultValue={writer? writer : ""}/>
                             </td>
                         </tr>
                     </tbody>
                 </table>
-                <div className="images_list">
+                <div className="pre_images_list">
                 <span className="title"><font color="#bbb">이전이미지</font></span>
                 {
                     image[0] ?
                     image.map(m=>{
                         return (
-                            <>                                        
-                            <img src={m.image_url} alt={m.filename}  key={m.filename+m.image_url}/>              
+                            <>   
+                            <div className="pre_image" key={m.filename+m.image_url}> 
+                                <button className="close" type="button" onClick={(e)=>{
+                                    setDeleteImages([...deleteImages, m.id]);
+                                  
+                                }}>x</button>                                    
+                                <img src={m.image_url} alt={m.filename}  />
+                                {
+                                    deleteImages.map((d,i)=>{
+                                        if(d === m.id){
+                                            return (
+                                                <div className="delete_image" key={m.id+i+d+"delete"} onClick={()=>{
+                                                    if(window.confirm("삭제를 취소하시겠습니까?")){
+                                                        const de = deleteImages.filter(d => d !== m.id);
+                                                        setDeleteImages([...de]);
+                                                    }      
+                                                }}>DELETE</div>
+                                            )
+                                        }     
+                                    })
+                                }
+                            </div>                 
                             </>
                         )
                     }) : <></>         
@@ -178,8 +214,7 @@ export default function PhotoUpdate(props){
                         </tr>
                         <tr>
                             <td colSpan='2' style={{padding : 5, margin:"0 auto"}}>
-                            {/* <WriteEditor onChange={(ed)=>{setDesc(ed)}}  /> */}
-                            <CKEditor5 onChange={(ed)=>{setDesc(ed)}}/>
+                            <CKEditor5 onChange={(ed)=>{setDesc(ed)}} data={desc} />
                                 <div className="btn_wrap">
                                     <input type="submit" className="btn" value="글쓰기"/>
                                     <button className="btn">목록</button>
