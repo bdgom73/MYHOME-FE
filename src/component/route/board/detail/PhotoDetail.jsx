@@ -26,8 +26,7 @@ export default function PhotoDetail(props){
     const [data,setData] = useState({});
     const [content,setContent] = useState();
     const [comment,setComment] = useState([]);
-    const [editorState, setEditorState] = useState(EditorState.createEmpty());
-    const [context, setContext] = useState();
+
     const [recommendState,setRecommendState] = useState(false);
     const [recommend, setRecommend] = useState(0);
     const [imageList,setImageList] = useState([]);
@@ -65,7 +64,7 @@ export default function PhotoDetail(props){
             setContent(res.data.description);
             setComment(res.data.commentDTOList || []);
             setRecommend(res.data.recommend);
-            console.log(res)
+         
             refTitle.innerHTML = `MYDOMUS | ${res.data.title ? res.data.title : "PHOTO"}`
         })
         .catch(e=>{
@@ -90,15 +89,8 @@ export default function PhotoDetail(props){
         })
     },[])
   
-    useEffect(()=>{
-        const editorToHtml = draftToHtml(convertToRaw(editorState.getCurrentContent()));
-        setContext(editorToHtml);
-    },[editorState])
 
-    const onEditorStateChange = (es)=>{ 
-        setEditorState(es);  
-    }
-
+  
     const Recommend = ()=>{
         axios.get(`/bbs/${params.id}/recommend`,{
             headers : {
@@ -182,10 +174,9 @@ export default function PhotoDetail(props){
                 <div id="content_field" dangerouslySetInnerHTML={{ __html : content}}/>
             </div>
             <userController>
-                <button type="button" className="btn" disabled={recommendState} onClick={Recommend}>
+                <button type="button" className="btn" disabled={member.data.id === data.writer_id ? true : recommendState} onClick={Recommend}>
                     <AiTwotoneLike color="#fff"/>추천
-                </button>
-                
+                </button>      
             </userController>
             <div className="btn_wrap">
             {

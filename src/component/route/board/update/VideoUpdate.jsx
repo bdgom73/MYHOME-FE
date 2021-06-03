@@ -24,24 +24,19 @@ export default function VideoUpdate(props){
     const {refTitle} = useTitle();
     const modal = useModal();
     const member = useMember();
-    const [file,setFile] = useState({});
-   
     const [desc,setDesc] = useState("");
-    const [url,setUrl] = useState("");
-    
-    const [platform,setPlatform] = useState("youtube");
-    const [etcUrl , setETCUrl] = useState("");
-    const [uploadLoading, setUploadLoading] = useState(false);
+    const [url,setUrl] = useState(""); 
     const [data, setData] = useState({});  
     const [title,setTitle] = useState("");
     const [writer,setWriter] = useState("");
     const [board_id, setBoardId] = useState();
+    
+    const [rendering,setRendering] = useState(0);
 
     useEffect(()=>{    
         setBoardId(params.id);
         axios.get("/bbs/view/"+params.id+"/video")
          .then(res=>{ 
-            console.log(res.data)
             setData(res.data); 
             setTitle(res.data.title);
             setWriter(res.data.nickname);
@@ -67,65 +62,41 @@ export default function VideoUpdate(props){
             refTitle.innerHTML = `MYDOMUS | ${res.data.title ? res.data.title : "Update"}` 
          })
          .catch(e=>{
-            console.log(e.response);
             history.push("/bbs/video/");
          });
  
-     },[board_id])
+     },[board_id,rendering])
 
     function onModalHandler(){
         if(modal.modal === 1){
             return <Modal close={modal.close}>잘못된 URL입니다.</Modal>
         }else if(modal.modal === 2){
-            return <Modal close={modal.close}><VideoUpload/></Modal>
+            return <Modal close={modal.close}><VideoUpload 
+            uuid={member.SESSION_UID} 
+            onUploadend={()=>{
+                modal.close();
+                setRendering(rendering+1);
+            }}
+            board_id={board_id} 
+            /></Modal>
         }
     }
+   
    
 
     const onSubmitHandler = (e)=>{
         e.preventDefault();    
-
-        setUploadLoading(true); 
         const fd = new FormData();
-        if(e.target[2].checked){
-            fd.append("video",file);
-        }else{
-            const url = e.target[3].value;
-            if(platform === "youtube"){
-                if(url.indexOf("https://youtu.be/") !== -1){
-                    const unique = url.split("https://youtu.be/")[1];
-                    if(!unique){
-                        modal.setModal(1)
-                    }
-                    fd.append("video_url",e.target[3].value);
-                    fd.append("category_type","YOUTUBE");
-                }
-            }else if(platform === "twitch"){
-                fd.append("video_url",e.target[3].value);
-                fd.append("category_type","TWITCH");
-            }else if(platform === "afreeca"){
-                if(etcUrl.indexOf("https://vod.afreecatv.com/ST/") !== -1){
-                    const unique = etcUrl.split("https://vod.afreecatv.com/ST/")[1];
-                    if(!unique){
-                        modal.setModal(1)
-                    }
-                    fd.append("video_url",e.target[3].value);
-                    fd.append("category_type","AFREECA");
-                }
-            }
-        }
-       
         fd.append("title",e.target[0].value);
         fd.append("description",desc);
-        
-        
-        axios.post("/bbs/update",fd,
+        fd.append("category","video");
+        fd.append("id",board_id);
+        axios.put("/bbs/update",fd,
         {headers:{'Content-Type': 'multipart/form-data',"Authorization" : member.SESSION_UID}})
             .then(res=>{
                 e.preventDefault();
                 if(res.status === 200) {
-                    setUploadLoading(false)
-                    history.push(`/bbs/video/${res.data}`)
+                    history.push(`/bbs/video/${board_id}`)
                 }            
             }).catch(e=>console.log(e.response))
 
@@ -135,7 +106,6 @@ export default function VideoUpdate(props){
     return(
         <>
         {onModalHandler()}
-        {uploadLoading ? <Loading/> : <></>}
         <div className="v_write_wrap">
             <form onSubmit={onSubmitHandler}>
                 <table>
@@ -168,7 +138,7 @@ export default function VideoUpdate(props){
                                     <c> {data.video_url}</c>
                                 </div>
                                 <div className="btn_wrap" style={{position:"relative"}}>
-                                    <button type='button' className="btn" >
+                                    <button type='button' className="btn" onClick={()=>{modal.setModal(2)}}>
                                         비디오 수정
                                     </button>
                                 </div>
@@ -194,7 +164,7 @@ export default function VideoUpdate(props){
                                
                                 ) : data.videoType === "AFREECA"  ? (
                                 <iframe title="afreeca"
-                                    style={etcUrl !== "" ? {display : "block" , margin : "0 auto", width:"100%", height:"300px"} : {display : "none"}}
+                                    style={url !== "" ? {display : "block" , margin : "0 auto", width:"100%", height:"300px"} : {display : "none"}}
                                     id="afreecatv_player_video"  
                                     src= {`//vod.afreecatv.com/embed.php?type=station&isAfreeca=false&autoPlay=false&showChat=true&mutePlay=false&szBjId=wnd2qud&nStationNo=18382776&nBbsNo=69072228&nTitleNo=${url}&szCategory=00010000&szVodCategory=00040066&szPart=CLIP&szVodType=STATION&nPlaylistIdx=0&isEmbedautoPlay=false&szSysType=html5`}
                                     frameborder="0" allowfullscreen="true"/>
@@ -212,7 +182,7 @@ export default function VideoUpdate(props){
                         <td colSpan='2' style={{padding : 5, margin:"0 auto"}}>
                            <CKEditor5 onChange={(ed)=>{setDesc(ed)}} data={desc}/>
                             <div className="btn_wrap">
-                                <input type="submit" className="btn" value="글쓰기"/>
+                                <input type="submit" className="btn" value="수정"/>
                                 <button className="btn">목록</button>
                             </div> 
                         </td>

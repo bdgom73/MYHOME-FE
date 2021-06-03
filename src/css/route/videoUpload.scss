@@ -18,7 +18,14 @@ uploads{
                     display: inline;
                     font-size: 12px;
                     padding: 3px;
-                    border-bottom: 1px solid #bbb;
+                    input[type="text"]{ 
+                        cursor: auto;
+                        border: 0;
+                        border-bottom: 1px solid #bbbbbb;
+                        &:focus{
+                            outline: none;
+                        }
+                    }
                }
             }
         }
@@ -60,12 +67,56 @@ uploads{
         }
     }
 }
+navigator{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: flex-start;
+    border-bottom: 1px solid #bbbbbb;
+    navchild{
+        background-color: #bbbbbb;
+        display: block;
+        border: 1px solid #bbbbbb;
+        border-bottom: 1px solid #bbbbbb;
+        padding: 5px 5px ;      
+        n{
+            font-size: 13px;
+            font-weight: bold;
+        }
+        &:not(:nth-child(1)){
+            border-left: 0;
+        }
+        
+    }
+    .selected{
+        position: relative;
+        background-color: #fff;
+        &::after{
+            content: "";
+            display: block;
+            position: absolute;
+            bottom: -2px;
+            left: 0px;
+            width: 100%;
+            border-bottom: 2px solid rgb(255, 255, 255);
+        }
+    }
+}
 @media screen and (max-width: 600px){
     uploads{
         div{
             display: flex;
             flex-direction: column;   
-           
+            videoupload{
+                videouploadcontent{
+                    vc{
+                        .select_video-type{
+                            display: block;
+                        }
+                    }
+                }
+            }    
         }
     }
+    
 }

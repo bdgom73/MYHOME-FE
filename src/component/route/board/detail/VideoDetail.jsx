@@ -6,11 +6,10 @@ import { AiTwotoneLike } from 'react-icons/ai';
 import { GrFormView } from 'react-icons/gr';
 import useMember from "../../../../customState/useMember";
 import Comment from "../Comment";
-import { EditorState,convertToRaw } from "draft-js";
-import draftToHtml from 'draftjs-to-html';
+
 import moment from "moment";
 import useTitle from "../../../../customState/useTitle";
-import WriteEditor from "../../../part/write/WriteEditor";
+
 import CKEditor5 from "../../../part/write/CKEditor/CKEditor5";
 
 export default function VideoDetail(props){
@@ -26,12 +25,11 @@ export default function VideoDetail(props){
     const [content,setContent] = useState();
     const [videoUrl,setVideoUrl] = useState("")
     const [comment,setComment] = useState([]);
-    const [editorState, setEditorState] = useState(EditorState.createEmpty());
-    const [context, setContext] = useState();
     const [videoError,setVideoError] = useState(false);
     const [recommendState,setRecommendState] = useState(false);
     const [recommend, setRecommend] = useState(0);
     const [editorContent, setEditorContent] = useState("");
+
     useEffect(()=>{    
        setBoardId(params.id);
        axios.get("/bbs/view/"+params.id+"/video")
@@ -43,7 +41,7 @@ export default function VideoDetail(props){
             setVideoUrl(unique); 
             setContent(res.data.description);
             setComment(res.data.commentDTOList || []);
-            setRecommend(res.data.recommend);
+            setRecommend(res.data.recommend);     
             refTitle.innerHTML = `MYDOMUS | ${res.data.title ? res.data.title : "VIDEO"}`
         })
         .catch(e=>{
@@ -59,8 +57,8 @@ export default function VideoDetail(props){
             headers : {
                 "Authorization" : member.SESSION_UID
             }
-        }).then(res=> {     
-           setRecommendState(!res.data);
+        }).then(res=> {    
+            setRecommendState(!res.data);
         })
         .catch(e=>{
             console.log(e.response);
@@ -68,14 +66,6 @@ export default function VideoDetail(props){
         })
     },[])
   
-    useEffect(()=>{
-        const editorToHtml = draftToHtml(convertToRaw(editorState.getCurrentContent()));
-        setContext(editorToHtml);
-    },[editorState])
-
-    const onEditorStateChange = (es)=>{ 
-        setEditorState(es);  
-    }
 
     const Recommend = ()=>{
         axios.get(`/bbs/${params.id}/recommend`,{
@@ -83,12 +73,12 @@ export default function VideoDetail(props){
                 "Authorization" : member.SESSION_UID
             }
         })
-        .then(res=>{
-            alert("현재글을 추천 했습니다")
-            setRecommendState(true)
+        .then(res=>{     
+            alert("현재글을 추천 했습니다");
+            setRecommendState(true);
             setRecommend(recommend+1)
         }).catch(e=>{
-
+            setRecommendState(false);
             console.log(e.response)
         })
     }
@@ -166,12 +156,12 @@ export default function VideoDetail(props){
                         </>)
                      : videoType === "TWITCH" ? (
                         <>
-                        {/* <iframe 
+                        <iframe 
                             title="Twitch clips"
                             // src={"https://clips.twitch.tv/AstuteVibrantMilkEleGiggle-eJ3UKsq_0_hIqsPY"}
                             // src="https://clips.twitch.tv/embed?clip=AstuteVibrantMilkEleGiggle-eJ3UKsq_0_hIqsPY&parent=www.example.com"
                             frameborder="0" allowfullscreen="true" scrolling="no" width="100%" />
-                        </> */}
+                       
                         </>
                         ) : videoType === "AFREECA" ? (
                             <>
@@ -189,16 +179,15 @@ export default function VideoDetail(props){
                 <div id="content_field" dangerouslySetInnerHTML={{ __html : content}}/>
             </div>
             <userController>
-                <button type="button" className="btn" disabled={recommendState} onClick={Recommend}>
+                <button type="button" className="btn" disabled={member.data.id === data.writer_id ? true : recommendState} onClick={Recommend}>
                     <AiTwotoneLike color="#fff"/>추천
-                </button>
-                
+                </button>      
             </userController>
             <div className="btn_wrap">
             {
             (member.data.id === data.writer_id && data.writer_id && member.data.id) || member.data.rank === "ADMIN"? 
             <controller>
-                <button type="button" className="btn">수정</button>
+                <button type="button" className="btn" onClick={()=>history.push("/bbs/update/video/"+board_id)}>수정</button>
                 <button type="button" className="btn delete" onClick={onClickDeleteHandler}>삭제</button>
             </controller>   : <></>
             }
@@ -208,10 +197,7 @@ export default function VideoDetail(props){
                     member.logined ? (
                     <comment-write>
                         <writer><strong>작성자</strong> : {member.data.name}</writer>
-                        {/* <WriteEditor isComment 
-                        editorState={editorState}
-                        onEditorStateChange={onEditorStateChange}
-                        /> */}
+                     
                         <CKEditor5 
                             onlyComments 
                             onChange={(value)=>{setEditorContent(value)}}

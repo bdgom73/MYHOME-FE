@@ -55,11 +55,12 @@ export default function GoogleMap(props){
     const [cityname,setCityname] = useState();
     // ajax 현재 도시의 아이디값으로 날씨데이터 가져오기.
     function getWeatherBbox(bound,cb){
-        bound = bound ? bound : bounds;
+        bound = bound ? bound : bounds;       
         axios({
             method:"get",
             url : `http://api.openweathermap.org/data/2.5/box/city?bbox=${bound.La.g},${bound.Ua.g},${bound.La.i},${bounds.Ua.i},${zoom}&appid=${W_API_KEY}`
         }).then((res)=>{
+            console.log(res)
             if(cb) cb(res);
         }).catch((e)=>{  
             alert(e.response.data.message)
@@ -73,10 +74,17 @@ export default function GoogleMap(props){
             setMap(map);
             setGooglempas(maps);
             setSearchBox(new maps.places.SearchBox(searchRef.current));  
-            getWeatherBbox(map.getBounds(),(res)=>{  
-                setT(res.data.list || []);     
-            })
-            
+            const bounds = map.getBounds();
+            let gbounds = {
+                La : {
+                    g : bounds.Eb.g,
+                    i : bounds.Eb.i
+                },
+                Ua : {
+                    g : bounds.oc.g,
+                    i : bounds.oc.i
+                }
+            }     
         }
     }
 
@@ -111,7 +119,6 @@ export default function GoogleMap(props){
     },[searchBox])
 
     useEffect(()=>{
-        console.log(zoom)
         if(bounds.La && bounds.Ua){
             getWeatherBbox("",(res)=>{  
                 setT(res.data.list || []);        
@@ -176,28 +183,15 @@ export default function GoogleMap(props){
                             
                         }
                         setZoom(e.zoom);
-                        setBounds(bounds1);
-                      
+                        setBounds(bounds1);        
                     }}
-                    >
-                      
+                    >      
                     <Marker
                         lat={current.lat}
                         lng={current.lng}
                     >
                         <FiMapPin size="40" fill="#9f02ff" stroke="#eee"/>    
-                    </Marker>
-                    {/* {
-                        cityJson.map((c,i)=>{
-                            return(
-                                <Marker key={c.coord.lat+c.coord.lon+i}
-                                    lat={c.coord.lat} lng ={c.coord.lon}
-                                >
-                                    <FiMapPin size="30" fill="#9f02ff" stroke="#eee"/>             
-                                </Marker>
-                            );
-                        })
-                    } */}
+                    </Marker>    
                      {
                         
                         Array.isArray(t) ?
@@ -215,7 +209,8 @@ export default function GoogleMap(props){
                                    }}/>                                     
                                 </Marker>
                             );
-                        }) : <></>
+                        }) 
+                        : <></>
                         
                     }
                     </GoogleMapReact>
