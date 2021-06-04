@@ -42,7 +42,7 @@ export default function PhotoBoard(props){
         .then(res=>{
             setData(res.data);   
             setLoading(false);        
-        }).catch(e=> {console.log(e.response)})
+        }).catch(e=> {console.log(e.response); setLoading(false);})
     }
     return (
         <>   

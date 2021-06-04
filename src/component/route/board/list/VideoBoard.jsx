@@ -7,6 +7,9 @@ import "../../../../css/pagination.scss";
 import SubLoading from "../../../sub_loading";
 import useTitle from "../../../../customState/useTitle";
 import { useHistory } from "react-router";
+import { FcDeleteDatabase } from 'react-icons/fc';
+import { AiOutlineReload } from 'react-icons/ai';
+
 export default function VideoBoard(){
 
     useTitle(`MYDOMUS | VIDEO`);
@@ -87,7 +90,8 @@ export default function VideoBoard(){
         <div className="card_board_wrap">
         {
             data.map((m,i)=>{
-                const unique = m.video_url ? m["video_url"].split("https://youtu.be/")[1]: "";
+                const unique = m.video_url ? m["video_url"].split("https://youtu.be/")[1]: ""; 
+                    
                 return <BoardCard 
                     id={m.id}
                     title={m.title}
@@ -99,11 +103,21 @@ export default function VideoBoard(){
                     rank = {m.rank}
                     created = {m.created}
                     updated = {m.updated}
-                    />
+                    />   
             })
         }
         </div>
-        {loading ? <SubLoading/> : <></> }
+        {loading ? <SubLoading/> : data.length <= 0 ? 
+            <div className="no-data">
+                <div className="no-data-context">
+                    <FcDeleteDatabase size="28"/> 
+                    데이터없음
+                </div>
+                <button type="button" className="get-reload" onClick={_getUrl} >
+                    <AiOutlineReload size="20"/>
+                </button>        
+            </div> : <></> 
+        }
         </Board>
     )
 }

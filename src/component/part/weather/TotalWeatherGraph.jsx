@@ -1,5 +1,4 @@
 import { ResponsiveLine } from "@nivo/line";
-import { useEffect, useRef, useState } from "react";
 import { getWeatherIconUrl } from "../../../js/weather_conversion";
 
 export default function TotalWeatherGraph(props){
@@ -16,7 +15,7 @@ export default function TotalWeatherGraph(props){
                     yScale={{ type: 'linear', min: 'auto', max: 'auto', stacked: true, reverse: false }}
                     yFormat=" >-.0f"    
                     axisTop={null}
-                    width = {width ? width : (600)}
+                    width = {width ? width : (600)}            
                     axisRight={null}
                     enableGridX={false}
                     enableGridY={false}

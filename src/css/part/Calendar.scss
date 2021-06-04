@@ -1,17 +1,22 @@
 @import "../color.scss";
+.calendar_main_wrap{
+    background-color: $mushroom;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
 .calendar_wrap{
+    border-radius: 5px;
     width: 100%;
     max-width: 1100px;
-    margin: 10px auto;
-     padding: 10px;
-    border-radius: 10px;
+    padding: 10px;
+    margin-top: 10px;
     -ms-user-select: none; 
     -moz-user-select: -moz-none;
     -khtml-user-select: none;
     -webkit-user-select: none;
     user-select: none;
-    background: rgb(255,255,255);
-    background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(109,1,110,1) 100%);
+    background-color: #fff;
     .calendar_top{      
         display: flex;
         align-items: center;
@@ -29,7 +34,7 @@
             }
         }
         .current_date{
-            color: #ffffff;
+            color: #000000;
             font-size: 18px;
             font-weight: bold;
             display: flex;

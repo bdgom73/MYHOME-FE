@@ -35,7 +35,7 @@ function App() {
       
       {/* MEMBERSHIP SERVICE */}
       <Route exact path="/weather" ><Template access="user"><TotalWeather/></Template></Route>
-      <Route exact path="/schedule" ><Template access="user"><Calendar view/></Template></Route>
+      <Route exact path="/schedule" ><Template access="user"><div className="calendar_main_wrap"><Calendar view/></div></Template></Route>
       <Route exact path="/map" ><Template access="user"><GoogleMap/></Template></Route>  
 
       {/* JOIN SERVICE */}
@@ -79,6 +79,7 @@ function App() {
       
       {/* TEST */}
       <Route exact path="/test"><Modal><VideoUpload/></Modal></Route>
+
       {/* NOT FOUND SERVICE */}
       <Route path="/"><NotFound/></Route>
     </Switch> 
