@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import "../../../../css/route/videoDetail.scss";
+
 import axios from "axios";
 import { useHistory } from "react-router";
 import { AiTwotoneLike } from 'react-icons/ai';

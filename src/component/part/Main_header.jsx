@@ -1,7 +1,7 @@
 import { useState,useEffect, useRef } from 'react';
 import { BsList,BsFillBellFill } from 'react-icons/bs';
 import { useHistory } from 'react-router';
-import "../../css/part/Main_header.scss";
+
 import useMember from '../../customState/useMember';
 import { Link } from 'react-router-dom';
 

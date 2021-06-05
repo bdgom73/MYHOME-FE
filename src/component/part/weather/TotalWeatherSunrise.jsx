@@ -4,7 +4,7 @@ import { WiSunrise } from 'react-icons/wi';
 import { WiSunset } from 'react-icons/wi';
 import { BsMoon } from 'react-icons/bs';
 import { RiMoonFoggyFill } from 'react-icons/ri';
-import "../../../css/part/weather/TotalWeatherSunsize.scss";
+
 export default function TotalWeatherSunrise(props){
 
     const { data } = props;

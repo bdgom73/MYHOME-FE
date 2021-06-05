@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useState } from 'react';
 import DaumPostcode from 'react-daum-postcode';
 import { useHistory } from 'react-router';
+import { toast } from 'react-toastify';
 import useTitle from '../../customState/useTitle';
 import Modal from '../modal/modal';
 export default function Register(){
@@ -59,10 +60,10 @@ export default function Register(){
 
         axios.post("/member/register",fd)
             .then(res=>{
+                toast.success("회원가입 완료")
                 history.push("/login");
             }).catch(e=>{
-                console.log(e.response)
-                alert(e.response.data.message ? e.response.data.message : "알수 없는 오류로 인해 로그인에 실패했습니다.");
+                toast.error(e.response.data.message ? e.response.data.message : "알수 없는 오류로 인해 로그인에 실패했습니다.");
             })
     }
 

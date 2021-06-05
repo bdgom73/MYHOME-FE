@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import "../../../css/modal/form/calendar_memo.scss";
 import { MdTitle } from 'react-icons/md';
 import { ImFileText2 } from 'react-icons/im';
 import { FcCalendar } from 'react-icons/fc';

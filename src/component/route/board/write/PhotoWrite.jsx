@@ -1,13 +1,13 @@
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import useMember from "../../../../customState/useMember";
 import useModal from "../../../../customState/useModal";
 import useTitle from "../../../../customState/useTitle";
 import Modal from "../../../modal/modal";
-import "../../../../css/route/VideoWrite.scss";
 import { byte } from "../../../../js/common";
 import CKEditor5 from "../../../part/write/CKEditor/CKEditor5";
+import { toast } from "react-toastify";
 
 export default function PhotoWrite(props){
 
@@ -47,7 +47,7 @@ export default function PhotoWrite(props){
             if(files.length >= 10) setChange(false);  
             else setChange(true);
         }else{
-            alert("이미지 10개이상 업로드는 불가능합니다.");    
+            toast.error("이미지 10개이상 업로드는 불가능합니다.");    
         }   
     }
 
@@ -107,7 +107,9 @@ export default function PhotoWrite(props){
         axios.post("/bbs/write?category=photo",fd,{headers:{'Content-Type': 'multipart/form-data',"Authorization" : member.SESSION_UID}})
             .then(res=>{
                 if(res.status === 200) history.push(`/bbs/photo/${res.data}`)
-            }).catch(e=>console.log(e.response))
+            }).catch(e=>{
+                toast.error(e.response.data.message ? e.response.data.message : "게시판 등록에 실패했습니다.")
+            })
     }
     return(
         <>

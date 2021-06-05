@@ -1,11 +1,11 @@
 import axios from 'axios';
-import { useState } from 'react';
+
 import { useCookies } from 'react-cookie';
-import DaumPostcode from 'react-daum-postcode';
+
 import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
 import useTitle from '../../customState/useTitle';
-import Modal from '../modal/modal';
+import { toast } from 'react-toastify';
 export default function Login(){
 
     useTitle(`MYDOMUS | LOGIN`);
@@ -22,9 +22,10 @@ export default function Login(){
         axios.post("/member/login",fd)
             .then(res=>{
                 setCookies("SESSION_UID",res.data,{path : "/"});
+                toast.success("로그인 했습니다.")
                 history.push("/");
             }).catch(e=>{
-                alert(e.response.message ? e.response.message : "알수 없는 오류로 인해 로그인에 실패했습니다.");
+                toast.error(e.response.data.message ? e.response.data.message : "로그인에 실패했습니다.")
             })
     }
     return(

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import "../../css/part/Loading.scss";
+
 export default function Loading(props){
 
     useEffect(()=>{

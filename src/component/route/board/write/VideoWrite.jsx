@@ -5,7 +5,7 @@ import useMember from "../../../../customState/useMember";
 import useModal from "../../../../customState/useModal";
 import useTitle from "../../../../customState/useTitle";
 import Modal from "../../../modal/modal";
-import "../../../../css/route/VideoWrite.scss";
+
 import { RiPhoneFindLine } from 'react-icons/ri';
 import { byte } from "../../../../js/common";
 import moment from "moment";

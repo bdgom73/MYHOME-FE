@@ -1,7 +1,7 @@
 import moment from "moment";
 import { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
-import "../../../css/write/comment.scss";
+
 import 'moment/locale/ko'
 import useMember from "../../../customState/useMember";
 import { FiMoreVertical } from 'react-icons/fi';

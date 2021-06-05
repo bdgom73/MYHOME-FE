@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import moment, { weekdaysMin } from 'moment';
 import { AiOutlineArrowLeft,AiOutlineArrowRight } from 'react-icons/ai';
 import { MdDateRange } from 'react-icons/md';
-import "../../css/part/Calendar.scss";
+
 import CalendarMemo from "../modal/form/calendar_memo";
 import Modal from "../modal/modal";
 import CalendarView from "../modal/form/calendar_view";

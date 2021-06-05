@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import "../../../../css/CKEditor.scss"
+
 const comments_config = ['bold','italic','link','undo','redo'];
 const basic_config = [
   'heading','|','bold','italic','link','bulletedList','numberedList','|',

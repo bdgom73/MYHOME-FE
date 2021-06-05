@@ -1,5 +1,4 @@
 
-import "../../css/route/home.scss";
 import useTitle from "../../customState/useTitle";
 import Calendar from "../part/Calendar";
 

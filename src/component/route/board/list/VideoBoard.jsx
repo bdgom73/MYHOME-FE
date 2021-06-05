@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import Board from "../../../part/write/Board";
-import "../../../../css/write/board.scss";
+
 import BoardCard from "../../../part/write/BoardCard";
 import axios from "axios";
-import "../../../../css/pagination.scss";
+
 import SubLoading from "../../../sub_loading";
 import useTitle from "../../../../customState/useTitle";
 import { useHistory } from "react-router";

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { AiFillCloseCircle } from 'react-icons/ai';
-import "../../css/modal/modal.scss";
+
 export default function Modal({children,title,width,style,close}) {
     
     useEffect(()=>{

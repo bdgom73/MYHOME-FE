@@ -1,0 +1,41 @@
+
+// basic
+@import "./basic/CKEditor.scss";
+@import "./basic/color.scss";
+@import "./basic/form.scss";
+@import "./basic/pagination.scss";
+@import "./basic/progressBar.scss";
+
+// board
+@import "./board/board.scss";
+@import "./board/boardTable.scss";
+@import "./board/comment.scss";
+@import "./board/Detail.scss";
+@import "./board/home.scss";
+@import "./board/videoUpload.scss";
+@import "./board/Write.scss";
+
+// modal
+@import "./modal/modal.scss";
+@import "./modal/message.scss";
+@import "./modal/form/calendar_memo.scss";
+ 
+// part.1
+@import "./part/googleMap.scss";
+@import "./part/Loading.scss";
+
+// part . calendar
+@import "./part/calendar/Calendar.scss";
+
+// part .template
+@import "./part/template/Main_footer.scss";
+@import "./part/template/Main_header.scss";
+@import "./part/template/Main_side.scss";
+@import "./part/template/Main_template.scss";
+
+// part .weather
+@import "./part/weather/TotalWeather.scss";
+@import "./part/weather/TotalWeatherSunsize.scss";
+@import "./part/weather/weather.scss";
+@import "./part/weather/weather_onecall.scss";
+

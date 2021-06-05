@@ -1,11 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-import "./css/form.scss";
+import "./css/init.scss";
+import "./App.css";
 import reportWebVitals from './reportWebVitals';
 import dotenv from "dotenv";
 import { BrowserRouter } from 'react-router-dom';
 import {CookiesProvider} from "react-cookie";
+import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
+
+toast.configure();
 dotenv.config();
 
 ReactDOM.render(

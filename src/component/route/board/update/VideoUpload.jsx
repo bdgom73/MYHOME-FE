@@ -2,7 +2,7 @@ import moment from "moment";
 import { useState } from "react";
 import { byte } from "../../../../js/common";
 import ProgressBar from "../../../progressBar";
-import "../../../../css/route/videoUpload.scss";
+
 import { FcVideoFile,FcClapperboard } from 'react-icons/fc';
 import { afreecatv } from "../../../../afreecatv";
 import { AiFillYoutube } from "react-icons/ai";

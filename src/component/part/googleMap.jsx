@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { FiMapPin } from 'react-icons/fi';
 import { GrMap } from 'react-icons/gr';
 import cityJson from "../../json/city.json";
-import "../../css/part/googleMap.scss";
+
 import axios from 'axios';
 import { getWeatherIconUrl } from '../../js/weather_conversion';
 import WeatherInfo from "./weather/WeatherInfo";

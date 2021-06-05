@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import "../../css/part/weather.scss";
+
 import cityJson from "../../json/city_use.json";
 import cityList from "../../storage/cityList";
 import { getWeatherIconUrl, KtoC, timestampToDate } from "../../js/weather_conversion";

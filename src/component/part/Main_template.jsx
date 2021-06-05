@@ -2,7 +2,7 @@ import { useEffect,useState } from "react";
 import Footer from "./Main_footer";
 import Header from "./Main_header";
 import Side from "./Main_side";
-import "../../css/part/Main_template.scss";
+
 import useMember from "../../customState/useMember";
 import { useHistory } from "react-router";
 export default function Main_template(props) {

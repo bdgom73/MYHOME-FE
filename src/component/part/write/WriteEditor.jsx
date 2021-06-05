@@ -2,7 +2,7 @@ import {Editor} from "react-draft-wysiwyg";
 import { EditorState,convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import '../../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import "../../../css/route/VideoWrite.scss";
+
 import { useCallback, useEffect, useState } from "react";
 
 export default function WriteEditor(props){

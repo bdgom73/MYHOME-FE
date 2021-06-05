@@ -6,7 +6,7 @@ import useModal from "../../../../customState/useModal";
 import useTitle from "../../../../customState/useTitle";
 import Modal from "../../../modal/modal";
 import WriteEditor from "../../../part/write/WriteEditor";
-import "../../../../css/route/VideoWrite.scss";
+
 import CKEditor5 from "../../../part/write/CKEditor/CKEditor5";
 
 export default function FreeWrite(props){

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Board from "../../../part/write/Board";
 import BoardTable from "../../../part/write/BoardTable";
-import "../../../../css/write/board.scss";
+
 import axios from "axios";
 import { useHistory } from "react-router";
 import ReactPaginate from "react-paginate";

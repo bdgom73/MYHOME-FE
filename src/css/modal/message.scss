@@ -1,0 +1,19 @@
+message{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top : 20%;
+    left : 50%;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    border-radius: 10px;
+    padding: 10px 20px;
+    min-width: 150px;
+    color : #000;
+    
+    text{
+        font-size: 13px;     
+        // color : #b3b3b3;
+    }
+}

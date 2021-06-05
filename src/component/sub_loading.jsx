@@ -1,5 +1,5 @@
 
-import "../css/part/Loading.scss"
+
 export default function SubLoading(props){
   
     return(

@@ -1,4 +1,4 @@
-import "../../css/part/Main_side.scss";
+
 import { BsList } from 'react-icons/bs';
 import { TiWeatherSunny } from 'react-icons/ti';
 import { AiFillPicture } from 'react-icons/ai';

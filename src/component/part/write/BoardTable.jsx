@@ -1,7 +1,7 @@
 import moment from "moment";
 import { useEffect, useRef, useState } from "react";
 import { useHistory } from "react-router";
-import "../../../css/write/boardTable.scss";
+
 import useMember from "../../../customState/useMember";
 import SubLoading from "../../sub_loading";
 

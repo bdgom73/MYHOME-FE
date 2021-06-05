@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import cityJson from "../../json/city_use.json";
 import cityList from "../../storage/cityList";
-import "../../css/part/weather_onecall.scss";
+
 import { ResponsiveLine  } from '@nivo/line'
 import Loading from "./Loading";
 import { getWeatherIconUrl, hourFormat, timestampToDate, timestampToDate2, timestampToHour, timestampToMonthAndDateAndHour } from "../../js/weather_conversion";

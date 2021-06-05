@@ -1,6 +1,5 @@
 import {  Route, Switch } from "react-router-dom";
 import Template from "./component/part/Main_template";
-import "./App.css";
 import Calendar from "./component/part/Calendar";
 import Home from "./component/route/Home";
 import GoogleMap from "./component/part/googleMap";
@@ -13,23 +12,71 @@ import VideoDetail from "./component/route/board/detail/VideoDetail";
 import FreeBoard from "./component/route/board/list/FreeBoard";
 import SubLoading from "./component/sub_loading";
 import FreeDetail from "./component/route/board/detail/FreeDetail";
-import Test from "./component/test";
 import PhotoBoard from "./component/route/board/list/PhotoBoard";
 import PhotoDetail from "./component/route/board/detail/PhotoDetail";
 import VideoWrite from "./component/route/board/write/VideoWrite";
 import FreeWrite from "./component/route/board/write/FreeWrite";
 import PhotoWrite from "./component/route/board/write/PhotoWrite";
 import PhotoUpdate from "./component/route/board/update/PhotoUpdate";
-import CKEditor5 from "./component/part/write/CKEditor/CKEditor5";
 import FreeUpdate from "./component/route/board/update/FreeUpdate";
 import Notice from "./component/route/notice/Notice"
 import VideoUpdate from "./component/route/board/update/VideoUpdate";
 import Modal from "./component/modal/modal";
-import VideoUpload from "./component/route/board/update/VideoUpload";
+import { ToastContainer } from 'react-toastify';
+import { useEffect } from "react";
+import moment from "moment";
+import axios from "axios";
 
 function App() {
 
+  useEffect(()=>{
+    const params = {
+      startDate : '2021-05-05',
+      endDate : '2021-06-01',
+      timeUnit : "date",
+      device : "pc", 
+      "keywordGroups": [
+        {
+          "groupName": "한글",
+          "keywords": [
+            "한글",
+            "korean"
+          ]
+        },
+        {
+          "groupName": "영어",
+          "keywords": [
+            "영어",
+            "english"
+          ]
+        }
+      ],  
+    }
+    console.log(JSON.stringify(params));
+    let client_id = 'gAZPXnsAVvyO0o7Ysbv1';
+    let client_secret = 'gtj2DjwgH3';
+    axios({
+      method : "post",
+      url : "/v1/datalab/search",
+      data : JSON.stringify(params),   
+      headers : {
+        'X-Naver-Client-Id': client_id,
+        'X-Naver-Client-Secret': client_secret,
+        'Content-Type': 'application/json'
+      }
+      
+    }
+     
+    ).then(res=>{
+      console.log(res)
+    }).catch(e=>{
+      console.log(e.response);
+    })
+  },[])
+
   return (   
+    <>
+    <ToastContainer/>
     <Switch>   
       <Route exact path="/" ><Template><Home /></Template></Route>
       
@@ -78,11 +125,12 @@ function App() {
       <Route exact path="/bbs/write/photo"><Template access="user"><PhotoWrite/></Template></Route>
       
       {/* TEST */}
-      <Route exact path="/test"><Modal><VideoUpload/></Modal></Route>
+      <Route exact path="/test"><Modal><></></Modal></Route>
 
       {/* NOT FOUND SERVICE */}
       <Route path="/"><NotFound/></Route>
     </Switch> 
+    </>
   );
 }
 

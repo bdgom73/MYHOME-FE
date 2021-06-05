@@ -1,4 +1,4 @@
-import "../../../css/write/board.scss";
+
 import { AiTwotoneLike } from 'react-icons/ai';
 import { GrFormView } from 'react-icons/gr';
 import { useHistory } from "react-router";
