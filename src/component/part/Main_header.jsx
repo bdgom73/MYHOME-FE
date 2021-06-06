@@ -13,7 +13,6 @@ export default function Main_header(props){
         setProfileAct(!profileAct);
     }
     const history = useHistory();
-   
     const {data,logined,removeCookie} = useMember();
     const searchRef = useRef(0);
 
@@ -34,10 +33,14 @@ export default function Main_header(props){
                     <img src="/image/logo.png" alt="LOGO" style={{width:"100px",marginLeft:"15px",marginBottom:"-10px"}}/>
                 </div>
             </div>
-            <div className="search">
-                <input type="text" name="search" onFocus={onFocusHandler}/>
-                <input type="button" value="검색" onClick={()=>{console.log(searchRef.current.value)}}/>
-            </div>
+            {
+                history.location.pathname !== "/" ? (
+                    <div className="search" >
+                        <input type="text" name="search" onFocus={onFocusHandler}/>
+                        <input type="button" value="검색" onClick={()=>{console.log(searchRef.current.value)}}/>
+                    </div>
+                ) :<></>
+            }        
             <div className="user_info">
             {
                 logined ? (

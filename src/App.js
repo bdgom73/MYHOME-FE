@@ -31,39 +31,32 @@ function App() {
 
   useEffect(()=>{
     const params = {
-      startDate : '2021-05-05',
-      endDate : '2021-06-01',
-      timeUnit : "date",
-      device : "pc", 
+      startDate : '2021-06-01',
+      endDate : '2021-06-05',
+      timeUnit : "date", 
       "keywordGroups": [
         {
-          "groupName": "한글",
+          "groupName": "패션의류",
           "keywords": [
-            "한글",
-            "korean"
+            "로션",
+            "lotion",
           ]
-        },
-        {
-          "groupName": "영어",
-          "keywords": [
-            "영어",
-            "english"
-          ]
-        }
+        },    
       ],  
     }
-    console.log(JSON.stringify(params));
-    let client_id = 'gAZPXnsAVvyO0o7Ysbv1';
-    let client_secret = 'gtj2DjwgH3';
+    let client_id = process.env.REACT_APP_NAVER_CLIENT_ID;
+    let client_secret =  process.env.REACT_APP_NAVER_CLIENT_SECRET;
+
     axios({
-      method : "post",
-      url : "/v1/datalab/search",
-      data : JSON.stringify(params),   
-      headers : {
-        'X-Naver-Client-Id': client_id,
-        'X-Naver-Client-Secret': client_secret,
-        'Content-Type': 'application/json'
-      }
+      method : "get",
+      // url : "/v1/datalab/search",
+      url : "/bbs/date/top10",
+      // data : JSON.stringify(params),   
+      // headers : {
+      //   'X-Naver-Client-Id': client_id,
+      //   'X-Naver-Client-Secret': client_secret,
+      //   'Content-Type': 'application/json'
+      // }
       
     }
      
