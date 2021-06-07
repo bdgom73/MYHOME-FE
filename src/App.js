@@ -26,6 +26,7 @@ import { ToastContainer } from 'react-toastify';
 import { useEffect } from "react";
 import moment from "moment";
 import axios from "axios";
+import Search from "./component/route/Search";
 
 function App() {
 
@@ -117,6 +118,8 @@ function App() {
       <Route exact path="/bbs/write/free"><Template access="user"><FreeWrite/></Template></Route>
       <Route exact path="/bbs/write/photo"><Template access="user"><PhotoWrite/></Template></Route>
       
+      {/* Search Service */}
+      <Route exact path="/search" render={(props)=>{ return <Template><Search {...props}/></Template>}} ></Route>
       {/* TEST */}
       <Route exact path="/test"><Modal><></></Modal></Route>
 

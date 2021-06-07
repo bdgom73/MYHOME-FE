@@ -94,11 +94,8 @@ export default function Register(){
     return(
         <>
         {openModal()}
-        <div className="write_wrap">
-            <div className="sub_header">
-                {/* <div className="logo">
-                    <img src="/image/logo.png" alt="LOGO" onClick={()=>{history.push("/")}}/>
-                </div> */}
+        <div className="write_wrap" style={{maxWidth:"800px",margin:"15px auto"}}>
+            <div className="sub_header">    
                 <div className="title">회원가입</div>
             </div>   
             <form onSubmit={onSubmitHandler}> 
@@ -108,7 +105,7 @@ export default function Register(){
                     <button type="button" className="btn">중복체크</button>
                     <button type="button" className="btn delete">인증</button>
                 </div>
-                <message>사용가능한 이메일입니다.</message>
+                {/* <message>사용가능한 이메일입니다.</message> */}
                 <div className="label_con">
                     <div className="label_wrap">
                         <label htmlFor="password">비밀번호</label>

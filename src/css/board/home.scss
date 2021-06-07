@@ -4,6 +4,12 @@
     width: 100%;
     padding: 10px;
     min-height: 100vh;
+    .search_main{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
     logo{
         display: flex;
         align-items: center;
@@ -105,7 +111,19 @@
                         }
                     }
                 }
-                .list_context{
+                .list_desc{    
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                    font-size: 13px;
+                    margin-top: 5px;
+                    width: 100%;
+                    width: 80%;
+                }
+                .list_context{    
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    overflow: hidden;  
                     margin-left: 5px;
                     .list_title{
                         overflow: hidden;

@@ -7,11 +7,10 @@ import { GrFormView } from 'react-icons/gr';
 
 import useMember from "../../../../customState/useMember";
 import Comment from "../Comment";
-import { EditorState,convertToRaw } from "draft-js";
-import draftToHtml from 'draftjs-to-html';
+
 import moment from "moment";
 import useTitle from "../../../../customState/useTitle";
-import WriteEditor from "../../../part/write/WriteEditor";
+
 import CKEditor5 from "../../../part/write/CKEditor/CKEditor5";
 export default function FreeDetail(props){
 
