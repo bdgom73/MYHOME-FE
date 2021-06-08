@@ -19,7 +19,7 @@ export default function Main_side(props){
     }
     return(
         <>
-        <div className="side_nav">
+        <div className="side_nav" style={props.style}>
             <div className="sub_menu" >
                 <BsList size={30}  onClick={props.subMenuHandler}/>
                 <img src="/logo.png" alt="LOGO" onClick={()=>{routePush("/")}} style={{width:"80px"}}/>

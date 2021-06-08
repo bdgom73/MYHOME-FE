@@ -50,7 +50,7 @@ export default function Main_template(props) {
     return(
         <>
         <Header subMenuHandler={subMenuHandler}/>
-        <div className="content_wrap">
+        <div className="content_wrap" >
             {
                 subMenu ? (
                     <div className="side_menu" >

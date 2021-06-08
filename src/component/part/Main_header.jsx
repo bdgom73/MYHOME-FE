@@ -1,4 +1,4 @@
-import { useState,useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { BsList,BsFillBellFill } from 'react-icons/bs';
 import { useHistory } from 'react-router';
 
@@ -21,9 +21,8 @@ export default function Main_header(props){
     }
     
     return(
-        <>
-       
-        <header>
+        <> 
+        <header style={props.style}>
             <div className="header_s1">
                 <div className="sub_menu">
                     <BsList size={30} onClick={props.subMenuHandler}/>
@@ -66,7 +65,7 @@ export default function Main_header(props){
                                     </uc>
                                 </userinfo>
                                 <div style={{display:"flex",justifyContent:"space-between"}}>
-                                <span className="btn ">내정보</span>
+                                <span className="btn" onClick={()=> history.push("/myinfo")}>내정보</span>
                                 <span className="btn logout" onClick={()=>{removeCookie("SESSION_UID",{path:"/"}); window.location.reload()}}>Logout</span> 
                                 </div>
                                 </div>

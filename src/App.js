@@ -23,51 +23,15 @@ import Notice from "./component/route/notice/Notice"
 import VideoUpdate from "./component/route/board/update/VideoUpdate";
 import Modal from "./component/modal/modal";
 import { ToastContainer } from 'react-toastify';
-import { useEffect } from "react";
-import moment from "moment";
-import axios from "axios";
+import { useEffect, useMemo } from "react";
+import publicIp  from "public-ip";
 import Search from "./component/route/Search";
+import axios from "axios";
+import Myinfo from "./component/route/myinfo/Myinfo";
 
 function App() {
 
-  useEffect(()=>{
-    const params = {
-      startDate : '2021-06-01',
-      endDate : '2021-06-05',
-      timeUnit : "date", 
-      "keywordGroups": [
-        {
-          "groupName": "패션의류",
-          "keywords": [
-            "로션",
-            "lotion",
-          ]
-        },    
-      ],  
-    }
-    let client_id = process.env.REACT_APP_NAVER_CLIENT_ID;
-    let client_secret =  process.env.REACT_APP_NAVER_CLIENT_SECRET;
-
-    axios({
-      method : "get",
-      // url : "/v1/datalab/search",
-      url : "/bbs/date/top10",
-      // data : JSON.stringify(params),   
-      // headers : {
-      //   'X-Naver-Client-Id': client_id,
-      //   'X-Naver-Client-Secret': client_secret,
-      //   'Content-Type': 'application/json'
-      // }
-      
-    }
-     
-    ).then(res=>{
-      console.log(res)
-    }).catch(e=>{
-      console.log(e.response);
-    })
-  },[])
-
+ 
   return (   
     <>
     <ToastContainer/>
@@ -120,6 +84,9 @@ function App() {
       
       {/* Search Service */}
       <Route exact path="/search" render={(props)=>{ return <Template><Search {...props}/></Template>}} ></Route>
+      
+      {/* My Infomation */}
+      <Route exact path="/myinfo" render={(props)=>{ return <Myinfo {...props}/> }}></Route>
       {/* TEST */}
       <Route exact path="/test"><Modal><></></Modal></Route>
 

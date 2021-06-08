@@ -88,6 +88,15 @@
                 font-weight: bold;
             }
         }
+        .search_data{
+            font-size: 22px;
+            font-weight: bold;
+            padding: 10px;
+            border-bottom: 3px solid #222;
+            span{
+                color : #c56900;
+            }
+        }
         .list{
             width: 100%;    
             .category{

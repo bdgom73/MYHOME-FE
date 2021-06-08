@@ -8,4 +8,10 @@ module.exports = (app) => {
         target: 'https://openapi.naver.com',
         changeOrigin: true,
     }));
+  app.use(
+    '/openapi', 
+    createProxyMiddleware({
+        target: 'http://whois.kisa.or.kr',
+        changeOrigin: true,
+    }));
 };

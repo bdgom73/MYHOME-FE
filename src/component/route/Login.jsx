@@ -6,11 +6,19 @@ import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
 import useTitle from '../../customState/useTitle';
 import { toast } from 'react-toastify';
+import publicIp  from "public-ip";
+import { useEffect } from 'react';
+import moment from 'moment';
+function clientIP(){
+    return publicIp.v4();
+  }
 export default function Login(){
 
     useTitle(`MYDOMUS | LOGIN`);
     const history = useHistory();
     const [cookies , setCookies] = useCookies();
+
+
     function onSubmitHandler(e){
         const {target} = e;
         e.preventDefault();
@@ -18,15 +26,23 @@ export default function Login(){
         const fd = new FormData();
         fd.append("email",target[0].value);
         fd.append("password",target[1].value);
-     
-        axios.post("/member/login",fd)
-            .then(res=>{
-                setCookies("SESSION_UID",res.data,{path : "/"});
-                toast.success("로그인 했습니다.")
-                history.push("/");
-            }).catch(e=>{
-                toast.error(e.response.data.message ? e.response.data.message : "로그인에 실패했습니다.")
+        
+        clientIP().then(result=>{
+            axios.get(`/openapi/whois.jsp?query=${result}&key=${process.env.REACT_APP_WHOIS_KR_KEY}&answer=json`).then(res => {
+                fd.append("ip",result);
+                fd.append("countryCode",res.data.whois.countryCode);
+                fd.append("ipv",res.data.whois.queryType);
+                axios.post("/member/login",fd)
+                .then(response=>{
+                    setCookies("SESSION_UID",response.data,{path : "/"});
+                    toast.success(`${result} ${res.data.whois.countryCode} ${moment().format("YY-MM-DD HH:mm")} 로그인`);
+                    history.push("/");   
+                }).catch(e=>{
+                    toast.error(e.response.data.message ? e.response.data.message : "로그인에 실패했습니다.")
+                })    
             })
+        })
+        
     }
     return(
         <>

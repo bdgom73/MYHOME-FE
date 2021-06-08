@@ -30,9 +30,10 @@ export default function Search(props){
     const [value,setValue] = useState(term);
     const [searchText, setSearchText] = useState("");
     const [data , setData] = useState([]);
-    const [sort,setSort] = useState("date");
+    const [sort,setSort] = useState("include");
+    const [subSort,setSubSort] = useState("date");
     const onSearchHandler = ()=>{
-        const search_url = `/search?term=${term}&size=${50}&page=${0}`
+        const search_url = `/search?term=${term}&size=${50}&page=${0}&sort=${sort}&sub_sort=${subSort}`
         axios.get(search_url)
         .then(res=>{
             setData(res.data);
@@ -46,7 +47,7 @@ export default function Search(props){
         if(term){
             onSearchHandler();
         }
-    },[value])
+    },[value,sort,subSort])
 
     function boardList(d,i){
         let text = d.description;
@@ -88,15 +89,21 @@ export default function Search(props){
         return (
             <>  
             <div className="home_wrap">
-                <div className="search_data">
-                    통합검색어 : {term}
-                </div>
+               
                 <div className="home_list">
-                    {/* <top>
-                        <tl onClick={()=>{setSort("date")}} className={sort === "date" ? "selected" : ""}>최신순</tl>
-                        <tl onClick={()=>{setSort("recommend")}} className={sort === "recommend" ? "selected" : ""}>추천순</tl>
-                        <tl onClick={()=>{setSort("views")}} className={sort === "views" ? "selected" : ""}>조회순</tl>
-                    </top>   */}
+                    
+                    <div className="search_data">
+                        통합검색어 | <span>{term}</span>
+                    </div>
+                    <top>
+                        <tl onClick={()=>{setSort("exact")}} className={sort === "exact" ? "selected" : ""}>완전일치</tl>
+                        <tl onClick={()=>{setSort("include")}} className={sort === "include" ? "selected" : ""}>포함</tl>
+                        <tl onClick={()=>{setSort("start")}} className={sort === "start" ? "selected" : ""}>첫일치</tl>
+                    </top> 
+                    <top>
+                    <tl onClick={()=>{setSubSort("date")}} className={subSort === "date" ? "selected" : ""}>최신순</tl>
+                    <tl onClick={()=>{setSubSort("views")}} className={subSort === "views" ? "selected" : ""}>조회순</tl>
+                </top>  
                     <div className="list">
                         <h2>자유게시판</h2>
                         {
