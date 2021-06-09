@@ -47,7 +47,7 @@ export default function Search(props){
         if(term){
             onSearchHandler();
         }
-    },[value,sort,subSort])
+    },[value,sort,subSort,term])
 
     function boardList(d,i){
         let text = d.description;

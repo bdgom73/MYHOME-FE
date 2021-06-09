@@ -33,10 +33,10 @@ export default function Main_header(props){
                 </div>
             </div>
             {
-                history.location.pathname !== "/" && history.location.pathname !== "/search" ? (
+                history.location.pathname !== "/" ? (
                     <div className="search" >
                         <input type="text" name="search" onFocus={onFocusHandler}/>
-                        <input type="button" value="검색" onClick={()=>{console.log(searchRef.current.value)}}/>
+                        <input type="button" value="검색" onClick={()=>{ history.push(`/search?search=${searchRef.current.value}`)}}/>
                     </div>
                 ) :<></>
             }        
