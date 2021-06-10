@@ -52,7 +52,7 @@ export default function Home(props){
             <search>
                 <div className="search">
                     <input type="text" name="search"  autocomplete="off" onFocus={onFocusHandler}/>
-                    <input type="button" value="검색" onClick={()=>{console.log(searchRef.current.value)}}/>
+                    <input type="button" value="검색" onClick={()=>{history.push (`/search?search=${searchRef.current.value}`)}}/>
                 </div>
             </search>
             <div className="home_list">

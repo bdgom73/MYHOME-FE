@@ -1,11 +1,16 @@
 import { useEffect, useState } from "react";
 import Board from "../../../part/write/Board";
 import BoardTable from "../../../part/write/BoardTable";
-
+import { RiGitRepositoryPrivateFill } from 'react-icons/ri';
+import { CgPassword,CgProfile } from 'react-icons/cg';
+import { HiStatusOnline } from 'react-icons/hi';
+import { AiOutlineClear } from 'react-icons/ai';
 import axios from "axios";
 import { useHistory, useLocation } from "react-router";
 import ReactPaginate from "react-paginate";
 import useTitle from "../../../../customState/useTitle";
+import moment from "moment";
+import { Link } from "react-router-dom";
 export default function FreeBoard(props){
 
     useTitle(`MYDOMUS | FREE`)
@@ -65,7 +70,7 @@ export default function FreeBoard(props){
             loading ={loading}
             writerColumn="writer"
             dateColumn="created"
-            />   
+            />                 
         <ReactPaginate 
             pageCount={Math.ceil(total / 40)}
             pageRangeDisplayed={40}

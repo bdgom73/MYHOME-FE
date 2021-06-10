@@ -23,11 +23,9 @@ import Notice from "./component/route/notice/Notice"
 import VideoUpdate from "./component/route/board/update/VideoUpdate";
 import Modal from "./component/modal/modal";
 import { ToastContainer } from 'react-toastify';
-import { useEffect, useMemo } from "react";
-import publicIp  from "public-ip";
 import Search from "./component/route/Search";
-import axios from "axios";
 import Myinfo from "./component/route/myinfo/Myinfo";
+import UserInfo from "./component/route/user/UserInfo";
 
 function App() {
 
@@ -36,7 +34,7 @@ function App() {
     <>
     <ToastContainer/>
     <Switch>   
-      <Route exact path="/" ><Template><Home /></Template></Route>
+      <Route exact path="/" ><Template><Home/></Template></Route>
       
       {/* MEMBERSHIP SERVICE */}
       <Route exact path="/weather" ><Template access="user"><TotalWeather/></Template></Route>
@@ -87,6 +85,9 @@ function App() {
       
       {/* My Infomation */}
       <Route exact path="/myinfo" render={(props)=>{ return <Myinfo {...props}/> }}></Route>
+
+      {/* User Infomation */}
+      <Route exact path="/user/:email" render={(props)=>{ return <UserInfo {...props}/> }}></Route>
       {/* TEST */}
       <Route exact path="/test"><Modal><></></Modal></Route>
 

@@ -46,6 +46,19 @@
                 color : #eeeeee;
                 text-shadow: 2px 2px 2px #bbbbbb;
                 padding: 3px;
+                margin-bottom: 0;
+            }
+            h3{
+                font-size: 20px;
+                color : #e2e2e2;
+                text-shadow: 2px 2px 2px #bbbbbb;
+                padding: 3px;
+                margin-top: 0;
+                svg{
+                    color : #33a111;
+                    vertical-align: top;
+                    margin-right: 5px;
+                }
             }
             ul{
                 width: 100%;      
@@ -135,6 +148,26 @@
                 margin: 5px 0;  
                 cursor: pointer;
             }
+            .select_board{
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+                margin-bottom: 5px;
+                .all{
+                    color: #eee;
+                    cursor: pointer;
+                    -webkit-touch-callout: none;
+                    user-select: none;
+                    -moz-user-select: none;
+                    -ms-user-select: none;
+                    -webkit-user-select: none;
+            
+                }
+                svg{
+                    margin: 0 5px;
+                }
+            }
+           
             label{
                 // width: 100%;
                 // position: relative;
@@ -192,6 +225,16 @@
             font-family: 'Jua', sans-serif;
             color: #eeeeee;
             margin-top: 10px;
+        }
+        tbody{
+            tr{
+                td{
+                    svg{
+                        vertical-align: top;
+                        margin-right: 5px;
+                    }
+                }
+            }   
         }
     }
 }

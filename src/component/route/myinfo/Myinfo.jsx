@@ -17,6 +17,8 @@ import DaumPostcode from 'react-daum-postcode';
 import useModal from "../../../customState/useModal";
 import Modal from '../../modal/modal';
 import useTitle from '../../../customState/useTitle';
+import {FaComments,FaChalkboardTeacher, FaChalkboard, FaVideo } from 'react-icons/fa';
+import { MdPhoto } from 'react-icons/md';
 export default function Myinfo(props){
 
     useTitle("MYDOMUS | ME")
@@ -138,6 +140,9 @@ export default function Myinfo(props){
                         <li onClick={()=>{setSelected("info"); window.location.href="#info"}}><RiGitRepositoryPrivateFill color={selected==="info" ? "#bd2a2a" : ""}/>개인정보</li>
                         <li onClick={()=>{setSelected("change"); window.location.href="#change"}}><CgPassword color={selected==="change" ? "#bd2a2a" : ""}/>비밀번호변경</li>
                         <li onClick={()=>{setSelected("recode"); window.location.href="#recode"}}><HiStatusOnline color={selected==="recode" ? "#bd2a2a" : ""}/>계정로그인기록</li>
+                       
+                        <li onClick={()=>{setSelected("wiw"); window.location.href="#wiw"}}><FaChalkboardTeacher color={selected==="wiw" ? "#bd2a2a" : ""}/> 내가 쓴 글 </li>
+                        <li onClick={()=>{setSelected("wic"); window.location.href="#wic"}}><FaComments color={selected==="wic" ? "#bd2a2a" : ""}/> 내가 쓴 댓글</li>  
                         <li onClick={()=>{setSelected("out"); window.location.href="#out"}}><AiOutlineClear color={selected==="out" ? "#bd2a2a" : ""}/>회원탈퇴</li>
                     </ul>
                 </div>
@@ -288,6 +293,114 @@ export default function Myinfo(props){
                         </ib>   
                     </InfoDetailBody>
                 </InfoDetail>
+                <InfoDetail id="wiw">
+                            <InfoDetailTitle>
+                                <ich>내가 쓴 글</ich>  
+                                <ic>내가 <font color="#ca5656">작성한</font> 글입니다.</ic>
+                                <ic>
+                                    게시판 구분 없이 <font color="#ca5656">최근 순</font>으로 <font color="#ca5656">10개</font> 단위로 보여집니다.  
+                                </ic> 
+                                <ic>&nbsp;</ic>
+                                <ic>
+                                    게시판 카테고리에 따라 다음과 같이 표기됩니다.    
+                                </ic>
+                                <ic style={{alignItems:"center",display:"flex"}}>
+                                    1. 사진 게시판 &nbsp; <MdPhoto color="#fff" size="20"/>
+                                </ic> 
+                                <ic style={{alignItems:"center",display:"flex"}}>
+                                    2. 자유 게시판 &nbsp; <FaChalkboard color="#fff" size="20"/>
+                                </ic>  
+                                <ic style={{alignItems:"center",display:"flex"}}>
+                                    3. 영상 게시판 &nbsp; <FaVideo color="#fff" size="20"/>
+                                </ic>       
+                            </InfoDetailTitle>
+                            <InfoDetailBody style={{position:"relative"}}>
+                                <ib>
+                                    <div className="select_board">  
+                                        <span className="all" title="전체게시판">ALL</span>                                   
+                                        <MdPhoto color="#fff" size="20" title="사진게시판"/>
+                                        <FaChalkboard color="#fff" size="20" title="자유게시판"/>
+                                        <FaVideo color="#fff" size="20" title="영상게시판"/>
+                                    </div>
+                                    <table className="table">
+                                        <colgroup>
+                                            <col width="10%"/>
+                                            <col width="60%"/>
+                                            <col width="30%"/>
+                                        </colgroup>
+                                        <thead>
+                                            <tr>
+                                                <th>NO</th>
+                                                <th>제목</th>
+                                                <th>작성일</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody style={{color : "#eeeeff"}}>
+                                            <tr>
+                                                <td>53</td>
+                                                <td><MdPhoto color="#fff" size="15"/>테스트입니다.</td>
+                                                <td>2021-01-10 18:30</td>
+                                            </tr>
+                                            <tr>
+                                                <td>85</td>
+                                                <td><FaChalkboard color="#fff" size="15"/>테스트입니다.</td>
+                                                <td>2021-03-24 14:30</td>
+                                            </tr>
+                                            <tr>
+                                                <td>112</td>
+                                                <td><FaVideo color="#fff" size="15"/>테스트입니다.</td>
+                                                <td>2021-06-10 23:32</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </ib>              
+                            </InfoDetailBody>
+                        </InfoDetail>  
+                        <InfoDetail id="wic">
+                            <InfoDetailTitle>
+                                <ich>내가 쓴 댓글</ich>  
+                                <ic>내가 <font color="#ca5656">작성한</font> 댓글입니다.</ic>
+                                <ic>&nbsp;</ic>    
+                                <ic>
+                                    <font color="#ca5656">최근 순</font>으로 <font color="#ca5656">10개</font> 단위로 보여집니다.  
+                                </ic>                     
+                            </InfoDetailTitle>
+                            <InfoDetailBody style={{position:"relative"}}>
+                                <ib>
+                                    <table className="table">
+                                        <colgroup>
+                                            <col width="10%"/>
+                                            <col width="60%"/>
+                                            <col width="30%"/>
+                                        </colgroup>
+                                        <thead>
+                                            <tr>
+                                                <th>B_NO</th>
+                                                <th>내용</th>
+                                                <th>작성일</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody style={{color : "#eeeeff"}}>
+                                            <tr>
+                                                <td>53</td>
+                                                <td>ㅋㅋㅋ 너무웃김.</td>
+                                                <td>2021-01-10 18:30</td>
+                                            </tr>
+                                            <tr>
+                                                <td>85</td>
+                                                <td>와 진짜 대박이네</td>
+                                                <td>2021-03-24 14:30</td>
+                                            </tr>
+                                            <tr>
+                                                <td>112</td>
+                                                <td>와 이건가..</td>
+                                                <td>2021-06-10 23:32</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </ib>              
+                            </InfoDetailBody>
+                        </InfoDetail>    
                 <InfoDetail id="out">
                     <InfoDetailTitle>
                         <ich>회원탈퇴</ich> 
