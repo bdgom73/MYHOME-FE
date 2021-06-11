@@ -34,7 +34,6 @@ export default function Home(props){
             url : `/bbs/${sort}/top10`})
         .then(res=>{
             const d = res.data;
-            console.log(d);
             setData(d || []);
         }).catch(e=>{
             console.log(e.response);
@@ -66,7 +65,7 @@ export default function Home(props){
                     data.map((d,i)=>{
                         return (
                         <>
-                        <div key={d.id+"메인페이지"+d.updated+i} 
+                        <div key={d.id+d.updated+i} 
                         title={"조회수 : " + d.views + "  추천수 : " +d.recommend} className="list_body">
                             <span onClick={()=>{history.push(`/bbs/${d.categoryList}/${d.id}`)}}>{
                                 d.categoryList === "PHOTO"  && d.imageList[0] ? 

@@ -19,6 +19,8 @@ import Modal from '../../modal/modal';
 import useTitle from '../../../customState/useTitle';
 import {FaComments,FaChalkboardTeacher, FaChalkboard, FaVideo } from 'react-icons/fa';
 import { MdPhoto } from 'react-icons/md';
+import axios from 'axios';
+import ReactPaginate from 'react-paginate';
 export default function Myinfo(props){
 
     useTitle("MYDOMUS | ME")
@@ -37,12 +39,26 @@ export default function Myinfo(props){
 
     const [privateInfoIsUpdate, setPrivateInfoIsUpdate ]= useState(false);
 
-    const [nickname,setNickname] = useState(data.nickname);
+    const [nickname,setNickname] = useState("");
     const [address,setAddress] = useState(data.address);
     const [zipcode,setZipcode] = useState(data.zipcode);
     const [detail_address,setDetail_address] = useState(data.detail_address);
     const [avatar,setAavtar] = useState(data.avatar_url);
     const [currentAvatar,setCurrentAvatar] = useState(data.avatar_url);
+
+
+    // 내가 쓴 댓글 , 게시글 
+    const [comments, setComments] = useState([]);
+    const [commentsCount,setCommentsCount] = useState(0);
+    const [cpage,setCpage] = useState(0);
+    const [ctotal,setCtotal] = useState(0);
+    const [board,setBoard] = useState([]);
+    const [boardCount,setBoardCount] = useState(0);
+    const [bpage,setBpage] = useState(0);
+    const [btotal,setBtotal] = useState(0);
+
+    // 로그인 로그
+    const [log,setLog] = useState([]);
 
     function onComplete(data){
         setZipcode(data.zonecode);
@@ -58,7 +74,6 @@ export default function Myinfo(props){
                 </Modal>)
         }    
     }
-
 
     useEffect(()=>{
         setNickname(data.nickname);
@@ -110,7 +125,49 @@ export default function Myinfo(props){
             body.style.backgroundColor="#fff";
         } 
     }
-    console.log(data)
+
+    useEffect(()=>{
+        if(data.nickname){   
+            getMemberBoardData(0);
+            getMemberCommentsData(0);
+            getLoginLogData();
+        }
+    },[data]);
+
+    function getMemberBoardData(page){
+        setBoard([]);
+        const fd = new FormData();
+        fd.append("nickname",data.nickname);
+        axios.post(`/bbs/nickname/member/get?page=${page}&size=10`,fd)
+        .then(res=>{
+            const result = res.data;
+            setBoard(result.content || []);
+            setBoardCount(result.totalElements || 0);
+            setBpage(0);
+            setBtotal(result.totalPages);
+        }).catch(e=> console.log(e.response));
+    }
+    function getMemberCommentsData(page){
+        setComments([]);
+        const fd = new FormData();
+        fd.append("nickname",data.nickname);
+        axios.post(`/comments/nickname/get?page=${page}&size=10`,fd)
+        .then(res=>{
+            const result = res.data;
+            console.log(result);
+            setComments(result.content || []);
+            setCommentsCount(result.totalElements || 0);
+            setCpage(0);
+            setCtotal(result.totalPages);
+        })
+    }
+    function getLoginLogData(){       
+        axios.get("/log/login/top=30",{"headers":{"Authorization" : SESSION_UID}})
+            .then(res=>{
+                console.log(res.data);
+                setLog(res.data);
+            }).catch(e=>console.log(e.response.data))
+    }
     return(
         <>
         {modalActive()}
@@ -139,8 +196,7 @@ export default function Myinfo(props){
                         <li onClick={()=>{setSelected("avatar"); window.location.href="#avatar"}}><CgProfile color={selected==="avatar" ? "#bd2a2a" : ""}/>아바타 변경</li>
                         <li onClick={()=>{setSelected("info"); window.location.href="#info"}}><RiGitRepositoryPrivateFill color={selected==="info" ? "#bd2a2a" : ""}/>개인정보</li>
                         <li onClick={()=>{setSelected("change"); window.location.href="#change"}}><CgPassword color={selected==="change" ? "#bd2a2a" : ""}/>비밀번호변경</li>
-                        <li onClick={()=>{setSelected("recode"); window.location.href="#recode"}}><HiStatusOnline color={selected==="recode" ? "#bd2a2a" : ""}/>계정로그인기록</li>
-                       
+                        <li onClick={()=>{setSelected("recode"); window.location.href="#recode"}}><HiStatusOnline color={selected==="recode" ? "#bd2a2a" : ""}/>계정로그인기록</li>             
                         <li onClick={()=>{setSelected("wiw"); window.location.href="#wiw"}}><FaChalkboardTeacher color={selected==="wiw" ? "#bd2a2a" : ""}/> 내가 쓴 글 </li>
                         <li onClick={()=>{setSelected("wic"); window.location.href="#wic"}}><FaComments color={selected==="wic" ? "#bd2a2a" : ""}/> 내가 쓴 댓글</li>  
                         <li onClick={()=>{setSelected("out"); window.location.href="#out"}}><AiOutlineClear color={selected==="out" ? "#bd2a2a" : ""}/>회원탈퇴</li>
@@ -263,144 +319,193 @@ export default function Myinfo(props){
                 <InfoDetail id="recode">
                     <InfoDetailTitle>
                         <ich>계정로그인기록</ich> 
-                        <ic>현재일로부터 <font color="#ca5656">30일 전</font>의 로그인기록입니다.</ic>  
-                        <ic>
-                            {moment().format("YYYY-MM-DD")} ~ {moment(new Date().setDate(new Date().getDate()-30)).format("YYYY-MM-DD")} 까지의 로그인 기록입니다.
-                        </ic>  
+                        <ic>최근 <font color="#ca5656">30개의</font>의 로그인기록입니다.</ic>           
                         <ic>&nbsp;</ic>     
                         <ic>최근 로그인 기록</ic>  
-                        <ic>로그인시간 : {moment(new Date().setDate(new Date().getDate())).format("YYYY-MM-DD HH:mm:ss")} |  </ic>  
-                        <ic>IP : 192.168.0.1 |</ic>  
-                        <ic>Protocol : IPv4 |</ic>    
-                        <ic> 국가 : KR</ic>    
+                        <ic>로그인시간 : {moment(log[0] ? log[0].loginDate : "").format("YYYY-MM-DD HH:mm:ss")} |  </ic>  
+                        <ic>IP : {log[0] ? log[0].ip : ""} |</ic>  
+                        <ic>Protocol : {log[0] ? log[0].ipv : ""} |</ic>    
+                        <ic> 국가 : {log[0] ? log[0].countryCode : ""}</ic>    
                     </InfoDetailTitle>
                     <InfoDetailBody>  
-                        <ib style={{alignItems : "center"}}>
-                            {
-                                Array.from(Array(10), (_, i) => i + 1).map((d)=>{
-                                    console.log(d)
-                                    return (
-                                        <p style={{fontSize:"12px"}}>
-                                        로그인시간 : {moment(new Date().setDate(new Date().getDate()+d)).format("YYYY-MM-DD HH:mm:ss")} | 
-                                        IP : 192.168.0.1 |
-                                        Protocol : IPv4 |
-                                        국가 : KR
-                                        </p>  
-                                    );
-                                })
-                            }
-                         
+                        <ib className="log_wrap">
+                            <table className="table">
+                               <tbody>
+                                {
+                                    log.map((d,i)=>{
+                                        return (
+                                        <tr key={d.id+d.loginDate}>
+                                            <td style={{color : "#eeeeee"}}>{i+1}</td>
+                                            <td>
+                                                <p className="log" style={{fontSize:"12px"}} >
+                                                <font color="#b1a2c3">로그인시간</font> : {moment(d.loginDate).format("YYYY-MM-DD HH:mm:ss")} |
+                                                <font color="#b1a2c3"> 국가</font> : {d.countryCode} <br/>
+                                                <font color="#b1a2c3"> Protocol</font> : {d.ipv} |
+                                                <font color="#b1a2c3"> IP</font> : {d.ip} 
+                                                </p> 
+                                            </td>
+                                        </tr>
+                                        );
+                                    })
+                                }
+                                </tbody>
+                            </table>
                         </ib>   
                     </InfoDetailBody>
                 </InfoDetail>
                 <InfoDetail id="wiw">
-                            <InfoDetailTitle>
-                                <ich>내가 쓴 글</ich>  
-                                <ic>내가 <font color="#ca5656">작성한</font> 글입니다.</ic>
-                                <ic>
-                                    게시판 구분 없이 <font color="#ca5656">최근 순</font>으로 <font color="#ca5656">10개</font> 단위로 보여집니다.  
-                                </ic> 
-                                <ic>&nbsp;</ic>
-                                <ic>
-                                    게시판 카테고리에 따라 다음과 같이 표기됩니다.    
-                                </ic>
-                                <ic style={{alignItems:"center",display:"flex"}}>
-                                    1. 사진 게시판 &nbsp; <MdPhoto color="#fff" size="20"/>
-                                </ic> 
-                                <ic style={{alignItems:"center",display:"flex"}}>
-                                    2. 자유 게시판 &nbsp; <FaChalkboard color="#fff" size="20"/>
-                                </ic>  
-                                <ic style={{alignItems:"center",display:"flex"}}>
-                                    3. 영상 게시판 &nbsp; <FaVideo color="#fff" size="20"/>
-                                </ic>       
-                            </InfoDetailTitle>
-                            <InfoDetailBody style={{position:"relative"}}>
-                                <ib>
-                                    <div className="select_board">  
-                                        <span className="all" title="전체게시판">ALL</span>                                   
-                                        <MdPhoto color="#fff" size="20" title="사진게시판"/>
-                                        <FaChalkboard color="#fff" size="20" title="자유게시판"/>
-                                        <FaVideo color="#fff" size="20" title="영상게시판"/>
-                                    </div>
-                                    <table className="table">
-                                        <colgroup>
-                                            <col width="10%"/>
-                                            <col width="60%"/>
-                                            <col width="30%"/>
-                                        </colgroup>
-                                        <thead>
-                                            <tr>
-                                                <th>NO</th>
-                                                <th>제목</th>
-                                                <th>작성일</th>
+                    <InfoDetailTitle>
+                        <ich>내가 쓴 글</ich>  
+                        <ic>내가 <font color="#ca5656">작성한</font> 글입니다.</ic>
+                        <ic>
+                            게시판 구분 없이 <font color="#ca5656">최근 순</font>으로 <font color="#ca5656">10개</font> 단위로 보여집니다.  
+                        </ic> 
+                        <ic>&nbsp;</ic>
+                        <ic>
+                            게시판 카테고리에 따라 다음과 같이 표기됩니다.    
+                        </ic>
+                        <ic style={{alignItems:"center",display:"flex"}}>
+                            1. 사진 게시판 &nbsp; <MdPhoto color="#fff" size="20"/>
+                        </ic> 
+                        <ic style={{alignItems:"center",display:"flex"}}>
+                            2. 자유 게시판 &nbsp; <FaChalkboard color="#fff" size="20"/>
+                        </ic>  
+                        <ic style={{alignItems:"center",display:"flex"}}>
+                            3. 영상 게시판 &nbsp; <FaVideo color="#fff" size="20"/>
+                        </ic>       
+                    </InfoDetailTitle>
+                    <InfoDetailBody style={{position:"relative"}}>
+                        <ib>
+                            <div className="select_board">  
+                                <span className="all" title="전체게시판">ALL</span>                                   
+                                <MdPhoto color="#fff" size="20" title="사진게시판"/>
+                                <FaChalkboard color="#fff" size="20" title="자유게시판"/>
+                                <FaVideo color="#fff" size="20" title="영상게시판"/>
+                            </div>
+                            <table className="table">
+                                <colgroup>
+                                    <col width="10%"/>
+                                    <col width="60%"/>
+                                    <col width="30%"/>
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th>NO</th>
+                                        <th>제목</th>
+                                        <th>작성일</th>
+                                    </tr>
+                                </thead>
+                                <tbody style={{color : "#eeeeff"}}>
+                                    {
+                                        board.map((b,i)=>{
+                                            return (
+                                                <tr key={b.id+i+"board_list_myinfo"}>
+                                                    <td>{b.id}</td>
+                                                    <td>
+                                                        {b.title}
+                                                    </td>
+                                                    <td>
+                                                        {
+                                                            b.created === b.updated ? 
+                                                            moment(b.created).format("YYYY-MM-DD HH:mm:ss") :
+                                                            "(수정) " + moment(b.updated).format("YYYY-MM-DD HH:mm:ss")
+                                                        }
+                                                        
+                                                    </td>
+                                                </tr>
+                                            )
+                                        })
+                                    }
+                                </tbody>
+                            </table>
+                            <ReactPaginate 
+                                count 
+                                pageCount={Math.ceil(boardCount / 10)}
+                                pageRangeDisplayed={2}
+                                marginPagesDisplayed={0}
+                                breakLabel={""}
+                                previousLabel={"이전"}
+                                nextLabel={"다음"}
+                                onPageChange={({selected})=>{  
+                                    getMemberBoardData(selected);
+                                }}
+                                containerClassName={"pagination-ul"}
+                                activeClassName={"currentPage"}
+                                previousClassName={"pageLabel-btn"}
+                                nextClassName={"pageLabel-btn"}
+                            />
+                        </ib>              
+                    </InfoDetailBody>
+                </InfoDetail>  
+                <InfoDetail id="wic">
+                    <InfoDetailTitle>
+                        <ich>내가 쓴 댓글</ich>  
+                        <ic>내가 <font color="#ca5656">작성한</font> 댓글입니다.</ic>
+                        <ic>&nbsp;</ic>    
+                        <ic>
+                            <font color="#ca5656">최근 순</font>으로 <font color="#ca5656">10개</font> 단위로 보여집니다.  
+                        </ic>                     
+                    </InfoDetailTitle>
+                    <InfoDetailBody style={{position:"relative"}}>
+                        <ib>
+                            <table className="table">
+                                <colgroup>
+                                    <col width="10%"/>
+                                    <col width="60%"/>
+                                    <col width="30%"/>
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th>B_NO</th>
+                                        <th>내용</th>
+                                        <th>작성일</th>
+                                    </tr>
+                                </thead>
+                                <tbody style={{color : "#eeeeff"}}>
+                                {
+                                    comments.map((b,i)=>{
+                                        
+                                        let text = b.description;
+                                        text = text.replace(/<(\/)?([a-zA-Z]*)(\s[a-zA-Z]*=[^>]*)?(\s)*(\/)?>/ig, "");
+
+                                        return (
+                                            <tr key={b.id+i+"comments_list_myinfo"}>
+                                                <td>{b.board_id}</td>
+                                                <td>
+                                                    {text}
+                                                </td>
+                                                <td>
+                                                    {
+                                                        b.created === b.updated ? 
+                                                        moment(b.created).format("YYYY-MM-DD HH:mm:ss") :
+                                                        "(수정) " + moment(b.updated).format("YYYY-MM-DD HH:mm:ss")
+                                                    }
+                                                    
+                                                </td>
                                             </tr>
-                                        </thead>
-                                        <tbody style={{color : "#eeeeff"}}>
-                                            <tr>
-                                                <td>53</td>
-                                                <td><MdPhoto color="#fff" size="15"/>테스트입니다.</td>
-                                                <td>2021-01-10 18:30</td>
-                                            </tr>
-                                            <tr>
-                                                <td>85</td>
-                                                <td><FaChalkboard color="#fff" size="15"/>테스트입니다.</td>
-                                                <td>2021-03-24 14:30</td>
-                                            </tr>
-                                            <tr>
-                                                <td>112</td>
-                                                <td><FaVideo color="#fff" size="15"/>테스트입니다.</td>
-                                                <td>2021-06-10 23:32</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </ib>              
-                            </InfoDetailBody>
-                        </InfoDetail>  
-                        <InfoDetail id="wic">
-                            <InfoDetailTitle>
-                                <ich>내가 쓴 댓글</ich>  
-                                <ic>내가 <font color="#ca5656">작성한</font> 댓글입니다.</ic>
-                                <ic>&nbsp;</ic>    
-                                <ic>
-                                    <font color="#ca5656">최근 순</font>으로 <font color="#ca5656">10개</font> 단위로 보여집니다.  
-                                </ic>                     
-                            </InfoDetailTitle>
-                            <InfoDetailBody style={{position:"relative"}}>
-                                <ib>
-                                    <table className="table">
-                                        <colgroup>
-                                            <col width="10%"/>
-                                            <col width="60%"/>
-                                            <col width="30%"/>
-                                        </colgroup>
-                                        <thead>
-                                            <tr>
-                                                <th>B_NO</th>
-                                                <th>내용</th>
-                                                <th>작성일</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody style={{color : "#eeeeff"}}>
-                                            <tr>
-                                                <td>53</td>
-                                                <td>ㅋㅋㅋ 너무웃김.</td>
-                                                <td>2021-01-10 18:30</td>
-                                            </tr>
-                                            <tr>
-                                                <td>85</td>
-                                                <td>와 진짜 대박이네</td>
-                                                <td>2021-03-24 14:30</td>
-                                            </tr>
-                                            <tr>
-                                                <td>112</td>
-                                                <td>와 이건가..</td>
-                                                <td>2021-06-10 23:32</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </ib>              
-                            </InfoDetailBody>
-                        </InfoDetail>    
+                                        )
+                                    })
+                                }
+                                </tbody>
+                            </table>
+                            <ReactPaginate 
+                                pageCount={Math.ceil(commentsCount / 10)}
+                                pageRangeDisplayed={2}
+                                marginPagesDisplayed={0}
+                                breakLabel={""}
+                                previousLabel={"이전"}
+                                nextLabel={"다음"}
+                                onPageChange={({selected})=>{        
+                                    getMemberCommentsData(selected);
+                                }}
+                                containerClassName={"pagination-ul"}
+                                activeClassName={"currentPage"}
+                                previousClassName={"pageLabel-btn"}
+                                nextClassName={"pageLabel-btn"}
+                            />
+                        </ib>              
+                    </InfoDetailBody>
+                </InfoDetail>    
                 <InfoDetail id="out">
                     <InfoDetailTitle>
                         <ich>회원탈퇴</ich> 

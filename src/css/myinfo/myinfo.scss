@@ -89,13 +89,7 @@
         .myinfo_main{
             width: 70%;
         }
-        p{
-            color : #eee;
-            border: 1px solid #bbb;
-            padding: 5px;
-            border-radius: 5px;
-            background-color: #7e7e7e;
-        }
+    
     }
 }
 .info_detail{
@@ -191,6 +185,13 @@
                 // margin-top: 10px;
                 margin: 10px 5px 0px;
             }
+
+            .pagination-ul,.pageLabel-btn{
+                color : #bbb;
+            }
+            .currentPage{
+                color : #ebee2c;
+            }
         }
         .onetext{
             background-color: #808080;
@@ -229,6 +230,7 @@
         tbody{
             tr{
                 td{
+                    max-width: 288px;
                     svg{
                         vertical-align: top;
                         margin-right: 5px;
@@ -274,8 +276,27 @@
         display: block;
     }
 }
-
-@media screen and (max-width: 680px){
+.log_wrap{
+    align-items: center;
+    max-height: 630px;
+    overflow: auto;
+    &::-webkit-scrollbar{
+        width: 10px;
+        height: 5px;
+    }
+    &::-webkit-scrollbar-thumb{
+        border-radius: 10px;
+        background-color: #e0e0e0;
+    }
+}
+.log{
+    display: inline-block;
+    border-radius: 5px;
+    padding: 5px;
+    color: #eee;
+  
+}
+@media screen and (max-width: 826px){
     .myinfo_wrap{  
         .myinfo_top{
             position: relative;

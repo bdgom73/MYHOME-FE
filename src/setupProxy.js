@@ -2,6 +2,7 @@ const {createProxyMiddleware} =  require('http-proxy-middleware');
 
 
 module.exports = (app) => {
+
   app.use(
     '/v1', 
     createProxyMiddleware({
@@ -14,4 +15,5 @@ module.exports = (app) => {
         target: 'http://whois.kisa.or.kr',
         changeOrigin: true,
     }));
+    
 };
