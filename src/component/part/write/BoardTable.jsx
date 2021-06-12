@@ -23,13 +23,15 @@ export default function BoardTable(props){
         loading,
         colgroup,
         imageColumn,
+        link,
+        id,
+        htmlToText,
+        style
      } = props;
     
      
     const history = useHistory();
-     console.log(data)
-    useEffect(()=>{
-        
+    useEffect(()=>{     
         const col = colgroup ? colgroup.split(" ") : []
         setCol(col || []);
     },[])
@@ -39,12 +41,18 @@ export default function BoardTable(props){
         return key;
     }
   
-    const onClickHandler=(id)=>{
-        history.push(`/bbs/${boardName ? boardName : "free"}/${id}`)
+    const onClickHandler=(id,category)=>{
+        if(!category) category = "free";
+        if(link){
+            history.push(`/bbs/${category}/${id}`);
+        }else{
+            history.push(`/bbs/${boardName ? boardName : "free"}/${id}`)
+        }
+       
     }
     return(
         <>
-        <table className={autoSize ? "control" : "table"}>    
+        <table className={autoSize ? "control" : "table"} style={style}>    
             <colgroup>
             {
                 col.map((c,i)=>{
@@ -65,7 +73,7 @@ export default function BoardTable(props){
             <tbody>        
                 {
                     loading ?  <tr><td colSpan={columnData ? columnData.length : 0}><SubLoading/></td></tr> : 
-                    data ?
+                    data.length !== 0 && data?
                     data.map((d,i)=>{
                         const unique = videoColumn && d[videoColumn]? d[videoColumn].split("https://youtu.be/")[1]: "";
                         const key = dataField();
@@ -77,7 +85,7 @@ export default function BoardTable(props){
                                     if(linkColumn){
                                       
                                         return (
-                                            <td key={k+i+j} onClick={k===linkColumn ? ()=>{onClickHandler(d.id)}:()=>{}} 
+                                            <td key={k+i+j} onClick={k===linkColumn ? ()=>{onClickHandler(id ? d[id] : d.id , link ? d.categoryList.toLowerCase() : "")}:()=>{}} 
                                             className={k===linkColumn? "link" : ""} style={k==="title" ? {width : "40%"} : {}}>
                                           
                                                 {          
@@ -104,10 +112,11 @@ export default function BoardTable(props){
                                         )
                                     }else{ 
                                         return (
-                                            <td key={k+i+j} onClick={()=>{onClickHandler(d.id)}} style={k==="title" ? {width : "40%"} : {}}>
+                                            <td key={k+i+j} onClick={()=>{onClickHandler(id ? d[id] : d.id ,link ? d.categoryList.toLowerCase() : "")}} style={k==="title" ? {width : "40%"} : {}}>
                                                  {          
                                                 k === "id" && moment.duration(moment().diff(moment(d[dateColumn]))).days() < 1 ?
                                                 <div className="new"><pcon><span>NEW</span></pcon>{d[k]}</div> :
+                                                htmlToText === k ? <div dangerouslySetInnerHTML={{__html : d[htmlToText]}}/> :
                                                 dateColumn === k ? moment(d[dateColumn]).format("YYYY-MM-DD HH:mm") : 
                                                 videoColumn === k && d.videoType === "YOUTUBE" ? 
                                                 <img className="thumbnail" src={`https://i1.ytimg.com/vi/${unique}/1.jpg`} alt="youtube_video"/> :
@@ -131,7 +140,7 @@ export default function BoardTable(props){
                                 }) : key.map((k,j)=>{
                                     if(linkColumn){
                                         return (
-                                            <td key={k+i+j} onClick={k===linkColumn ? ()=>{onClickHandler(d.id)}:()=>{}} style={k==="title" ? {width : "40%"} : {}}>
+                                            <td key={k+i+j} onClick={k===linkColumn ? ()=>{onClickHandler(id ? d[id] : d.id ,link ? d.categoryList.toLowerCase() : "")}:()=>{}} style={k==="title" ? {width : "40%"} : {}}>
                                              {          
                                                 k === "id" && moment.duration(moment().diff(moment(d[dateColumn]))).days() < 1 ?
                                                 <div className="new"><pcon><span>NEW</span></pcon>{d[k]}</div> :
@@ -155,7 +164,7 @@ export default function BoardTable(props){
                                         )
                                     }else{
                                         return (
-                                            <td key={k+i+j} onClick={()=>{onClickHandler(d.id)}} style={k==="title" ? {width : "40%"} : {}}>
+                                            <td key={k+i+j} onClick={()=>{onClickHandler(id ? d[id] : d.id ,link ? d.categoryList.toLowerCase() : "")}} style={k==="title" ? {width : "40%"} : {}}>
                                                  {          
                                                 k === "id" && moment.duration(moment().diff(moment(d[dateColumn]))).days() < 1 ?
                                                 <div className="new"><pcon><span>NEW</span></pcon>{d[k]}</div> :

@@ -29,7 +29,7 @@ export default function Comment(props){
                             <profile>
                                 <avatar>               
                                 
-                               <img src={d.avatar_url ? d.avatar_url : "/profile.png"} alt={d.name+"이미지"}/> : 
+                               <img src={d.avatar_url ? d.avatar_url : "/profile.png"} alt={d.name+"이미지"}/>
                                
                                 </avatar>
                                 <info>    

@@ -9,28 +9,39 @@ import { useEffect, useState } from 'react';
 import InfoDetail from '../myinfo/InfoDetail';
 import InfoDetailTitle from '../myinfo/InfoDetailTitle';
 import InfoDetailBody from '../myinfo/InfoDetailBody';
-
-import moment from 'moment';
 import useMember from '../../../customState/useMember';
 import Mainheader from '../../part/Main_header';
 import Mainside from '../../part/Main_side';
-import DaumPostcode from 'react-daum-postcode';
-import useModal from "../../../customState/useModal";
-import Modal from '../../modal/modal';
 import useTitle from '../../../customState/useTitle';
+import axios from 'axios';
+import moment from 'moment';
+import ReactPaginate from 'react-paginate';
+import BoardTable from "../../part/write/BoardTable";
 export default function UserInfo(props){
 
     const title = useTitle("MYDOMUS | User");
     const history = useHistory();
-
+    const { params : {nickname}} = props.match;
     const {logined,SESSION_UID,data} = useMember();
     const [selected,setSelected] = useState("id");
     
     const [avatar,setAavtar] = useState(data.avatar_url);
 
-    useEffect(()=>{   
-        title.refTitle.innerText=`MYDOMUS | ${data.email}`
-        setAavtar(data.avatar_url);
+    // 내가 쓴 댓글 , 게시글 
+    const [comments, setComments] = useState([]);
+    const [commentsCount,setCommentsCount] = useState(0);
+    const [cloading,setCLoading] = useState(false);
+    const [board,setBoard] = useState([]);
+    const [boardCount,setBoardCount] = useState(0);
+    const [bloading,setBLoading] = useState(false);
+
+    const [category,setCategory] = useState("all");
+    useEffect(()=>{  
+        if(data.nickname){
+            title.refTitle.innerText=`MYDOMUS | ${nickname}`
+        } else{
+            title.refTitle.innerText=`MYDOMUS | 유저정보`
+        }
     },[data])
 
     const [subMenu, setSubMenu] = useState(false); 
@@ -46,6 +57,37 @@ export default function UserInfo(props){
             body.style.backgroundColor="#fff";
         } 
     }
+    function getMemberCommentsData(page){
+        setComments([]);
+        setCLoading(true)
+        const fd = new FormData();
+        fd.append("nickname",nickname);
+        axios.post(`/comments/nickname/get?page=${page}&size=10`,fd)
+        .then(res=>{
+            const result = res.data;
+            console.log(result)
+            setComments(result.content || []);
+            setCommentsCount(result.totalElements || 0);
+            if(res.status === 200) setCLoading(false);
+        }).catch(e=> setCLoading(false))
+    }
+    function getMemberBoardData(page){
+        setBoard([]);
+        setBLoading(true)
+        const fd = new FormData();
+        fd.append("nickname",nickname);
+        axios.post(`/bbs/nickname/member/get?page=${page}&size=10`,fd)
+        .then(res=>{
+            const result = res.data;
+            setBoard(result.content || []);
+            setBoardCount(result.totalElements || 0);
+            if(res.status === 200) setBLoading(false);
+        }).catch(e=> {console.log(e.response); setBLoading(false);});
+    }
+    useEffect(()=>{
+        getMemberCommentsData(0);
+        getMemberBoardData(0);
+    },[])
 
     return(
         <>
@@ -64,7 +106,7 @@ export default function UserInfo(props){
                     <div className="side">
                         <div className="myinfo_side">
                             <h2>유저정보</h2>
-                            <h3><RiUserFollowFill/>테스트별명</h3>
+                            <h3><RiUserFollowFill/>{nickname}</h3>
                             <ul>                    
                                 <li onClick={()=>{setSelected("avatar"); window.location.href="#avatar"}}><CgProfile color={selected==="avatar" ? "#bd2a2a" : ""}/>
                                     아바타
@@ -88,7 +130,7 @@ export default function UserInfo(props){
                                 <ic>해당 유저의 <font color="#fff">소개글</font> 입니다.</ic>                  
                             </InfoDetailTitle>
                             <InfoDetailBody style={{backgroundColor:"#F09AB1"}}>
-                                안녕하세요 테스트별명 입니다.💘
+                                안녕하세요 {nickname} 입니다.
                             </InfoDetailBody>
                         </InfoDetail>      
                         <InfoDetail id="avatar">
@@ -126,7 +168,7 @@ export default function UserInfo(props){
                         </InfoDetail>   
                         <InfoDetail id="wiw">
                             <InfoDetailTitle>
-                                <ich>테스트별명님이 쓴 글</ich>  
+                                <ich>{nickname}님이 쓴 글</ich>  
                                 <ic>해당 유저가 <font color="#ca5656">작성한</font> 글입니다.</ic>
                                 <ic>
                                     게시판 구분 없이 <font color="#ca5656">최근 순</font>으로 <font color="#ca5656">10개</font> 단위로 보여집니다.  
@@ -146,50 +188,45 @@ export default function UserInfo(props){
                                 </ic>       
                             </InfoDetailTitle>
                             <InfoDetailBody style={{position:"relative"}}>
-                                <ib>
-                                    <div className="select_board">  
-                                        <span className="all" title="전체게시판">ALL</span>                                   
-                                        <MdPhoto color="#fff" size="20" title="사진게시판"/>
-                                        <FaChalkboard color="#fff" size="20" title="자유게시판"/>
-                                        <FaVideo color="#fff" size="20" title="영상게시판"/>
-                                    </div>
-                                    <table className="table">
-                                        <colgroup>
-                                            <col width="10%"/>
-                                            <col width="60%"/>
-                                            <col width="30%"/>
-                                        </colgroup>
-                                        <thead>
-                                            <tr>
-                                                <th>NO</th>
-                                                <th>제목</th>
-                                                <th>작성일</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody style={{color : "#eeeeff"}}>
-                                            <tr>
-                                                <td>53</td>
-                                                <td><MdPhoto color="#fff" size="15"/>테스트입니다.</td>
-                                                <td>2021-01-10 18:30</td>
-                                            </tr>
-                                            <tr>
-                                                <td>85</td>
-                                                <td><FaChalkboard color="#fff" size="15"/>테스트입니다.</td>
-                                                <td>2021-03-24 14:30</td>
-                                            </tr>
-                                            <tr>
-                                                <td>112</td>
-                                                <td><FaVideo color="#fff" size="15"/>테스트입니다.</td>
-                                                <td>2021-06-10 23:32</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </ib>              
-                            </InfoDetailBody>
+                            <ib>
+                                <div className="select_board">  
+                                    <span className="all" style={{color : category === "all" ? "#32922f" : "#fff"}} title="전체게시판" onClick={()=> setCategory("all")}>ALL</span>                                   
+                                    <MdPhoto color={category === "PHOTO" ? "#32922f" : "#fff"} size="20" title="사진게시판" onClick={()=> setCategory("PHOTO")}/>
+                                    <FaChalkboard color={category === "FREE" ? "#32922f" : "#fff"} size="20" title="자유게시판" onClick={()=> setCategory("FREE")}/>
+                                    <FaVideo color={category === "VIDEO" ? "#32922f" : "#fff"} size="20" title="영상게시판" onClick={()=> setCategory("VIDEO")}/>
+                                </div>
+                                <BoardTable
+                                    data={category === "all" ? board : board.filter(v=> v.categoryList === category)}
+                                    columnData={["No","제목","작성일"]}
+                                    dateColumn="created"
+                                    columnDataKey={["id","title","created"]}
+                                    loading={bloading}
+                                    link
+                                    style={{color : "#fff"}}
+                                />
+                               
+                                <ReactPaginate 
+                                    count 
+                                    pageCount={category === "all" ? Math.ceil(boardCount / 10) : Math.ceil((board.filter(v=> v.categoryList === category).length)/10)}
+                                    pageRangeDisplayed={2}
+                                    marginPagesDisplayed={0}
+                                    breakLabel={""}
+                                    previousLabel={"이전"}
+                                    nextLabel={"다음"}
+                                    onPageChange={({selected})=>{  
+                                        getMemberBoardData(selected);
+                                    }}
+                                    containerClassName={"pagination-ul"}
+                                    activeClassName={"currentPage"}
+                                    previousClassName={"pageLabel-btn"}
+                                    nextClassName={"pageLabel-btn"}
+                                />
+                            </ib>              
+                        </InfoDetailBody>
                         </InfoDetail>  
                         <InfoDetail id="wic">
                             <InfoDetailTitle>
-                                <ich>테스트별명님이 쓴 댓글</ich>  
+                                <ich>{nickname}님이 쓴 댓글</ich>  
                                 <ic>해당 유저가 <font color="#ca5656">작성한</font> 댓글입니다.</ic>
                                 <ic>&nbsp;</ic>    
                                 <ic>
@@ -198,40 +235,35 @@ export default function UserInfo(props){
                             </InfoDetailTitle>
                             <InfoDetailBody style={{position:"relative"}}>
                                 <ib>
-                                    <table className="table">
-                                        <colgroup>
-                                            <col width="10%"/>
-                                            <col width="60%"/>
-                                            <col width="30%"/>
-                                        </colgroup>
-                                        <thead>
-                                            <tr>
-                                                <th>B_NO</th>
-                                                <th>내용</th>
-                                                <th>작성일</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody style={{color : "#eeeeff"}}>
-                                            <tr>
-                                                <td>53</td>
-                                                <td>ㅋㅋㅋ 너무웃김.</td>
-                                                <td>2021-01-10 18:30</td>
-                                            </tr>
-                                            <tr>
-                                                <td>85</td>
-                                                <td>와 진짜 대박이네</td>
-                                                <td>2021-03-24 14:30</td>
-                                            </tr>
-                                            <tr>
-                                                <td>112</td>
-                                                <td>와 이건가..</td>
-                                                <td>2021-06-10 23:32</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                    <BoardTable
+                                        data={comments}
+                                        id={"board_id"}
+                                        columnData={["No","내용","작성일"]}
+                                        dateColumn="created"
+                                        columnDataKey={["board_id","description","created"]}
+                                        loading={cloading}
+                                        link
+                                        htmlToText="description"
+                                        style={{color : "#fff"}}
+                                    />
+                                    <ReactPaginate 
+                                        pageCount={Math.ceil(commentsCount / 10)}
+                                        pageRangeDisplayed={2}
+                                        marginPagesDisplayed={0}
+                                        breakLabel={""}
+                                        previousLabel={"이전"}
+                                        nextLabel={"다음"}
+                                        onPageChange={({selected})=>{        
+                                            getMemberCommentsData(selected);
+                                        }}
+                                        containerClassName={"pagination-ul"}
+                                        activeClassName={"currentPage"}
+                                        previousClassName={"pageLabel-btn"}
+                                        nextClassName={"pageLabel-btn"}
+                                    />
                                 </ib>              
                             </InfoDetailBody>
-                        </InfoDetail>                   
+                        </InfoDetail>               
                     </div>      
                 </div>   
             </div>     

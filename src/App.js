@@ -87,7 +87,7 @@ function App() {
       <Route exact path="/myinfo" render={(props)=>{ return <Myinfo {...props}/> }}></Route>
 
       {/* User Infomation */}
-      <Route exact path="/user/:email" render={(props)=>{ return <UserInfo {...props}/> }}></Route>
+      <Route exact path="/user/:nickname" render={(props)=>{ return <UserInfo {...props}/> }}></Route>
       {/* TEST */}
       <Route exact path="/test"><Modal><></></Modal></Route>
 

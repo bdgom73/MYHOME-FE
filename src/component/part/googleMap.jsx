@@ -75,16 +75,16 @@ export default function GoogleMap(props){
             setGooglempas(maps);
             setSearchBox(new maps.places.SearchBox(searchRef.current));  
             const bounds = map.getBounds();
-            let gbounds = {
-                La : {
-                    g : bounds.Eb.g,
-                    i : bounds.Eb.i
-                },
-                Ua : {
-                    g : bounds.oc.g,
-                    i : bounds.oc.i
-                }
-            }     
+            // let gbounds = {
+            //     La : {
+            //         g : bounds.Eb.g,
+            //         i : bounds.Eb.i
+            //     },
+            //     Ua : {
+            //         g : bounds.oc.g,
+            //         i : bounds.oc.i
+            //     }
+            // }     
         }
     }
 

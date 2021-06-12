@@ -21,6 +21,7 @@ import {FaComments,FaChalkboardTeacher, FaChalkboard, FaVideo } from 'react-icon
 import { MdPhoto } from 'react-icons/md';
 import axios from 'axios';
 import ReactPaginate from 'react-paginate';
+import BoardTable from '../../part/write/BoardTable';
 export default function Myinfo(props){
 
     useTitle("MYDOMUS | ME")
@@ -56,9 +57,14 @@ export default function Myinfo(props){
     const [boardCount,setBoardCount] = useState(0);
     const [bpage,setBpage] = useState(0);
     const [btotal,setBtotal] = useState(0);
+    const [cloading,setCLoading] = useState(false);
+    const [bloading,setBLoading] = useState(false);
+
 
     // 로그인 로그
     const [log,setLog] = useState([]);
+
+    const [category,setCategory] = useState("all");
 
     function onComplete(data){
         setZipcode(data.zonecode);
@@ -377,50 +383,23 @@ export default function Myinfo(props){
                     <InfoDetailBody style={{position:"relative"}}>
                         <ib>
                             <div className="select_board">  
-                                <span className="all" title="전체게시판">ALL</span>                                   
-                                <MdPhoto color="#fff" size="20" title="사진게시판"/>
-                                <FaChalkboard color="#fff" size="20" title="자유게시판"/>
-                                <FaVideo color="#fff" size="20" title="영상게시판"/>
+                                <span className="all" style={{color : category === "all" ? "#32922f" : "#fff"}} title="전체게시판" onClick={()=> setCategory("all")}>ALL</span>                                   
+                                <MdPhoto color={category === "PHOTO" ? "#32922f" : "#fff"} size="20" title="사진게시판" onClick={()=> setCategory("PHOTO")}/>
+                                <FaChalkboard color={category === "FREE" ? "#32922f" : "#fff"} size="20" title="자유게시판" onClick={()=> setCategory("FREE")}/>
+                                <FaVideo color={category === "VIDEO" ? "#32922f" : "#fff"} size="20" title="영상게시판" onClick={()=> setCategory("VIDEO")}/>
                             </div>
-                            <table className="table">
-                                <colgroup>
-                                    <col width="10%"/>
-                                    <col width="60%"/>
-                                    <col width="30%"/>
-                                </colgroup>
-                                <thead>
-                                    <tr>
-                                        <th>NO</th>
-                                        <th>제목</th>
-                                        <th>작성일</th>
-                                    </tr>
-                                </thead>
-                                <tbody style={{color : "#eeeeff"}}>
-                                    {
-                                        board.map((b,i)=>{
-                                            return (
-                                                <tr key={b.id+i+"board_list_myinfo"}>
-                                                    <td>{b.id}</td>
-                                                    <td>
-                                                        {b.title}
-                                                    </td>
-                                                    <td>
-                                                        {
-                                                            b.created === b.updated ? 
-                                                            moment(b.created).format("YYYY-MM-DD HH:mm:ss") :
-                                                            "(수정) " + moment(b.updated).format("YYYY-MM-DD HH:mm:ss")
-                                                        }
-                                                        
-                                                    </td>
-                                                </tr>
-                                            )
-                                        })
-                                    }
-                                </tbody>
-                            </table>
-                            <ReactPaginate 
+                            <BoardTable
+                                data={category === "all" ? board : board.filter(v=> v.categoryList === category)}
+                                columnData={["No","제목","작성일"]}
+                                dateColumn="created"
+                                columnDataKey={["id","title","created"]}
+                                loading={bloading}
+                                link
+                                style={{color : "#fff"}}
+                            />
+                             <ReactPaginate 
                                 count 
-                                pageCount={Math.ceil(boardCount / 10)}
+                                pageCount={category === "all" ? Math.ceil(boardCount / 10) : Math.ceil((board.filter(v=> v.categoryList === category).length)/10)}
                                 pageRangeDisplayed={2}
                                 marginPagesDisplayed={0}
                                 breakLabel={""}
@@ -448,46 +427,17 @@ export default function Myinfo(props){
                     </InfoDetailTitle>
                     <InfoDetailBody style={{position:"relative"}}>
                         <ib>
-                            <table className="table">
-                                <colgroup>
-                                    <col width="10%"/>
-                                    <col width="60%"/>
-                                    <col width="30%"/>
-                                </colgroup>
-                                <thead>
-                                    <tr>
-                                        <th>B_NO</th>
-                                        <th>내용</th>
-                                        <th>작성일</th>
-                                    </tr>
-                                </thead>
-                                <tbody style={{color : "#eeeeff"}}>
-                                {
-                                    comments.map((b,i)=>{
-                                        
-                                        let text = b.description;
-                                        text = text.replace(/<(\/)?([a-zA-Z]*)(\s[a-zA-Z]*=[^>]*)?(\s)*(\/)?>/ig, "");
-
-                                        return (
-                                            <tr key={b.id+i+"comments_list_myinfo"}>
-                                                <td>{b.board_id}</td>
-                                                <td>
-                                                    {text}
-                                                </td>
-                                                <td>
-                                                    {
-                                                        b.created === b.updated ? 
-                                                        moment(b.created).format("YYYY-MM-DD HH:mm:ss") :
-                                                        "(수정) " + moment(b.updated).format("YYYY-MM-DD HH:mm:ss")
-                                                    }
-                                                    
-                                                </td>
-                                            </tr>
-                                        )
-                                    })
-                                }
-                                </tbody>
-                            </table>
+                            <BoardTable
+                                data={comments}
+                                id={"board_id"}
+                                columnData={["No","내용","작성일"]}
+                                dateColumn="created"
+                                columnDataKey={["board_id","description","created"]}
+                                loading={cloading}
+                                link
+                                htmlToText="description"
+                                style={{color : "#fff"}}
+                            />
                             <ReactPaginate 
                                 pageCount={Math.ceil(commentsCount / 10)}
                                 pageRangeDisplayed={2}

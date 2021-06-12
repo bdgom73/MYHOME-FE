@@ -53,13 +53,17 @@ export default function Home(props){
                     <input type="text" name="search"  autocomplete="off" onFocus={onFocusHandler}/>
                     <input type="button" value="검색" onClick={()=>{history.push (`/search?search=${searchRef.current.value}`)}}/>
                 </div>
-            </search>
+            </search>  
             <div className="home_list">
+                <div className="signal_wrap" style={{margin:"15px 0"}}>
+                    <iframe src="https://www.signal.bz/" id="signal" title="signal실시간검색" scrolling="no"></iframe>
+                </div>
                 <top>
                     <tl onClick={()=>{setSort("date")}} className={sort === "date" ? "selected" : ""}>최신순</tl>
                     <tl onClick={()=>{setSort("recommend")}} className={sort === "recommend" ? "selected" : ""}>추천순</tl>
                     <tl onClick={()=>{setSort("views")}} className={sort === "views" ? "selected" : ""}>조회순</tl>
                 </top>  
+               
                 <div className="list">
                 {
                     data.map((d,i)=>{
