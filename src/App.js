@@ -26,6 +26,7 @@ import { ToastContainer } from 'react-toastify';
 import Search from "./component/route/Search";
 import Myinfo from "./component/route/myinfo/Myinfo";
 import UserInfo from "./component/route/user/UserInfo";
+import ToastWeather from "./component/part/ToastWeather";
 
 function App() {
 
@@ -89,11 +90,12 @@ function App() {
       {/* User Infomation */}
       <Route exact path="/user/:nickname" render={(props)=>{ return <UserInfo {...props}/> }}></Route>
       {/* TEST */}
-      <Route exact path="/test"><Modal><></></Modal></Route>
+      <Route exact path="/test"><ToastWeather/></Route>
 
       {/* NOT FOUND SERVICE */}
       <Route path="/"><NotFound/></Route>
     </Switch> 
+    <ToastWeather/>
     </>
   );
 }

@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+// font-family: 'Jua', sans-serif;
+.toast_weather_wrap{
+    -ms-user-select: none; 
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    position: fixed;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    bottom: 0px;
+    right: 0px;
+    display: flex;
+    align-items: center;
+    background-color: #222222;
+    padding: 2px;
+    max-width: 300px;
+    height: 55px;
+    font-family: 'Jua', sans-serif;
+    transition: all .3s ease-in;
+    .weather_select{
+        position: relative;
+        select{
+            position: absolute;
+            bottom : 35px;
+            right: 3px;
+            border: 0;
+            background-color: #222222;
+            color : #eee;
+            font-family: 'Jua', sans-serif;
+            overflow: hidden;
+            padding :5px;
+           
+            &:focus{
+                outline: none;
+            }
+            
+            option{
+                position: relative;
+                padding: 2px;
+                border-bottom: 1px solid #bbb;
+               
+            }
+            
+        }
+    }
+    .toast_weather{
+        display: flex;
+        ul{
+
+            padding : 0;
+            margin: 0 0 0 5px;
+            display: flex;
+            list-style: none;
+            align-items: center;
+           
+            li{
+                color: #eee;
+                font-weight: bold;
+                margin: 0px 4px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .small{
+                font-size: 12px;
+            }
+        }
+    }
+}

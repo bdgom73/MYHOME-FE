@@ -17,6 +17,7 @@ import axios from 'axios';
 import moment from 'moment';
 import ReactPaginate from 'react-paginate';
 import BoardTable from "../../part/write/BoardTable";
+import { maskingText } from '../../../js/common';
 export default function UserInfo(props){
 
     const title = useTitle("MYDOMUS | User");
@@ -36,13 +37,9 @@ export default function UserInfo(props){
     const [bloading,setBLoading] = useState(false);
 
     const [category,setCategory] = useState("all");
-    useEffect(()=>{  
-        if(data.nickname){
-            title.refTitle.innerText=`MYDOMUS | ${nickname}`
-        } else{
-            title.refTitle.innerText=`MYDOMUS | 유저정보`
-        }
-    },[data])
+    
+    // 유저정보
+    const [user,setUser] = useState({});
 
     const [subMenu, setSubMenu] = useState(false); 
      // 서브메뉴 ON/OFF
@@ -84,9 +81,20 @@ export default function UserInfo(props){
             if(res.status === 200) setBLoading(false);
         }).catch(e=> {console.log(e.response); setBLoading(false);});
     }
+    function getMemberData(){
+        axios.get(`/member/${nickname}`)
+        .then(res=>{
+            const result = res.data;
+            console.log(result)
+            setUser(result || {});
+            title.refTitle.innerText=`MYDOMUS | ${result.nickname}`
+            setAavtar(res.avatar_url);
+        }).catch(e=> {console.log(e.response);});
+    }
     useEffect(()=>{
         getMemberCommentsData(0);
         getMemberBoardData(0);
+        getMemberData();
     },[])
 
     return(
@@ -105,7 +113,7 @@ export default function UserInfo(props){
                 <div className="myinfo_body">
                     <div className="side">
                         <div className="myinfo_side">
-                            <h2>유저정보</h2>
+                            <h2>정보</h2>
                             <h3><RiUserFollowFill/>{nickname}</h3>
                             <ul>                    
                                 <li onClick={()=>{setSelected("avatar"); window.location.href="#avatar"}}><CgProfile color={selected==="avatar" ? "#bd2a2a" : ""}/>
@@ -158,11 +166,11 @@ export default function UserInfo(props){
                             <InfoDetailBody style={{position:"relative"}}>
                                 <ib style={{justifyContent:"center",alignItems:"center"}}>
                                     <label>이름</label>
-                                    <input type="text" className="onetext" readOnly defaultValue={"김*중"}/>  
+                                    <input type="text" className="onetext" readOnly defaultValue={user.name ? maskingText(user.name) : ""}/>  
                                     <label>닉네임</label>
-                                    <input type="text" className="onetext" readOnly defaultValue={"별명"}/> 
+                                    <input type="text" className="onetext" readOnly defaultValue={user.nickname ? user.nickname : ""}/> 
                                     <label>이메일</label>
-                                    <input type="text" className="onetext" readOnly defaultValue={"bdg****@naver.com"}/>   
+                                    <input type="text" className="onetext" readOnly defaultValue={user.email ? maskingText(user.email,"email") : ""}/>   
                                 </ib>               
                             </InfoDetailBody>
                         </InfoDetail>   
@@ -245,6 +253,7 @@ export default function UserInfo(props){
                                         link
                                         htmlToText="description"
                                         style={{color : "#fff"}}
+                                        colgroup={"10% 55% 35%"}
                                     />
                                     <ReactPaginate 
                                         pageCount={Math.ceil(commentsCount / 10)}

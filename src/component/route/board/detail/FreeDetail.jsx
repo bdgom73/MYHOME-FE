@@ -98,7 +98,7 @@ export default function FreeDetail(props){
         <h1 title={data.title}>{data.title}</h1>
         <video-info>
             <info>
-                <vi><small>작성자 |</small><b>{data.nickname}</b>              
+                <vi><small>작성자 |</small><a href={`/user/${data.nickname}`}><b>{data.nickname}</b></a>              
                 {
                     data.rank === "ADMIN" ? 
                     <pcon style={{backgroundColor:"#c4302b"}}>

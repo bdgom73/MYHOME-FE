@@ -174,6 +174,11 @@ export default function Myinfo(props){
                 setLog(res.data);
             }).catch(e=>console.log(e.response.data))
     }
+
+    function onUpdateHandler(){
+        const fd = new FormData();
+    }
+
     return(
         <>
         {modalActive()}
@@ -437,6 +442,7 @@ export default function Myinfo(props){
                                 link
                                 htmlToText="description"
                                 style={{color : "#fff"}}
+                                colgroup={"10% 55% 35%"}
                             />
                             <ReactPaginate 
                                 pageCount={Math.ceil(commentsCount / 10)}

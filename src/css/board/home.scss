@@ -215,7 +215,14 @@
         }
     }
 }
-
+@media screen and (max-width: 422px) {
+    .signal_wrap{ 
+        height: 520px;
+        iframe{
+           
+        }     
+    }
+}
 .range{
     background-color: #da4646 !important;
 }

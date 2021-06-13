@@ -11,6 +11,7 @@ import moment from "moment";
 import useTitle from "../../../../customState/useTitle";
 
 import CKEditor5 from "../../../part/write/CKEditor/CKEditor5";
+import { Link } from "react-router-dom";
 
 export default function VideoDetail(props){
 
@@ -104,7 +105,7 @@ export default function VideoDetail(props){
         <h1 title={data.title}>{data.title}</h1>
         <video-info>
             <info>
-                <vi><small>작성자 |</small><b>{data.nickname}</b>              
+                <vi><small>작성자 |</small><Link to={`/user/${data.nickname}`}> <b>{data.nickname}</b>  </Link>            
                 {
                     data.rank === "ADMIN" ? 
                     <pcon style={{backgroundColor:"#c4302b"}}>

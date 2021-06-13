@@ -77,20 +77,22 @@ export default function BoardTable(props){
                     data.map((d,i)=>{
                         const unique = videoColumn && d[videoColumn]? d[videoColumn].split("https://youtu.be/")[1]: "";
                         const key = dataField();
+                        var desc = htmlToText  ? d[htmlToText] : "";                
+                        desc = desc.replace(/<(\/)?([a-zA-Z]*)(\s[a-zA-Z]*=[^>]*)?(\s)*(\/)?>/ig, "");        
                         return (          
-                            <tr key={i+"tables"+i} > 
-                                      
+                            <tr key={i+"tables"+i} >                                     
                                 {
-                                columnDataKey ? columnDataKey.map((k,j)=>{           
-                                    if(linkColumn){
-                                      
+                                columnDataKey ? columnDataKey.map((k,j)=>{  
+                                    
+                                    if(linkColumn){          
+                                       
                                         return (
                                             <td key={k+i+j} onClick={k===linkColumn ? ()=>{onClickHandler(id ? d[id] : d.id , link ? d.categoryList.toLowerCase() : "")}:()=>{}} 
-                                            className={k===linkColumn? "link" : ""} style={k==="title" ? {width : "40%"} : {}}>
-                                          
+                                            className={k===linkColumn? "link" : ""} style={k==="title" ? {width : "40%"} : {}}> 
                                                 {          
                                                 k === "id" && moment.duration(moment().diff(moment(d[dateColumn]))).days() < 1 ?
                                                 <div className="new"><pcon><span>NEW</span></pcon>{d[k]}</div> :
+                                               
                                                 dateColumn === k ? moment(d[dateColumn]).format("YYYY-MM-DD HH:mm") : 
                                                 videoColumn === k && d.videoType === "YOUTUBE" ? 
                                                 <img className="thumbnail" src={`https://i1.ytimg.com/vi/${unique}/1.jpg`} alt="youtube_video"/> :
@@ -101,7 +103,9 @@ export default function BoardTable(props){
                                                 writerColumn === k && d.rank==="ADMIN" ?  
                                                 <div className="flex"><pcon style={{backgroundColor:"#c4302b"}}>
                                                     <span >운영자</span>  
-                                                </pcon>{d[k]}</div> :
+                                                </pcon><a href={`/user/${d[k]}`}>{d[k]}</a></div> :
+                                                writerColumn === k  ? <a href={`/user/${d[k]}`}>{d[k]}</a> :
+                                                htmlToText === k ? desc :
                                                 imageColumn === k ?  <img className="thumbnail" src={d.imageList[0] ? d.imageList[0].image_url : `/no_thumbnail.png`} alt="youtube_video"/> :
                                                 d[k]}
                                                 {
@@ -113,10 +117,9 @@ export default function BoardTable(props){
                                     }else{ 
                                         return (
                                             <td key={k+i+j} onClick={()=>{onClickHandler(id ? d[id] : d.id ,link ? d.categoryList.toLowerCase() : "")}} style={k==="title" ? {width : "40%"} : {}}>
-                                                 {          
+                                                  {          
                                                 k === "id" && moment.duration(moment().diff(moment(d[dateColumn]))).days() < 1 ?
                                                 <div className="new"><pcon><span>NEW</span></pcon>{d[k]}</div> :
-                                                htmlToText === k ? <div dangerouslySetInnerHTML={{__html : d[htmlToText]}}/> :
                                                 dateColumn === k ? moment(d[dateColumn]).format("YYYY-MM-DD HH:mm") : 
                                                 videoColumn === k && d.videoType === "YOUTUBE" ? 
                                                 <img className="thumbnail" src={`https://i1.ytimg.com/vi/${unique}/1.jpg`} alt="youtube_video"/> :
@@ -127,7 +130,10 @@ export default function BoardTable(props){
                                                 writerColumn === k && d.rank==="ADMIN" ?  
                                                 <div className="flex"><pcon style={{backgroundColor:"#c4302b"}}>
                                                     <span >운영자</span>  
-                                                </pcon>{d[k]}</div> : 
+                                                </pcon><a href={`/user/${d[k]}`}>{d[k]}</a></div> :
+                                                 writerColumn === k  ? <a href={`/user/${d[k]}`}>{d[k]}</a> :
+                                                 htmlToText === k ? desc :
+                                                imageColumn === k ?  <img className="thumbnail" src={d.imageList[0] ? d.imageList[0].image_url : `/no_thumbnail.png`} alt="youtube_video"/> :
                                                 d[k]}
                                                 {
                                                     dateColumn === k && updatedColumn && moment(d[dateColumn]).format("YYYY-MM-DD HH:mm") !== moment(d[updatedColumn]).format("YYYY-MM-DD HH:mm") ? 
@@ -154,7 +160,10 @@ export default function BoardTable(props){
                                                 writerColumn === k && d.rank==="ADMIN" ?  
                                                 <div className="flex"><pcon style={{backgroundColor:"#c4302b"}}>
                                                     <span >운영자</span>  
-                                                </pcon>{d[k]}</div> :
+                                                </pcon><a href={`/user/${d[k]}`}>{d[k]}</a></div> :
+                                                 writerColumn === k  ? <a href={`/user/${d[k]}`}>{d[k]}</a> :
+                                                 htmlToText === k ? desc :
+                                                imageColumn === k ?  <img className="thumbnail" src={d.imageList[0] ? d.imageList[0].image_url : `/no_thumbnail.png`} alt="youtube_video"/> :
                                                 d[k]}
                                                 {
                                                     dateColumn === k && updatedColumn && moment(d[dateColumn]).format("YYYY-MM-DD HH:mm") !== moment(d[updatedColumn]).format("YYYY-MM-DD HH:mm") ? 
@@ -178,7 +187,10 @@ export default function BoardTable(props){
                                                 writerColumn === k && d.rank==="ADMIN" ?  
                                                 <div className="flex"><pcon style={{backgroundColor:"#c4302b"}}>
                                                     <span >운영자</span>  
-                                                </pcon>{d[k]}</div> :
+                                                </pcon><a href={`/user/${d[k]}`}>{d[k]}</a></div> :
+                                                 writerColumn === k  ? <a href={`/user/${d[k]}`}>{d[k]}</a> :
+                                                 htmlToText === k ? desc :
+                                                imageColumn === k ?  <img className="thumbnail" src={d.imageList[0] ? d.imageList[0].image_url : `/no_thumbnail.png`} alt="youtube_video"/> :
                                                 d[k]}
                                                 {
                                                     dateColumn === k && updatedColumn && moment(d[dateColumn]).format("YYYY-MM-DD HH:mm") !== moment(d[updatedColumn]).format("YYYY-MM-DD HH:mm") ? 

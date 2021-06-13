@@ -14,6 +14,7 @@ import useModal from "../../../../customState/useModal";
 import Modal from "../../../modal/modal";
 import useMember from "../../../../customState/useMember";
 import CKEditor5 from "../../../part/write/CKEditor/CKEditor5";
+import { Link } from "react-router-dom";
 
 export default function PhotoDetail(props){
 
@@ -140,7 +141,7 @@ export default function PhotoDetail(props){
         <h1 title={data.title}>{data.title}</h1>
         <video-info>
             <info>
-                <vi><small>작성자 |</small><b>{data.nickname}</b>              
+                <vi><small>작성자 |</small><Link to={`/user/${member.data.name}`}><b>{data.nickname}</b> </Link>             
                 {
                     data.rank === "ADMIN" ? 
                     <pcon style={{backgroundColor:"#c4302b"}}>
