@@ -48,7 +48,7 @@ export default function BoardCard(props){
                             <span >운영자</span>  
                         </pcon> :<></>
                     }
-                    {writer}
+                    <a href={`/user/${writer}`} className="writer">{writer}</a>
                    
                 </div>
                 <div className="fromnow">{ moment(created, "YYYY-MM-DD HH:mm:ss").fromNow()}</div>

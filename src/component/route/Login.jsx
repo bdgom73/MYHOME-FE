@@ -46,11 +46,8 @@ export default function Login(){
     }
     return(
         <>
-        <div className="write_wrap">
+        <div className="write_wrap write_board2">
             <div className="sub_header">
-                {/* <div className="logo">
-                    <img src="/image/logo.png" alt="LOGO" onClick={()=>{history.push("/")}}/>
-                </div> */}
                 <div className="title">로그인</div>
             </div>  
             <form onSubmit={onSubmitHandler}>
@@ -65,6 +62,9 @@ export default function Login(){
                 <input type="submit" value="로그인"/>      
             </form>
             <p>계정이 없으신가요 ? <small><Link to="/register">회원가입</Link></small></p>
+            <p>
+                비밀번호를 잊으셨나요 ? <small><Link to="/">비밀번호 찾기</Link></small>
+            </p>          
         </div>
         </>
     );

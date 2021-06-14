@@ -27,6 +27,7 @@ import Search from "./component/route/Search";
 import Myinfo from "./component/route/myinfo/Myinfo";
 import UserInfo from "./component/route/user/UserInfo";
 import ToastWeather from "./component/part/ToastWeather";
+import UserFind from "./component/route/find/UserFind";
 
 function App() {
 
@@ -90,7 +91,7 @@ function App() {
       {/* User Infomation */}
       <Route exact path="/user/:nickname" render={(props)=>{ return <UserInfo {...props}/> }}></Route>
       {/* TEST */}
-      <Route exact path="/test"><ToastWeather/></Route>
+      <Route exact path="/test"><UserFind/></Route>
 
       {/* NOT FOUND SERVICE */}
       <Route path="/"><NotFound/></Route>

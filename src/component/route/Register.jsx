@@ -94,7 +94,7 @@ export default function Register(){
     return(
         <>
         {openModal()}
-        <div className="write_wrap" style={{maxWidth:"800px",margin:"15px auto"}}>
+        <div className="write_wrap write_board" style={{maxWidth:"800px",margin:"15px auto"}}>
             <div className="sub_header">    
                 <div className="title">회원가입</div>
             </div>   

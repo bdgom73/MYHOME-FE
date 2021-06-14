@@ -3,6 +3,22 @@ message{
     color : #fd5b50;
     font-weight: bold;
 }
+.write_board2{
+    form{
+        max-width: 500px;
+        padding: 10px;
+    }
+}
+.write_board{
+ 
+    padding: 10px;
+    form{
+        max-width: 500px;
+        padding: 10px;
+        border : 3px solid #eee;
+        border-radius: 10px;
+    }
+}
 .write_wrap{  
     display: flex;
     flex-direction: column;

@@ -35,7 +35,14 @@ table.table, table.control{
                 padding: 5px;
                 border-bottom: 1px solid #bbb;
                 text-align: center;
-               
+                a{
+                    text-decoration: none;
+                    color : #8b4f05;
+                    font-weight: bold;
+                    &:hover{
+                        text-decoration: underline;
+                    }
+                }
                 .thumbnail{
                     max-width: 120px;
                     max-height: 90px;
@@ -53,8 +60,11 @@ table.table, table.control{
             .link{
                 color : #8b4f05;
                 font-weight: bold;
-                text-decoration: underline;
+                text-decoration: none;
                 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                &:hover{
+                    text-decoration: underline;
+                }
             }
         }
     }

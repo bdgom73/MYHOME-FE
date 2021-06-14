@@ -19,7 +19,7 @@ function getWeatherCityName(city,cb,error){
     }).then((res)=>{
         if(cb) cb(res);
     }).catch((e)=>{
-        if(error) error(e.response);
+        if(error) error(e);
     })
 }
 // ajax 현재 도시의 아이디값으로 날씨데이터 가져오기.
@@ -57,42 +57,41 @@ export default function ToastWeather(props){
     const [isSeleted, setIsSeleted] = useState(false);
 
     const [active,setActive] = useState(true);
+
     useEffect(()=>{
         saveWeatherInfo();
-        setCurrent(cityList[0].id)
+        setCurrent(cityList[0].id);
     },[]);
 
     // ajax 기본 respanse 세팅
     function saveInfo(res){
         const info = res.data; 
-        console.log(info);
-        console.log(info);
         setMain(info.main);
-        setWind(info.wind);
-        setClouds(info.clouds);
-        setRain(info.rain);
-        setSnow(info.snow);
-        setWeather(info.weather[0]);
+        // setWind(info.wind);
+        // setClouds(info.clouds);
+        setRain(info.rain ? info.rain['1h'] : "");
+        setSnow(info.snow ? info.snow['1h'] : "");
+        setWeather(info.weather[0] || {});
         setCityName(cityJson[info.id].name);
         setDt(timestampToDate(info.dt));   
     }
 
     // 날씨 모드에 따른 값 가져오는 방법 검사
     const saveWeatherInfo = ()=>{
-        if(props.mode === "id"){
-            getWeatherCityId(props.id ? props.id : 1838716,(res)=>{
-                saveInfo(res);
-           });
-        }else{
-            getWeatherCityName(props.city ? props.city : "bucheon",(res)=>{
-                saveInfo(res);
-           });
-        }
-        
+        getWeatherCityId(1838716,(res)=>{       
+            console.log(res)
+            setMain(res.data.main);
+            // setWind(info.wind);
+            // setClouds(info.clouds);
+            setRain(res.data.rain ? res.data.rain['1h'] : "");
+            setSnow(res.data.snow ? res.data.snow['1h'] : "");
+            setWeather(res.data.weather[0]);
+            setCityName(cityJson[res.data.id].name);
+        },(e)=>{console.log(e)});    
     }
     return (
         <>
-        <div className="toast_weather_wrap" onMouseDown={(e)=>{console.log(e)}}  style={active ? {}: {right:"-240px"}}>    
+        <div className="toast_weather_wrap" onMouseDown={(e)=>{console.log(e)}}  style={active ? {}: {right:"-250px"}}>    
             <div className="tt">
                 {
                     active ?  
@@ -106,7 +105,10 @@ export default function ToastWeather(props){
                 <ul>
                     <li>{cityName}</li>
                     <li>
-                        <img src={getWeatherIconUrl(weather.icon)} alt={weather.description}/>       
+                        {
+                            weather.icon ? <img src={getWeatherIconUrl(weather.icon)} alt={weather.description}/> :<></>
+                        }
+                          
                     </li>
                     <li>{weather.description}</li>
                     <li>{Number(main.temp).toFixed(0)}℃</li> 
@@ -122,7 +124,15 @@ export default function ToastWeather(props){
                 <select size="15" value={current} onChange={(e)=>{  
                     setCurrent(e.target.value);
                     getWeatherCityId(e.target.value,(res)=>{       
-                        saveInfo(res); 
+                        const info = res.data; 
+                        console.log(info)
+                        setMain(info.main);
+                        // setWind(info.wind);
+                        // setClouds(info.clouds);
+                        setRain(info.rain ? info.rain['1h'] : "");
+                        setSnow(info.snow ? info.snow['1h'] : "");
+                        setWeather(info.weather[0]);
+                        setCityName(cityJson[info.id].name);
                         setIsSeleted(false);     
                     });   
                 }   

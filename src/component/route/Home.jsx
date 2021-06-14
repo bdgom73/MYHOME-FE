@@ -20,8 +20,6 @@ export default function Home(props){
     const history = useHistory();
     const [sort,setSort] = useState("date");
     const [data, setData] = useState([]);
-    const [plus,setPlus] = useState(false);
-    const [current,setCurrent] = useState({});
 
     const onFocusHandler = (e)=>{
         searchRef.current = e.target
@@ -35,8 +33,6 @@ export default function Home(props){
         .then(res=>{
             const d = res.data;
             setData(d || []);
-        }).catch(e=>{
-            console.log(e.response);
         })
     },[sort])
 

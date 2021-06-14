@@ -46,7 +46,7 @@ export default function Myinfo(props){
     const [detail_address,setDetail_address] = useState(data.detail_address);
     const [avatar,setAavtar] = useState(data.avatar_url);
     const [currentAvatar,setCurrentAvatar] = useState(data.avatar_url);
-
+    const [isduplicateNickname,setIsDuplicateNickname] = useState(false);
 
     // 내가 쓴 댓글 , 게시글 
     const [comments, setComments] = useState([]);
@@ -175,8 +175,27 @@ export default function Myinfo(props){
             }).catch(e=>console.log(e.response.data))
     }
 
+    function duplicateNickname(){
+        axios.get(`/member/duplicate/nickname=${nickname}`)
+        .then(res=>{}).catch(e=>{})
+    }
     function onUpdateHandler(){
         const fd = new FormData();
+        fd.append("nickname",nickname);
+        fd.append("address",address);
+        fd.append("zipcode",zipcode);
+        fd.append("detail_address",detail_address);
+        axios.put(`/member/update`,fd,{"headers" : {"Authorization" : SESSION_UID}})
+        .then(res=> {
+            if(res.status === 200) {
+                setPrivateInfoIsUpdate(false);
+            }
+        }).catch(e=>{alert(e.response.data.message ? e.response.data.message : "정보 변경에 실패했습니다."); 
+            setNickname(data.nickname);
+            setAddress(data.address);
+            setZipcode(data.zipcode);
+            setDetail_address(data.detail_address);     
+        })
     }
 
     return(
@@ -286,9 +305,9 @@ export default function Myinfo(props){
                             <label>이메일</label>
                             <input type="text" className="onetext" defaultValue={data.email ? data.email : ""} readOnly/>
                             <label>이름</label>
-                            <input type="text" className="onetext" defaultValue={data.name ? data.name : ""}/>
+                            <input type="text" className="onetext" defaultValue={data.name ? data.name : ""} readOnly/>
                             <label>닉네임</label>
-                            <input type="text" className="onetext" value={nickname} onChange={(e)=>{onChangePrivateInfo(e,"nickname")}}/>
+                            <input type="text" className="onetext" value={nickname} onChange={(e)=>{onChangePrivateInfo(e,"nickname");setIsDuplicateNickname(false)}}/>
                             <label>우편번호</label>          
                             <input type="text" className="onetext" value={zipcode} onClick={()=>{if(privateInfoIsUpdate)setModal(1);}}/>
                             <label className="full">주소</label>
@@ -299,7 +318,7 @@ export default function Myinfo(props){
                                 <button type="button" style={privateInfoIsUpdate ? {backgroundColor : "#08ac19" } :{backgroundColor: "#dd3b3b"  }} onClick={()=>{setPrivateInfoIsUpdate(!privateInfoIsUpdate)}}>{privateInfoIsUpdate ? "수정중" : "수정하기"}</button>
                                 {
                                     privateInfoIsUpdate ? 
-                                    <button type="button" style={{backgroundColor :"#eeeeee",color :"#222222"}}>변경</button> :
+                                    <button type="button" style={{backgroundColor :"#eeeeee",color :"#222222"}} onClick={onUpdateHandler}>변경</button> :
                                     <></>
                                 }
                                
@@ -395,9 +414,9 @@ export default function Myinfo(props){
                             </div>
                             <BoardTable
                                 data={category === "all" ? board : board.filter(v=> v.categoryList === category)}
-                                columnData={["No","제목","작성일"]}
+                                columnData={["구분","제목","작성일"]}
                                 dateColumn="created"
-                                columnDataKey={["id","title","created"]}
+                                columnDataKey={["categoryList","title","created"]}
                                 loading={bloading}
                                 link
                                 style={{color : "#fff"}}

@@ -205,9 +205,9 @@ export default function UserInfo(props){
                                 </div>
                                 <BoardTable
                                     data={category === "all" ? board : board.filter(v=> v.categoryList === category)}
-                                    columnData={["No","제목","작성일"]}
+                                    columnData={["구분","제목","작성일"]}
                                     dateColumn="created"
-                                    columnDataKey={["id","title","created"]}
+                                    columnDataKey={["categoryList","title","created"]}
                                     loading={bloading}
                                     link
                                     style={{color : "#fff"}}

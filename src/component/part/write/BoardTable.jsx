@@ -1,10 +1,10 @@
 import moment from "moment";
 import { useEffect, useRef, useState } from "react";
 import { useHistory } from "react-router";
-
+import { FaVideo,FaChalkboard,FaComments } from 'react-icons/fa';
 import useMember from "../../../customState/useMember";
 import SubLoading from "../../sub_loading";
-
+import { MdPhoto } from 'react-icons/md';
 import Loading from "../Loading";
 export default function BoardTable(props){
 
@@ -92,7 +92,12 @@ export default function BoardTable(props){
                                                 {          
                                                 k === "id" && moment.duration(moment().diff(moment(d[dateColumn]))).days() < 1 ?
                                                 <div className="new"><pcon><span>NEW</span></pcon>{d[k]}</div> :
-                                               
+                                                k === "categoryList" && d[k] === "PHOTO" ? 
+                                                <MdPhoto color="#fff" size="20"/> :
+                                                k === "categoryList" && d[k] === "FREE" ? 
+                                                <FaChalkboard color="#fff" size="20"/> :
+                                                k === "categoryList" && d[k] === "VIDEO" ? 
+                                                <FaVideo color="#fff" size="20"/> :
                                                 dateColumn === k ? moment(d[dateColumn]).format("YYYY-MM-DD HH:mm") : 
                                                 videoColumn === k && d.videoType === "YOUTUBE" ? 
                                                 <img className="thumbnail" src={`https://i1.ytimg.com/vi/${unique}/1.jpg`} alt="youtube_video"/> :
@@ -117,9 +122,15 @@ export default function BoardTable(props){
                                     }else{ 
                                         return (
                                             <td key={k+i+j} onClick={()=>{onClickHandler(id ? d[id] : d.id ,link ? d.categoryList.toLowerCase() : "")}} style={k==="title" ? {width : "40%"} : {}}>
-                                                  {          
+                                                   {          
                                                 k === "id" && moment.duration(moment().diff(moment(d[dateColumn]))).days() < 1 ?
                                                 <div className="new"><pcon><span>NEW</span></pcon>{d[k]}</div> :
+                                                k === "categoryList" && d[k] === "PHOTO" ? 
+                                                <MdPhoto color="#fff" size="20"/> :
+                                                k === "categoryList" && d[k] === "FREE" ? 
+                                                <FaChalkboard color="#fff" size="20"/> :
+                                                k === "categoryList" && d[k] === "VIDEO" ? 
+                                                <FaVideo color="#fff" size="20"/> :
                                                 dateColumn === k ? moment(d[dateColumn]).format("YYYY-MM-DD HH:mm") : 
                                                 videoColumn === k && d.videoType === "YOUTUBE" ? 
                                                 <img className="thumbnail" src={`https://i1.ytimg.com/vi/${unique}/1.jpg`} alt="youtube_video"/> :
@@ -131,8 +142,8 @@ export default function BoardTable(props){
                                                 <div className="flex"><pcon style={{backgroundColor:"#c4302b"}}>
                                                     <span >운영자</span>  
                                                 </pcon><a href={`/user/${d[k]}`}>{d[k]}</a></div> :
-                                                 writerColumn === k  ? <a href={`/user/${d[k]}`}>{d[k]}</a> :
-                                                 htmlToText === k ? desc :
+                                                writerColumn === k  ? <a href={`/user/${d[k]}`}>{d[k]}</a> :
+                                                htmlToText === k ? desc :
                                                 imageColumn === k ?  <img className="thumbnail" src={d.imageList[0] ? d.imageList[0].image_url : `/no_thumbnail.png`} alt="youtube_video"/> :
                                                 d[k]}
                                                 {
@@ -147,9 +158,15 @@ export default function BoardTable(props){
                                     if(linkColumn){
                                         return (
                                             <td key={k+i+j} onClick={k===linkColumn ? ()=>{onClickHandler(id ? d[id] : d.id ,link ? d.categoryList.toLowerCase() : "")}:()=>{}} style={k==="title" ? {width : "40%"} : {}}>
-                                             {          
+                                              {          
                                                 k === "id" && moment.duration(moment().diff(moment(d[dateColumn]))).days() < 1 ?
                                                 <div className="new"><pcon><span>NEW</span></pcon>{d[k]}</div> :
+                                                k === "categoryList" && d[k] === "PHOTO" ? 
+                                                <MdPhoto color="#fff" size="20"/> :
+                                                k === "categoryList" && d[k] === "FREE" ? 
+                                                <FaChalkboard color="#fff" size="20"/> :
+                                                k === "categoryList" && d[k] === "VIDEO" ? 
+                                                <FaVideo color="#fff" size="20"/> :
                                                 dateColumn === k ? moment(d[dateColumn]).format("YYYY-MM-DD HH:mm") : 
                                                 videoColumn === k && d.videoType === "YOUTUBE" ? 
                                                 <img className="thumbnail" src={`https://i1.ytimg.com/vi/${unique}/1.jpg`} alt="youtube_video"/> :
@@ -161,8 +178,8 @@ export default function BoardTable(props){
                                                 <div className="flex"><pcon style={{backgroundColor:"#c4302b"}}>
                                                     <span >운영자</span>  
                                                 </pcon><a href={`/user/${d[k]}`}>{d[k]}</a></div> :
-                                                 writerColumn === k  ? <a href={`/user/${d[k]}`}>{d[k]}</a> :
-                                                 htmlToText === k ? desc :
+                                                writerColumn === k  ? <a href={`/user/${d[k]}`}>{d[k]}</a> :
+                                                htmlToText === k ? desc :
                                                 imageColumn === k ?  <img className="thumbnail" src={d.imageList[0] ? d.imageList[0].image_url : `/no_thumbnail.png`} alt="youtube_video"/> :
                                                 d[k]}
                                                 {
@@ -174,9 +191,15 @@ export default function BoardTable(props){
                                     }else{
                                         return (
                                             <td key={k+i+j} onClick={()=>{onClickHandler(id ? d[id] : d.id ,link ? d.categoryList.toLowerCase() : "")}} style={k==="title" ? {width : "40%"} : {}}>
-                                                 {          
+                                                {          
                                                 k === "id" && moment.duration(moment().diff(moment(d[dateColumn]))).days() < 1 ?
                                                 <div className="new"><pcon><span>NEW</span></pcon>{d[k]}</div> :
+                                                k === "categoryList" && d[k] === "PHOTO" ? 
+                                                <MdPhoto color="#fff" size="20"/> :
+                                                k === "categoryList" && d[k] === "FREE" ? 
+                                                <FaChalkboard color="#fff" size="20"/> :
+                                                k === "categoryList" && d[k] === "VIDEO" ? 
+                                                <FaVideo color="#fff" size="20"/> :
                                                 dateColumn === k ? moment(d[dateColumn]).format("YYYY-MM-DD HH:mm") : 
                                                 videoColumn === k && d.videoType === "YOUTUBE" ? 
                                                 <img className="thumbnail" src={`https://i1.ytimg.com/vi/${unique}/1.jpg`} alt="youtube_video"/> :
@@ -188,8 +211,8 @@ export default function BoardTable(props){
                                                 <div className="flex"><pcon style={{backgroundColor:"#c4302b"}}>
                                                     <span >운영자</span>  
                                                 </pcon><a href={`/user/${d[k]}`}>{d[k]}</a></div> :
-                                                 writerColumn === k  ? <a href={`/user/${d[k]}`}>{d[k]}</a> :
-                                                 htmlToText === k ? desc :
+                                                writerColumn === k  ? <a href={`/user/${d[k]}`}>{d[k]}</a> :
+                                                htmlToText === k ? desc :
                                                 imageColumn === k ?  <img className="thumbnail" src={d.imageList[0] ? d.imageList[0].image_url : `/no_thumbnail.png`} alt="youtube_video"/> :
                                                 d[k]}
                                                 {
