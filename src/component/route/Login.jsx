@@ -12,6 +12,7 @@ import moment from 'moment';
 function clientIP(){
     return publicIp.v4();
   }
+
 export default function Login(){
 
     useTitle(`MYDOMUS | LOGIN`);
@@ -26,7 +27,6 @@ export default function Login(){
         const fd = new FormData();
         fd.append("email",target[0].value);
         fd.append("password",target[1].value);
-        
         clientIP().then(result=>{
             axios.get(`/openapi/whois.jsp?query=${result}&key=${process.env.REACT_APP_WHOIS_KR_KEY}&answer=json`).then(res => {
                 fd.append("ip",result);
@@ -42,7 +42,6 @@ export default function Login(){
                 })    
             })
         })
-        
     }
     return(
         <>
