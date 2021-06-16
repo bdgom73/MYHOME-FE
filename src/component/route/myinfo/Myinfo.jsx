@@ -201,6 +201,11 @@ export default function Myinfo(props){
     return(
         <>
         {modalActive()}
+        <button onClick={()=>{
+            axios.get(`/send/mail/${SESSION_UID}`)
+                .then(res=>console.log(res))
+                .catch(e=>console.log(e.response))
+        }}>클릭테스트</button>
         <Mainheader subMenuHandler={subMenuHandler} style={{backgroundColor : "#222222"}} />
         <div className="content_wrap">
             {

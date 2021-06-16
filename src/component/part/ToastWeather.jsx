@@ -110,7 +110,6 @@ export default function ToastWeather(props){
                         }
                           
                     </li>
-                    <li>{weather.description}</li>
                     <li>{Number(main.temp).toFixed(0)}℃</li> 
                     {rain ? <li>({rain}mm)</li> : ""}
                     {snow ? <li>({snow}mm)</li> : ""}

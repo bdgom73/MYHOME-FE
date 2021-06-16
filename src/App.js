@@ -28,12 +28,13 @@ import Myinfo from "./component/route/myinfo/Myinfo";
 import UserInfo from "./component/route/user/UserInfo";
 import ToastWeather from "./component/part/ToastWeather";
 import UserFind from "./component/route/find/UserFind";
+import EmailAuth from "./component/EmailAuth";
 
 function App() {
 
- 
   return (   
     <>
+   
     <ToastContainer/>
     <Switch>   
       <Route exact path="/" ><Template><Home/></Template></Route>
@@ -90,8 +91,10 @@ function App() {
 
       {/* User Infomation */}
       <Route exact path="/user/:nickname" render={(props)=>{ return <UserInfo {...props}/> }}></Route>
+
+      
       {/* TEST */}
-      <Route exact path="/test"><UserFind/></Route>
+      <Route exact path="/test"><EmailAuth/></Route>
 
       {/* NOT FOUND SERVICE */}
       <Route path="/"><NotFound/></Route>

@@ -47,3 +47,18 @@
 // user find
 @import "./find/UserFind.scss";
 
+
+// basic input text
+
+input[type="text"].basic{
+    width: 100%;
+    margin: 5px 0;
+    padding: 10px;
+    background-color: #eee;
+    border-radius: 5px;
+    height: 40px;
+    border : 1px solid #bbb;
+    &:focus{
+        outline: none;
+    }
+}
