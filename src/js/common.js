@@ -11,7 +11,7 @@ export function byte(fileSize, fixed) {
     if (fileSize >= 1024 * 1024) {
         fileSize = fileSize / (1024 * 1024);
         let fs = fileSize = (fixed === undefined) ? fileSize.toFixed(2) : fileSize.toFixed(fixed);
-        if(fs.indexOf(".") != -1){
+        if(fs.indexOf(".") !== -1){
             if(fs.split(".")[0].length >=4){
                 fileSize = fileSize / 1024;  
                 fileSize = (fixed === undefined) ? fileSize.toFixed(2) : fileSize.toFixed(fixed);
@@ -45,7 +45,7 @@ function commaNum(fileSize){
    
     str = fileSize.substring(0, point); 
     while (point < len) { 
-        if (str != "") str += ","; 
+        if (str !== "") str += ","; 
         str += fileSize.substring(point, point + 3); 
         point += 3; 
     } 

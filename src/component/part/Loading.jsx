@@ -9,10 +9,9 @@ export default function Loading(props){
     return(
         <>
         <div className="loading">
-            <div className="loading_bar">
-            <div className="bar"></div>
-            </div>
-           
+            <div className="bar">{props.text}</div>
+            <div className="loading_bar">     
+            </div>  
         </div>
         </>
     );

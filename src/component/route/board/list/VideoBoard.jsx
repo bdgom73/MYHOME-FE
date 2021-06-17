@@ -90,8 +90,8 @@ export default function VideoBoard(){
         <div className="card_board_wrap">
         {
             data.map((m,i)=>{
-                const unique = m.video_url ? m["video_url"].split("https://youtu.be/")[1]: ""; 
-                    
+                console.log(m);
+                const unique = m.video_url ? m["video_url"].split("https://youtu.be/")[1]: "";         
                 return <BoardCard 
                     id={m.id}
                     title={m.title}
@@ -103,6 +103,8 @@ export default function VideoBoard(){
                     rank = {m.rank}
                     created = {m.created}
                     updated = {m.updated}
+                    comment = {m.commentDTOList || []}
+                    
                     />   
             })
         }

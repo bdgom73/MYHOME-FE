@@ -310,26 +310,44 @@
             }
         }
         .myinfo_body{    
-            flex-direction: column;    
-            .side{        
-                width: 100%;
-                max-width: 100%;
+            flex-direction: column;
+            width: 100%; 
+            position: relative;
+            top:0px;       
+            .side{      
+                z-index: 99;  
+
+                top:-5px; 
+                display: flex;
                 flex-direction: column; 
-                margin: -5px;
-                &::after{
-                    content: "";
-                    position: absolute;
-                }
             }
             .myinfo_side{
-               
-                min-width: 340px;
+                position: relative;
+                width: 100%;
+                margin-left: -5px;
+                border-bottom-right-radius: 10px;
                 h2{
-                    display: block;
+                    padding :5px;
+                    display: flex;
+                    align-items: center;
                     width: 100%;
                     margin: 0;
+                    svg{
+                        cursor: pointer;
+                    }
                 }
-                ul{
+                .sub_list{
+                    position: absolute;
+                    flex-direction: column;
+                    justify-content: flex-start;
+                    align-items: flex-start;
+                    background-color: #111111;
+                    top:30px;
+                    width: 100%;
+                    padding: 10px;
+                    border-radius: 10px;
+                }
+                .info_list{
                     display: flex;
                     padding: 0;
                     align-items: center;
@@ -380,3 +398,4 @@
         }
     }
 }
+

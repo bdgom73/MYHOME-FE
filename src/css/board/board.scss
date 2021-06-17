@@ -122,16 +122,16 @@
             display: flex;
             align-items: center;
             justify-content: space-around;
-            .recommend,.views{
+            .recommend,.views,.comments{
                 span{
                     max-width: 60px;
                     overflow: hidden;
                     text-overflow:ellipsis;
                     white-space: nowrap;
+                    margin-left: 2px;
                 }
                 display: flex;
                 align-items: center;
-                
             }
         }
     }

@@ -100,9 +100,14 @@
         .list{
             width: 100%;    
             .category{
+                cursor: pointer;
                 color : #5c043e;
                 font-size: 9px;
                 font-weight: bold;
+                width: 100%;
+                &:hover{
+                    text-decoration: underline;
+                }
             } 
             .list_body{
                 display: flex;    
@@ -167,8 +172,11 @@
                 a{
                     color : #8b4f05;
                     font-weight: bold;
-                    text-decoration: underline;
+                    text-decoration: none;
                     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                    &:hover{
+                        text-decoration: underline; 
+                    }
                 }
             }
             

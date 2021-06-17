@@ -1,6 +1,7 @@
 
 import { AiTwotoneLike } from 'react-icons/ai';
 import { GrFormView } from 'react-icons/gr';
+import { FaCommentDots } from 'react-icons/fa';
 import { useHistory } from "react-router";
 import moment from "moment";
 import { Link } from "react-router-dom";
@@ -18,6 +19,7 @@ export default function BoardCard(props){
         rank,
         created,
         updated,
+        comment
      } = props;
 
     const history = useHistory();
@@ -55,6 +57,7 @@ export default function BoardCard(props){
                 <div className="info">
                     <span className="recommend" title={"추천수 : "+recommend}><AiTwotoneLike size="20" color="#3b5998"/> <span>{recommend}</span></span>
                     <span className="views" title={"조회수 : "+views}><GrFormView size="20"/> <span>{views}</span></span>
+                    <span className="comments" title={"댓글수 : " + (comment ? comment.length : 0)}><FaCommentDots size="18"/> <span>{comment ? comment.length : 0}</span></span>
                 </div>       
             </div>
         </div>  

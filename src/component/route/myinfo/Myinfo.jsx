@@ -4,6 +4,7 @@ import { RiGitRepositoryPrivateFill } from 'react-icons/ri';
 import { CgPassword,CgProfile } from 'react-icons/cg';
 import { HiStatusOnline } from 'react-icons/hi';
 import { AiOutlineClear } from 'react-icons/ai';
+import { IoIosArrowDown,IoIosArrowUp } from 'react-icons/io';
 import { useHistory } from 'react-router';
 import { useEffect, useState } from 'react';
 import InfoDetail from './InfoDetail';
@@ -64,7 +65,12 @@ export default function Myinfo(props){
     // 로그인 로그
     const [log,setLog] = useState([]);
 
+    // 카테고리
     const [category,setCategory] = useState("all");
+
+    // 모바일 화면
+    const [mini,setMini] = useState(document.body.clientWidth); 
+    const [subList,setSubList] = useState(false);
 
     function onComplete(data){
         setZipcode(data.zonecode);
@@ -198,14 +204,22 @@ export default function Myinfo(props){
         })
     }
 
+    function resizeEventHandler(){
+        const width = document.body.clientWidth;
+        setMini(width);
+        if(width >= 810) setSubList(false);
+    }
+
+    useEffect(()=>{
+        window.addEventListener("resize",resizeEventHandler);
+        return ()=>{
+            window.removeEventListener("resize",resizeEventHandler);
+        }
+    })
+
     return(
         <>
-        {modalActive()}
-        <button onClick={()=>{
-            axios.get(`/send/mail/${SESSION_UID}`)
-                .then(res=>console.log(res))
-                .catch(e=>console.log(e.response))
-        }}>클릭테스트</button>
+        {modalActive()}    
         <Mainheader subMenuHandler={subMenuHandler} style={{backgroundColor : "#222222"}} />
         <div className="content_wrap">
             {
@@ -224,42 +238,82 @@ export default function Myinfo(props){
         </div> */}
         <div className="myinfo_body">
             <div className="side">
-                <div className="myinfo_side">
-                    <h2>계정관리</h2>
-                    <ul>
-                        <li onClick={()=>{setSelected("id"); window.location.href="#id"}}><ImKey color={selected==="id" ? "#bd2a2a" : ""}/>MY ID</li>
-                        <li onClick={()=>{setSelected("avatar"); window.location.href="#avatar"}}><CgProfile color={selected==="avatar" ? "#bd2a2a" : ""}/>아바타 변경</li>
-                        <li onClick={()=>{setSelected("info"); window.location.href="#info"}}><RiGitRepositoryPrivateFill color={selected==="info" ? "#bd2a2a" : ""}/>개인정보</li>
-                        <li onClick={()=>{setSelected("change"); window.location.href="#change"}}><CgPassword color={selected==="change" ? "#bd2a2a" : ""}/>비밀번호변경</li>
-                        <li onClick={()=>{setSelected("recode"); window.location.href="#recode"}}><HiStatusOnline color={selected==="recode" ? "#bd2a2a" : ""}/>계정로그인기록</li>             
-                        <li onClick={()=>{setSelected("wiw"); window.location.href="#wiw"}}><FaChalkboardTeacher color={selected==="wiw" ? "#bd2a2a" : ""}/> 내가 쓴 글 </li>
-                        <li onClick={()=>{setSelected("wic"); window.location.href="#wic"}}><FaComments color={selected==="wic" ? "#bd2a2a" : ""}/> 내가 쓴 댓글</li>  
-                        <li onClick={()=>{setSelected("out"); window.location.href="#out"}}><AiOutlineClear color={selected==="out" ? "#bd2a2a" : ""}/>회원탈퇴</li>
-                    </ul>
+                <div className="myinfo_side" >
+                    <h2>
+                        계정관리
+                        {
+                            mini < 810 && subList ? 
+                            <IoIosArrowUp onClick={()=>{
+                                setSubList(!subList);
+                            }}/> : mini < 810 && !subList ?
+                            <IoIosArrowDown onClick={()=>{
+                                setSubList(!subList);
+                            }}/> :<></>
+                        }
+                       
+                    </h2>
+                    {
+                        mini < 810 && subList ?
+                        <ul className="sub_list">
+                            <li onClick={()=>{setSelected("id"); window.location.href="#id"}}><ImKey color={selected==="id" ? "#bd2a2a" : ""}/>MY ID</li>
+                            <li onClick={()=>{setSelected("avatar"); window.location.href="#avatar"}}><CgProfile color={selected==="avatar" ? "#bd2a2a" : ""}/>아바타 변경</li>
+                            <li onClick={()=>{setSelected("info"); window.location.href="#info"}}><RiGitRepositoryPrivateFill color={selected==="info" ? "#bd2a2a" : ""}/>개인정보</li>
+                            <li onClick={()=>{setSelected("change"); window.location.href="#change"}}><CgPassword color={selected==="change" ? "#bd2a2a" : ""}/>비밀번호변경</li>
+                            <li onClick={()=>{setSelected("recode"); window.location.href="#recode"}}><HiStatusOnline color={selected==="recode" ? "#bd2a2a" : ""}/>계정로그인기록</li>             
+                            <li onClick={()=>{setSelected("wiw"); window.location.href="#wiw"}}><FaChalkboardTeacher color={selected==="wiw" ? "#bd2a2a" : ""}/> 내가 쓴 글 </li>
+                            <li onClick={()=>{setSelected("wic"); window.location.href="#wic"}}><FaComments color={selected==="wic" ? "#bd2a2a" : ""}/> 내가 쓴 댓글</li>  
+                            <li onClick={()=>{setSelected("out"); window.location.href="#out"}}><AiOutlineClear color={selected==="out" ? "#bd2a2a" : ""}/>회원탈퇴</li>
+                        </ul> : 
+                        <></>
+                    }
+                    {
+                        mini >= 810 ?
+                        <ul className="info_list">
+                            <li onClick={()=>{setSelected("id"); window.location.href="#id"}}><ImKey color={selected==="id" ? "#bd2a2a" : ""}/>MY ID</li>
+                            <li onClick={()=>{setSelected("avatar"); window.location.href="#avatar"}}><CgProfile color={selected==="avatar" ? "#bd2a2a" : ""}/>아바타 변경</li>
+                            <li onClick={()=>{setSelected("info"); window.location.href="#info"}}><RiGitRepositoryPrivateFill color={selected==="info" ? "#bd2a2a" : ""}/>개인정보</li>
+                            <li onClick={()=>{setSelected("change"); window.location.href="#change"}}><CgPassword color={selected==="change" ? "#bd2a2a" : ""}/>비밀번호변경</li>
+                            <li onClick={()=>{setSelected("recode"); window.location.href="#recode"}}><HiStatusOnline color={selected==="recode" ? "#bd2a2a" : ""}/>계정로그인기록</li>             
+                            <li onClick={()=>{setSelected("wiw"); window.location.href="#wiw"}}><FaChalkboardTeacher color={selected==="wiw" ? "#bd2a2a" : ""}/> 내가 쓴 글 </li>
+                            <li onClick={()=>{setSelected("wic"); window.location.href="#wic"}}><FaComments color={selected==="wic" ? "#bd2a2a" : ""}/> 내가 쓴 댓글</li>  
+                            <li onClick={()=>{setSelected("out"); window.location.href="#out"}}><AiOutlineClear color={selected==="out" ? "#bd2a2a" : ""}/>회원탈퇴</li>
+                        </ul> : 
+                        <></>
+                    }
+                    
                 </div>
             </div>
             <div className="myinfo_main">
-                <InfoDetail id="id">
-                    <InfoDetailTitle>
-                        <ich>MyDOMUS 고유 ID</ich> 
-                        <ic>회원이 가지고있는 <font color="#ca5656">고유의 아이디</font>입니다.</ic> 
-                        <ic>고유 아이디 노출시 <font color="#ca5656">위험</font>할 수 있습니다.</ic> 
+                <InfoDetail id="intro">
+                    <InfoDetailTitle style={{backgroundColor:"#BD4162"}}>
+                        <ich>소개글</ich>  
+                        <ic>본인의 <font color="#fff">소개글</font> 입니다.</ic>                  
                     </InfoDetailTitle>
-                    <InfoDetailBody>
-                        <ib style={{justifyContent : "center", alignItems : "center"}}>
-                            <input type="text" value={privateID.ID} readOnly className="onetext full" 
-                            onFocus={()=>{
-                                setPrivateID({
-                                    hide : false,
-                                    ID : SESSION_UID
-                                })}} 
-                            onBlur={()=>{
-                                setPrivateID(privateInit);
-                            }}/>
-                            <font color="#ca5656">클릭 시 고유 ID가 표시됩니다.</font>
-                        </ib>
-                        
+                    <InfoDetailBody style={{backgroundColor:"#F09AB1"}}>
+                        안녕하세요 {nickname} 입니다.
                     </InfoDetailBody>
+                    </InfoDetail>
+                <InfoDetail id="id">
+                <InfoDetailTitle>
+                    <ich>MyDOMUS 고유 ID</ich> 
+                    <ic>회원이 가지고있는 <font color="#ca5656">고유의 아이디</font>입니다.</ic> 
+                    <ic>고유 아이디 노출시 <font color="#ca5656">위험</font>할 수 있습니다.</ic> 
+                </InfoDetailTitle>
+                <InfoDetailBody>
+                    <ib style={{justifyContent : "center", alignItems : "center"}}>
+                        <input type="text" value={privateID.ID} readOnly className="onetext full" 
+                        onFocus={()=>{
+                            setPrivateID({
+                                hide : false,
+                                ID : SESSION_UID
+                            })}} 
+                        onBlur={()=>{
+                            setPrivateID(privateInit);
+                        }}/>
+                        <font color="#ca5656">클릭 시 고유 ID가 표시됩니다.</font>
+                    </ib>
+                    
+                </InfoDetailBody>
                 </InfoDetail>
                 <InfoDetail id="avatar">
                     <InfoDetailTitle>

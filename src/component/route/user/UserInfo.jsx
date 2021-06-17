@@ -1,6 +1,7 @@
 import { FaChalkboardTeacher } from 'react-icons/fa';
 import { GoInfo } from 'react-icons/go';
 import { CgProfile } from 'react-icons/cg';
+import { IoIosArrowDown,IoIosArrowUp } from 'react-icons/io';
 import { RiUserFollowFill } from 'react-icons/ri';
 import { MdPhoto } from 'react-icons/md';
 import { FaVideo,FaChalkboard,FaComments } from 'react-icons/fa';
@@ -42,6 +43,11 @@ export default function UserInfo(props){
     const [user,setUser] = useState({});
 
     const [subMenu, setSubMenu] = useState(false); 
+
+    // 모바일 화면
+    const [mini,setMini] = useState(document.body.clientWidth); 
+    const [subList,setSubList] = useState(false);
+
      // 서브메뉴 ON/OFF
      const subMenuHandler = ()=>{
         setSubMenu(!subMenu);   
@@ -97,6 +103,17 @@ export default function UserInfo(props){
         getMemberData();
     },[])
 
+    function resizeEventHandler(){
+        const width = document.body.clientWidth;
+        setMini(width);
+        if(width >= 810) setSubList(false);
+    }
+    useEffect(()=>{
+        window.addEventListener("resize",resizeEventHandler);
+        return ()=>{
+            window.removeEventListener("resize",resizeEventHandler);
+        }
+    })
     return(
         <>
         <Mainheader subMenuHandler={subMenuHandler} style={{backgroundColor : "#222222"}} />
@@ -113,26 +130,59 @@ export default function UserInfo(props){
                 <div className="myinfo_body">
                     <div className="side">
                         <div className="myinfo_side">
-                            <h2>정보</h2>
+                            <h2>정보
+                            {
+                                mini < 810 && subList ? 
+                                <IoIosArrowUp onClick={()=>{
+                                    setSubList(!subList);
+                                }}/> : mini < 810 && !subList ?
+                                <IoIosArrowDown onClick={()=>{
+                                    setSubList(!subList);
+                                }}/> :<></>
+                            }
+                            </h2>      
                             <h3><RiUserFollowFill/>{nickname}</h3>
-                            <ul>                    
-                                <li onClick={()=>{setSelected("avatar"); window.location.href="#avatar"}}><CgProfile color={selected==="avatar" ? "#bd2a2a" : ""}/>
-                                    아바타
-                                </li>  
-                                <li onClick={()=>{setSelected("info"); window.location.href="#info"}}><GoInfo color={selected==="info" ? "#bd2a2a" : ""}/>
-                                    정보
-                                </li>
-                                <li onClick={()=>{setSelected("wiw"); window.location.href="#wiw"}}><FaChalkboardTeacher color={selected==="wiw" ? "#bd2a2a" : ""}/>
-                                    내가 쓴 글
-                                </li>
-                                <li onClick={()=>{setSelected("wic"); window.location.href="#wic"}}><FaComments color={selected==="wic" ? "#bd2a2a" : ""}/>
-                                    내가 쓴 댓글
-                                </li>    
-                            </ul>
+                            {
+                                mini < 810 && subList ?
+                                <ul className="sub_list">                    
+                                    <li onClick={()=>{setSelected("avatar"); window.location.href="#avatar"}}><CgProfile color={selected==="avatar" ? "#bd2a2a" : ""}/>
+                                        아바타
+                                    </li>  
+                                    <li onClick={()=>{setSelected("info"); window.location.href="#info"}}><GoInfo color={selected==="info" ? "#bd2a2a" : ""}/>
+                                        정보
+                                    </li>
+                                    <li onClick={()=>{setSelected("wiw"); window.location.href="#wiw"}}><FaChalkboardTeacher color={selected==="wiw" ? "#bd2a2a" : ""}/>
+                                        내가 쓴 글
+                                    </li>
+                                    <li onClick={()=>{setSelected("wic"); window.location.href="#wic"}}><FaComments color={selected==="wic" ? "#bd2a2a" : ""}/>
+                                        내가 쓴 댓글
+                                    </li>    
+                                </ul> : 
+                                <></>
+                            }
+                            {
+                                mini >= 810 ?
+                                <ul className="info_list">                    
+                                    <li onClick={()=>{setSelected("avatar"); window.location.href="#avatar"}}><CgProfile color={selected==="avatar" ? "#bd2a2a" : ""}/>
+                                        아바타
+                                    </li>  
+                                    <li onClick={()=>{setSelected("info"); window.location.href="#info"}}><GoInfo color={selected==="info" ? "#bd2a2a" : ""}/>
+                                        정보
+                                    </li>
+                                    <li onClick={()=>{setSelected("wiw"); window.location.href="#wiw"}}><FaChalkboardTeacher color={selected==="wiw" ? "#bd2a2a" : ""}/>
+                                        내가 쓴 글
+                                    </li>
+                                    <li onClick={()=>{setSelected("wic"); window.location.href="#wic"}}><FaComments color={selected==="wic" ? "#bd2a2a" : ""}/>
+                                        내가 쓴 댓글
+                                    </li>    
+                                </ul> : 
+                                <></>
+                            }
+                           
                         </div>
                     </div>
                     <div className="myinfo_main">  
-                        <InfoDetail id="avatar">
+                        <InfoDetail id="intro">
                             <InfoDetailTitle style={{backgroundColor:"#BD4162"}}>
                                 <ich>소개글</ich>  
                                 <ic>해당 유저의 <font color="#fff">소개글</font> 입니다.</ic>                  

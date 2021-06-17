@@ -14,6 +14,9 @@ export default function EmailAuth(props){
             width : "100%"
         }}>이메일 인증 중입니다.</h2>
         <SubLoading/>
+        <p>
+            이메일 인증이 끝나면 
+        </p>
         </div>
         </>
     );

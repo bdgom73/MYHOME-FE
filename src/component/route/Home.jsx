@@ -67,7 +67,7 @@ export default function Home(props){
                         <>
                         <div key={d.id+d.updated+i} 
                         title={"조회수 : " + d.views + "  추천수 : " +d.recommend} className="list_body">
-                            <span onClick={()=>{history.push(`/bbs/${d.categoryList}/${d.id}`)}}>{
+                            <span  onClick={()=>{history.push(`/bbs/${d.categoryList}/${d.id}`)}}>{
                                 d.categoryList === "PHOTO"  && d.imageList[0] ? 
                                 <img src={d.imageList[0].image_url} alt={d.title}/> : 
                                 d.categoryList === "VIDEO" && d.video_thumbnail ? 

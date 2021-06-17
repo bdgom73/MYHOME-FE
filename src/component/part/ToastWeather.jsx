@@ -91,7 +91,7 @@ export default function ToastWeather(props){
     }
     return (
         <>
-        <div className="toast_weather_wrap" onMouseDown={(e)=>{console.log(e)}}  style={active ? {}: {right:"-250px"}}>    
+        <div className="toast_weather_wrap"   style={active ? {}: {right:"-285px"}}>    
             <div className="tt">
                 {
                     active ?  
