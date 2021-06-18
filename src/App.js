@@ -29,6 +29,7 @@ import UserInfo from "./component/route/user/UserInfo";
 import ToastWeather from "./component/part/ToastWeather";
 import UserFind from "./component/route/find/UserFind";
 import EmailAuth from "./component/EmailAuth";
+import Loading from "./component/part/Loading";
 
 function App() {
 
@@ -92,9 +93,10 @@ function App() {
       {/* User Infomation */}
       <Route exact path="/user/:nickname" render={(props)=>{ return <UserInfo {...props}/> }}></Route>
 
-      
+      {/* User ID / PW Find Service*/}
+      <Route exact path="/find/userinfo" render={(props)=>{ return <Template access="non-user"><UserFind {...props}/></Template> }}></Route>
       {/* TEST */}
-      <Route exact path="/test"><EmailAuth/></Route>
+      <Route exact path="/test"><Loading text="adsdasdasd"/></Route>
 
       {/* NOT FOUND SERVICE */}
       <Route path="/"><NotFound/></Route>

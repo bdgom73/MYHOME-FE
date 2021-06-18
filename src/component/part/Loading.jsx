@@ -6,6 +6,7 @@ export default function Loading(props){
         document.body.overflow ="hidden";
         return (document.body.overflow ="auto");      
     },[])
+    
     return(
         <>
         <div className="loading">

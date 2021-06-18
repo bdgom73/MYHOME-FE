@@ -103,6 +103,7 @@ user-comment{
     border: 2px solid $mushroom;
     min-height: 100vh;
     border-radius: 5px;
+    min-width: 380px;
     h1{
         border-bottom:2px solid rgba($mushroom , 0.85);
         white-space: nowrap;

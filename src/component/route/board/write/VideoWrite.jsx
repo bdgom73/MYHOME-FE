@@ -80,7 +80,12 @@ export default function VideoWrite(props){
 
     const onSubmitHandler = (e)=>{
         e.preventDefault();    
-
+        if(e.target[0].value === ""){
+            const fwt = document.getElementById("video_write_title");
+            fwt.focus();
+            fwt.style.borderBottom = "3px solid #ca5b5b";
+            return;
+        }
         setUploadLoading(true); 
         const fd = new FormData();
         if(e.target[2].checked){
@@ -138,7 +143,7 @@ export default function VideoWrite(props){
                     <tbody>
                     <tr>
                         <td colSpan='2'>
-                            <input type="text" className="w_title" placeholder="제목을 입력해주세요" />
+                            <input type="text" id="video_write_title" className="w_title" placeholder="제목을 입력해주세요" />
                         </td>
                     </tr>
                     <tr>

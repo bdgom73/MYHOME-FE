@@ -90,12 +90,15 @@ export default function UserInfo(props){
     function getMemberData(){
         axios.get(`/member/${nickname}`)
         .then(res=>{
-            const result = res.data;
-            console.log(result)
+            const result = res.data;   
             setUser(result || {});
             title.refTitle.innerText=`MYDOMUS | ${result.nickname}`
             setAavtar(res.avatar_url);
-        }).catch(e=> {console.log(e.response);});
+
+        }).catch(e=> {
+            alert("존재하지 않는 회원입니다. 이전페이지로 이동합니다.");
+            history.goBack(-1);
+        });
     }
     useEffect(()=>{
         getMemberCommentsData(0);
@@ -188,7 +191,7 @@ export default function UserInfo(props){
                                 <ic>해당 유저의 <font color="#fff">소개글</font> 입니다.</ic>                  
                             </InfoDetailTitle>
                             <InfoDetailBody style={{backgroundColor:"#F09AB1"}}>
-                                안녕하세요 {nickname} 입니다.
+                                {user.self_introduction ? user.self_introduction : `안녕하세요 ${nickname}입니다.` }
                             </InfoDetailBody>
                         </InfoDetail>      
                         <InfoDetail id="avatar">

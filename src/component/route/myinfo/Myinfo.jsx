@@ -61,6 +61,8 @@ export default function Myinfo(props){
     const [cloading,setCLoading] = useState(false);
     const [bloading,setBLoading] = useState(false);
 
+    // 자기소개글 
+    const [isIntroduceUpdate, setIsIntroduceUpdate] = useState(false);
 
     // 로그인 로그
     const [log,setLog] = useState([]);
@@ -84,7 +86,56 @@ export default function Myinfo(props){
                 <Modal title="주소검색" close={close} >
                     <DaumPostcode onComplete={onComplete}/>
                 </Modal>)
-        }    
+        }else if(modal === 2){
+            return (
+                <Modal title="비밀번호변경" close={close} >
+                     <p className="info">
+                        <ul>
+                            <li>비밀번호는 <font color="#fa5656">영문,숫자,특수문자(필1)로</font> 이루어진 <font color="#fa5656">10자리 이상</font>으로 설정가능합니다.</li>
+                            <li><font color="#fa5656">연속된</font> 숫자,문자등 사용 자제하기</li>
+                            <li>본인과 관련된 <font color="#fa5656">(생일, 이름 이니셜 등)</font> 사용자제하기</li>
+                        </ul>
+                        <div className="label_wrap" style={{borderTop:"1px solid #eee", padding:"10px"}}>
+                            <label style={{fontSize : "18px"}}>변경할 Password</label>
+                            <input type="password" className="basic" placeholder="변경할 비밀번호를 입력해주세요" id="myinfo_changed_password"/>
+                           
+                        </div>
+                        
+                    </p> 
+                    <div id="myinfo_change_pw_msg"></div>
+                    <div className="btn_wrap">
+                        <button type="button" className="btn" onClick={()=>{
+                            const msg = document.getElementById("myinfo_change_pw_msg");
+                            const current_password = document.getElementById("myinfo_password");
+                            const changed_password = document.getElementById("myinfo_changed_password");
+                            if(changed_password.value === ""){
+                                    changed_password.focus();
+                                    msg.innerText="변경할 비밀번호를 입력해주세요.";
+                                    msg.classList.add("error");
+                                    msg.classList.remove("success");
+                                    return;
+                            }
+                            let passwordRegExp = /^[a-zA-Z0-9\d~!@#$%^&*]{10,}$/;  
+                            if(changed_password.value.match(passwordRegExp) === null){
+                                msg.innerText = "비밀번호 길이는 10자리이상 영문자,숫자, 특수문자(필1) 로 설정해주세요.";
+                                msg.classList.add("error");
+                                msg.classList.remove("success");
+                                changed_password.focus();
+                                return;
+                            }
+                            const fd = new FormData();
+                            fd.append("current_password",current_password.value);
+                            fd.append("password",changed_password.value);
+                            axios.post("/member/change/password",fd,{headers:{"Authorization":SESSION_UID}})
+                                .then(res=>{
+                                    alert("비밀번호 변경이 완료되었습니다.")
+                                    current_password.value="";
+                                    close();
+                                }).catch(e=>console.log(e.response))
+                        }}>변경하기</button>
+                    </div>
+                </Modal>)
+        }
     }
 
     useEffect(()=>{
@@ -232,10 +283,7 @@ export default function Myinfo(props){
             } 
               
        
-        <div className="myinfo_wrap" style={{backgroundImage:"url('/image/my.png')"}}>
-        {/* <div className="myinfo_top">
-            <img src="/logo.png" alt="mainLogo" onClick={()=>{history.push("/")}}/>
-        </div> */}
+        <div className="myinfo_wrap" style={{backgroundImage:"url('/image/my.png')"}}>    
         <div className="myinfo_body">
             <div className="side">
                 <div className="myinfo_side" >
@@ -287,10 +335,38 @@ export default function Myinfo(props){
                 <InfoDetail id="intro">
                     <InfoDetailTitle style={{backgroundColor:"#BD4162"}}>
                         <ich>소개글</ich>  
-                        <ic>본인의 <font color="#fff">소개글</font> 입니다.</ic>                  
+                        <ic>본인의 <font color="#fff568">소개글</font> 입니다.</ic> 
+                        <ic><font color="#fff568">50자 내</font>의 짧은 글만 작성할 수 있습니다.</ic> 
+                        <ic>줄바꿈은 적용되지않습니다.</ic>                  
                     </InfoDetailTitle>
-                    <InfoDetailBody style={{backgroundColor:"#F09AB1"}}>
-                        안녕하세요 {nickname} 입니다.
+                    <InfoDetailBody style={{backgroundColor:"#F09AB1", flexDirection:"column"}}>
+                        {
+                            isIntroduceUpdate ? 
+                            <div className="textarea_wrap">
+                                <textarea maxLength="50" rows="2" id="myinfo_intro_textarea" onChange={(e)=>{
+                                    const len = document.getElementById("myinfo_intro_textarea_len");
+                                    len.innerText = `${e.target.value.length}/50`;
+                                }}>
+                                    {data.self_introduction}    
+                                </textarea> 
+                                <div id="myinfo_intro_textarea_len" className="write_len">0/50</div> 
+                                <div className="btn_wrap">
+                                    <button type="button" className="btn delete" onClick={()=>{
+                                        const text = document.getElementById("myinfo_intro_textarea");
+                                        
+                                    }}> 수정</button>  
+                                    <button type="button" className="btn delete" onClick={()=> setIsIntroduceUpdate(false)}>취소</button>  
+                                </div>  
+                            </div>
+                            :
+                            <div className="introduce_myself"          
+                            onDoubleClick={()=> setIsIntroduceUpdate(true)}
+                            onTouchEnd={()=> setIsIntroduceUpdate(true)}
+                            >
+                                {data.self_introduction ? data.self_introduction : `안녕하세요 ${data.nickname} 입니다.`}
+                            </div> 
+                        }
+                                
                     </InfoDetailBody>
                     </InfoDetail>
                 <InfoDetail id="id">
@@ -396,12 +472,40 @@ export default function Myinfo(props){
                         <ic><font color="#ca5656">안전한 비밀번호</font>를 위해</ic> 
                         <ic>1. <font color="#ca5656">10자리 이상</font>의 비밀번호 길이</ic> 
                         <ic>2. <font color="#ca5656">연속된</font> 숫자, 문자등 사용 자제하기</ic>
-                        <ic>3. 본인의 생일 등 <font color="#ca5656">유추하기 쉬운 단어</font> 비밀번호 포함 자제</ic> 
+                        <ic>3. 본인의 생일 등 <font color="#ca5656">유추하기 쉬운 단어</font> 비밀번호 포함 자제</ic>
+                       
                     </InfoDetailTitle>
                     <InfoDetailBody>  
                         <ib style={{alignItems : "center"}}>
-                        <input type="text" className="onetext" value="현재 회원님의 비밀번호"/>
-                        <button type="button">수정하기</button>  
+                        <input type="password" className="onetext" placeholder="현재 회원님의 비밀번호" 
+                        id="myinfo_password" onChange={()=>{
+                            const mpm = document.getElementById("myinfo_password_message");
+                            mpm.innerText="";
+                        }}/>
+                        <div id="myinfo_password_message"></div>
+                        <button type="button" onClick={()=>{
+                            const current_password = document.getElementById("myinfo_password");
+                            const mpm = document.getElementById("myinfo_password_message");
+                            if(current_password.value===""){
+                                mpm.innerText="비밀번호를 입력해주세요";
+                                mpm.classList.add("error");
+                                mpm.classList.remove("success");
+                                return;
+                            }
+                            const fd = new FormData();                           
+                            fd.append("password",current_password.value);      
+                            axios.post("/member/equality/password/check",fd,{headers:{"Authorization":SESSION_UID}})
+                                .then(res=>{
+                                    const data = res.data;
+                                    if(data.result){
+                                        setModal(2);
+                                    }else{
+                                        mpm.innerText="비밀번호가 틀립니다.";
+                                        mpm.classList.add("error");
+                                        mpm.classList.remove("success");
+                                    }
+                                }).catch(e=>console.log(e.response));
+                        }}>수정하기</button>  
                         </ib>   
                     </InfoDetailBody>
                 </InfoDetail>
@@ -548,7 +652,7 @@ export default function Myinfo(props){
                     </InfoDetailTitle>
                     <InfoDetailBody>  
                         <ib style={{alignItems : "center"}}>
-                        <button type="button">회원탈퇴</button>  
+                        <button type="button" >회원탈퇴</button>  
                         </ib>   
                     </InfoDetailBody>
                 </InfoDetail>

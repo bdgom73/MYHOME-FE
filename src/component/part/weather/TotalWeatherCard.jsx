@@ -11,15 +11,22 @@ export default function TotalWeatherCard(props){
         return(
             <div className="weather">                   
                 <div className="icon">
-                    {data.weather ? <><img src={getWeatherIconUrl(data.weather[0].icon)} alt={data.weather[0].icon}/></>:<></>} 
+                    {data.weather[0] ? <><img src={getWeatherIconUrl(data.weather[0].icon)} alt={data.weather[0].icon}/></>:<></>} 
                 </div>
                 <div className="weather_info">
                     <div className="weather_c1">
                         {/* 현재 도시의 현재 날씨 */}
                         <span className="temp">
                             {
-                            data.temp['day'] ? (<>{Math.round(data.temp['day'])}<span>℃</span></>) : 
-                            data.temp ?  (<>{Math.round(data.temp)}<span>℃</span></>) : <></>                                            
+                            data.temp['day'] ? 
+                            <>
+                                {isNaN(Math.round(data.temp['day'])) ? 0 : Math.round(data.temp['day'])}
+                                <span>℃</span>
+                            </> : 
+                            data.temp ?  
+                            <>
+                                {isNaN(Math.round(data.temp)) ? 0 : Math.round(data.temp)}<span>℃</span></>
+                            : <></>                                            
                             }     
                         </span>
                         <span className="weather_status">

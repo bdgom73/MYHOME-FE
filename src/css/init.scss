@@ -1,4 +1,6 @@
-
+html,body{
+    min-width: 380px !important;
+}
 // basic
 @import "./basic/CKEditor.scss";
 @import "./basic/color.scss";
@@ -49,8 +51,9 @@
 
 
 // basic input text
-
-input[type="text"].basic{
+input[type="text"].basic,
+input[type="password"].basic
+{
     width: 100%;
     margin: 5px 0;
     padding: 10px;

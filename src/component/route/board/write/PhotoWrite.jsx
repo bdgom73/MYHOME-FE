@@ -93,6 +93,12 @@ export default function PhotoWrite(props){
     
     const onSubmitHandler = (e)=>{
         e.preventDefault();
+        if(e.target[0].value === ""){
+            const fwt = document.getElementById("photo_write_title");
+            fwt.focus();
+            fwt.style.borderBottom = "3px solid #ca5b5b";
+            return;
+        }
         const fd = new FormData();     
         fd.append("title",e.target[0].value);
         fd.append("description",desc);
@@ -120,7 +126,7 @@ export default function PhotoWrite(props){
                     <tbody>
                     <tr>
                         <td colSpan='2'>
-                            <input type="text" className="w_title" placeholder="제목을 입력해주세요" />
+                            <input type="text"  id="photo_write_title" className="w_title" placeholder="제목을 입력해주세요" />
                         </td>
                     </tr>
                     <tr>

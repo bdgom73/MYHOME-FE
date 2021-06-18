@@ -56,6 +56,10 @@
                     &:hover{
                         background-color: #ffe44b; 
                     }
+                    &:disabled{
+                        background-color: #dddddd;  
+                        cursor: not-allowed;
+                    }
                 }
             }
             &:first-child{

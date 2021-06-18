@@ -117,7 +117,8 @@ export default function Register(){
         }
        
         let emailRegExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-        if(email.match(emailRegExp) != null){
+               
+        if(email.match(emailRegExp) != null){       
             axios.get(`/send/email/${email}`)
                 .then(res=>{
                     setAuthNumber(res.data);
@@ -152,30 +153,36 @@ export default function Register(){
 
     function onSubmitHandler(e){
         const {target} = e;
-        const pw = document.getElementById("validate_password");
+        const pw = document.getElementById("dupicatePassword");
         e.preventDefault();
         if(emailcheck){
             if(!target[6].value){
                 setMsg("우편번호를 선택해주세요");
+                document.getElementById("register_zipcode").focus();
                 return;
-            }
-            if(target[2].value.length <= 9){   
-                pw.innerText = "비밀번호 길이는 10자리 이상으로 설정해주세요.";
+            }      
+            let passwordRegExp = /^[a-zA-Z0-9\d~!@#$%^&*]{10,}$/;  
+            if(target[2].value.match(passwordRegExp) === null){
+                pw.innerText = "비밀번호 길이는 10자리이상 영문자,숫자, 특수문자(필1) 로 설정해주세요.";
                 pw.classList.add("error");
                 pw.classList.remove("success");
+                document.getElementById("register_password").focus();
                 return;
             }
             if(target[2].value !== target[3].value){
-                pw.innerText = "비밀번호를 확인해주세요.";
+                pw.innerText = "비밀번호를 다릅니다.";
                 pw.classList.add("error");
                 pw.classList.remove("success");
+                document.getElementById("register_password").focus();
                 return;
             }
             if(email !== authEmail){
                 setEmailCheck(false);
                 setAuthEmail("");
+                document.getElementById("register_email").focus();
                 return;
-            }
+            }    
+           
             const fd = new FormData();
             fd.append("email",target[0].value);
             fd.append("password",target[2].value);
@@ -185,7 +192,6 @@ export default function Register(){
             fd.append("zipcode",target[6].value);
             fd.append("address",target[8].value);
             fd.append("detail_address",target[9].value);
-    
             axios.post("/member/register",fd)
                 .then(res=>{
                     toast.success("회원가입 완료")
@@ -201,34 +207,53 @@ export default function Register(){
 
     const duplicatePasswordCheck = (e)=>{     
         const pass = e.target.value;
-        // const pw = document.getElementById("validate_password");
-        // pw.innerText=""
+        const pw = document.getElementById("dupicatePassword");
         setSecondPassword(pass);
         if(pass !== firstPassword){
-            e.nativeEvent.path[2].childNodes[0].childNodes[1].style.borderBottom="2px solid #fd5b50";
-            e.target.style.borderBottom="2px solid #fd5b50";
+            pw.innerText="비밀번호가 다릅니다";
+            pw.classList.add("error");
+            pw.classList.remove("success");
         }else{
-            e.nativeEvent.path[2].childNodes[0].childNodes[1].style.borderBottom="1px solid #bbb";
-            e.target.style.borderBottom="1px solid #bbb";
+            let passwordRegExp = /^[a-zA-Z0-9\d~!@#$%^&*]{10,}$/;  
+            if(!passwordRegExp.test(e.target.value)){
+                pw.innerText="비밀번호는 영문,숫자,특수문자1개로 이루어진 10글자 이상만 설정가능합니다.";
+                pw.classList.add("error");
+                pw.classList.remove("success");
+            }else{
+                pw.innerText="비밀번호가 같습니다."
+                pw.classList.add("success");
+                pw.classList.remove("error");
+            }
         }
     }
     const duplicatePasswordCheck2 = (e)=>{
+        const pw = document.getElementById("dupicatePassword");
         const pass = e.target.value;
-        setFirstPassword(pass);
-        console.log( e.nativeEvent.path[2].childNodes[0].childNodes[1]);
+        setFirstPassword(pass);   
+          
         if(pass !== secondPassword){
-            e.nativeEvent.path[2].childNodes[1].childNodes[1].style.borderBottom="2px solid #fd5b50";
-            e.target.style.borderBottom="2px solid #fd5b50";
+            pw.innerText="비밀번호가 다릅니다";
+            pw.classList.add("error");
+            pw.classList.remove("success");
         }else{
-            e.nativeEvent.path[2].childNodes[1].childNodes[1].style.borderBottom="1px solid #bbb";
-            e.target.style.borderBottom="1px solid #bbb";
+            let passwordRegExp = /^[a-zA-Z0-9\d~!@#$%^&*]{10,}$/;  
+            if(!passwordRegExp.test(e.target.value)){
+                pw.innerText="비밀번호는 영문,숫자,특수문자1개로 이루어진 10글자 이상만 설정가능합니다.";
+                pw.classList.add("error");
+                pw.classList.remove("success");
+            }else{
+                pw.innerText="비밀번호가 같습니다."
+                pw.classList.add("success");
+                pw.classList.remove("error");
+            }
+           
         }
     }
  
     return(
         <>
         {openModal()}
-        {authLoading ? <Loading text="이메일 인증"/> : ""}
+        {authLoading ? <Loading text="이메일 검증 중입니다..."/> : ""}
         <div className="write_wrap write_board" style={{maxWidth:"800px",margin:"15px auto"}}>
             <div className="sub_header">    
                 <div className="title">회원가입</div>
@@ -236,7 +261,7 @@ export default function Register(){
             <form onSubmit={onSubmitHandler}> 
                 <div className="label_wrap">
                     <label htmlFor="email">이메일</label>
-                    <input type="email" placeholder="사용가능한 이메일 주소를 입력해주세요." style={{color : "#222"}} required name="email" value={email} onChange={(e)=>{setEmail(e.target.value);document.getElementById("dupicateEmail").innerText=""}}/>
+                    <input type="email" id="register_email" placeholder="사용가능한 이메일 주소를 입력해주세요." style={{color : "#222"}} required name="email" value={email} onChange={(e)=>{setEmail(e.target.value);document.getElementById("dupicateEmail").innerText=""}}/>
                     <div className="label_btn">
                         <button type="button" className="btn delete" onClick={onClickAuthHandler}>인증</button>
                     </div>
@@ -245,7 +270,7 @@ export default function Register(){
                 <div className="label_con">
                     <div className="label_wrap">
                         <label htmlFor="password">비밀번호</label>
-                        <input type={viewPasswords ? "text" : "password"} placeholder="10자리 이상의 패스워드를 입력해주세요" required name="password" onChange={duplicatePasswordCheck2}/>
+                        <input id="register_password" type={viewPasswords ? "text" : "password"} placeholder="10자리 이상의 패스워드를 입력해주세요" required name="password" onChange={duplicatePasswordCheck2}/>
                         {
                             viewPasswords ?  
                             <AiOutlineEyeInvisible onClick={()=> setViewPasswords(false)}/> : 
@@ -257,6 +282,7 @@ export default function Register(){
                         <label htmlFor="password2">비밀번호확인</label>
                         <input type={viewPasswords ? "text" : "password"} placeholder="동일한 패스워드를 입력해주세요" required name="password2" onChange={duplicatePasswordCheck} />
                     </div>
+                    <div id="dupicatePassword"></div>
                 </div>
                  <div id="validate_password"></div> 
                 <div className="label_wrap">
@@ -301,7 +327,7 @@ export default function Register(){
                     <div className="zipcode_wrap">
                         <label htmlFor="zipcode">우편번호</label>
                         <div className="wrap">
-                            <input type="text" readOnly name="zipcode" defaultValue={zipcode} />
+                            <input type="text" id="register_zipcode" readOnly name="zipcode" defaultValue={zipcode} />
                             <input type="button" onClick={()=>{setModalIndex(1)}} value="찾기"/>
                         </div>        
                     </div>  
@@ -309,8 +335,7 @@ export default function Register(){
                     <input type="text" readOnly name="address"  defaultValue={address}/>
                     <label htmlFor="detail_address">상세주소</label>
                     <input type="text" name="detail_address"/>
-                </div>
-                
+                </div>            
                 <input type="submit" value="가입하기" />      
             </form>
         </div>

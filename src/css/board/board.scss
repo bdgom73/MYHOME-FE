@@ -108,10 +108,11 @@
                 text-decoration: none;
             }
         }
-        .writer{
+        div.writer{
             font-size: 14px;
             display: inline-block;
             width: 100%;
+            max-width: 150px;
             overflow: hidden;
             text-overflow:ellipsis;
             white-space: nowrap;
