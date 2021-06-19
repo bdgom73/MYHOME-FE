@@ -19,15 +19,17 @@ import moment from 'moment';
 import ReactPaginate from 'react-paginate';
 import BoardTable from "../../part/write/BoardTable";
 import { maskingText } from '../../../js/common';
+import useModal from '../../../customState/useModal';
+import Modal from '../../modal/modal';
 export default function UserInfo(props){
 
     const title = useTitle("MYDOMUS | User");
+    const {modal,setModal,close} = useModal();
     const history = useHistory();
     const { params : {nickname}} = props.match;
-    const {logined,SESSION_UID,data} = useMember();
     const [selected,setSelected] = useState("id");
     
-    const [avatar,setAavtar] = useState(data.avatar_url);
+    const [avatar,setAavtar] = useState("");
 
     // 내가 쓴 댓글 , 게시글 
     const [comments, setComments] = useState([]);
@@ -68,7 +70,6 @@ export default function UserInfo(props){
         axios.post(`/comments/nickname/get?page=${page}&size=10`,fd)
         .then(res=>{
             const result = res.data;
-            console.log(result)
             setComments(result.content || []);
             setCommentsCount(result.totalElements || 0);
             if(res.status === 200) setCLoading(false);
@@ -92,8 +93,8 @@ export default function UserInfo(props){
         .then(res=>{
             const result = res.data;   
             setUser(result || {});
+            setAavtar(result.avatar_url)
             title.refTitle.innerText=`MYDOMUS | ${result.nickname}`
-            setAavtar(res.avatar_url);
 
         }).catch(e=> {
             alert("존재하지 않는 회원입니다. 이전페이지로 이동합니다.");
@@ -117,8 +118,22 @@ export default function UserInfo(props){
             window.removeEventListener("resize",resizeEventHandler);
         }
     })
+
+    function modalActive(){
+        switch(modal){
+            case 1 :
+                return (
+                    <Modal title="자세히보기" close={close}>
+                        <img src={avatar} alt="사용자 이미지 자세히보기" className="preview_image"/>
+                    </Modal>
+                )
+            default : 
+                return ""
+        }
+    }
     return(
         <>
+        {modalActive()}
         <Mainheader subMenuHandler={subMenuHandler} style={{backgroundColor : "#222222"}} />
         <div className="content_wrap">
             {
@@ -204,7 +219,7 @@ export default function UserInfo(props){
                             </InfoDetailTitle>
                             <InfoDetailBody style={{position:"relative"}}>
                                 <div className="img_wrap">
-                                    <img src={avatar ? avatar : "/profile.png"} alt="profile"/>                          
+                                    <img src={avatar ? avatar : "/profile.png"} alt="profile" onClick={()=>{setModal(1)}}/>                          
                                 </div>               
                             </InfoDetailBody>
                         </InfoDetail>

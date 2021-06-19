@@ -1,10 +1,12 @@
+import axios from "axios";
 import { useState } from "react";
 import useModal from "../../../customState/useModal";
 import Modal from "../../modal/modal";
+import Loading from "../../part/Loading";
 
 const UserFind = (props)=>{
-
-
+    
+    const [loading , setLoading] = useState(false);
     const {setModal, close, modal} = useModal();
     const [currentEmail, setCurrentEmail] = useState("");
     const modalActive = ()=>{
@@ -61,17 +63,31 @@ const UserFind = (props)=>{
                             비밀번호를 <font color="#fa5656">찾을 수 없</font>습니다.         
                         </p>
                         <div className="btn_wrap">
-                            <button type="button" className="btn">변경
-                        </button>
-                    </div>
+                            <button type="button" className="btn" onClick={()=>{
+                                setLoading(true);
+                                axios.get(`/member/find/password?email=${currentEmail}`)
+                                    .then(res=>{
+                                        alert("해당 이메일을 확인 후 로그인해주세요");
+                                        close();
+                                        setLoading(false);
+                                    }).catch(e=>{
+                                        alert("이메일 전송에 실패했습니다.");
+                                        setLoading(false);
+                                    })
+                            }}>변경</button>
+                        </div>
                     </Modal>
-                )   
+                );
+            default : 
+                return;
         }
+        
     }
 
 
     return(
         <>
+        {loading ? <Loading text="이메일전송중...."/> : ""}
         {modalActive()}
         <div className="user_find_wrap">
             <div className="user_find">

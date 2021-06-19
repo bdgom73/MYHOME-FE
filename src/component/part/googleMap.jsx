@@ -60,7 +60,6 @@ export default function GoogleMap(props){
             method:"get",
             url : `http://api.openweathermap.org/data/2.5/box/city?bbox=${bound.La.g},${bound.Ua.g},${bound.La.i},${bounds.Ua.i},${zoom}&appid=${W_API_KEY}`
         }).then((res)=>{
-            console.log(res)
             if(cb) cb(res);
         }).catch((e)=>{  
             alert(e.response.data.message)

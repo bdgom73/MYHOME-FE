@@ -20,7 +20,7 @@ export default function Calendar(props){
     // 저장된 현재 월
     const [month,setMonth]=useState(new Date().getMonth()+1);
     // 저장된 현재 일
-    const [day,setDay]=useState(new Date().getDate());
+    const [day]=useState(new Date().getDate());
     // 날짜 변경 모달 활성여부
     const [dateChange,setDateChange] = useState(false);
     // 값입력 모달창 활성여부
@@ -63,10 +63,9 @@ export default function Calendar(props){
     useEffect(()=>{ 
         const today = moment(year+"-"+month+"-"+day);
         const startWeek = today.clone().startOf('month').week();
-        const endWeek = today.clone().endOf('month').week() === 1 ? 53 : today.clone().endOf('month').week();
+        const endWeek = today.clone().endOf('month').week() === 1 ? 53 : today.clone().endOf('month').week()+1;
         const start_date = moment(year+"-"+month).clone().week(startWeek-1).format("YYYY-MM-DD");
         const end_date = moment(year+"-"+month).clone().week(endWeek).format("YYYY-MM-DD");
-     
         axios.get(`/calendar/schedule?start_date=${start_date}&end_date=${end_date}&type=range`,{headers:{'Authorization': member.SESSION_UID}})
         .then(res=>{    
             setRangeEvent(res.data.range || []);

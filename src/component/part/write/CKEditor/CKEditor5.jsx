@@ -9,7 +9,7 @@ const basic_config = [
   'imageStyle:side',
   '|',
   'imageTextAlternative'];
-function CKEditor5({onlyComments, onChange, data}){
+function CKEditor5({onlyComments, onChange, data, useKeyword}){
   
   const custom_config = {
     extraPlugins: [ MyCustomUploadAdapterPlugin ],
@@ -44,7 +44,14 @@ function CKEditor5({onlyComments, onChange, data}){
            
         }}       
       />
-          
+      <div className="keyword">
+          <tr>
+            <td>태그달기</td>
+            <td>
+              <div contentEditable > zz</div>
+            </td>
+          </tr>
+      </div>
       </div>
   );
     

@@ -99,8 +99,7 @@ export default function Myinfo(props){
                             <label style={{fontSize : "18px"}}>변경할 Password</label>
                             <input type="password" className="basic" placeholder="변경할 비밀번호를 입력해주세요" id="myinfo_changed_password"/>
                            
-                        </div>
-                        
+                        </div>    
                     </p> 
                     <div id="myinfo_change_pw_msg"></div>
                     <div className="btn_wrap">
@@ -227,7 +226,6 @@ export default function Myinfo(props){
     function getLoginLogData(){       
         axios.get("/log/login/top=30",{"headers":{"Authorization" : SESSION_UID}})
             .then(res=>{
-                console.log(res.data);
                 setLog(res.data);
             }).catch(e=>console.log(e.response.data))
     }
@@ -349,17 +347,25 @@ export default function Myinfo(props){
                                 }}>
                                     {data.self_introduction}    
                                 </textarea> 
-                                <div id="myinfo_intro_textarea_len" className="write_len">0/50</div> 
+                                <div id="myinfo_intro_textarea_len" className="write_len">{data.self_introduction ? data.self_introduction.length : 0}/50</div> 
                                 <div className="btn_wrap">
                                     <button type="button" className="btn delete" onClick={()=>{
                                         const text = document.getElementById("myinfo_intro_textarea");
-                                        
+                                        const fd = new FormData();
+                                        fd.append("introduce",text.value);
+                                        axios.post("/member/change/introduce",fd,{headers:{"Authorization":SESSION_UID}})
+                                            .then(res=>{
+                                                window.location.reload();       
+                                            }).catch(e=>{
+                                                alert("변경에 실패했습니다.");
+                                                setIsIntroduceUpdate(false);
+                                            })
                                     }}> 수정</button>  
                                     <button type="button" className="btn delete" onClick={()=> setIsIntroduceUpdate(false)}>취소</button>  
                                 </div>  
                             </div>
                             :
-                            <div className="introduce_myself"          
+                            <div className="introduce_myself"      
                             onDoubleClick={()=> setIsIntroduceUpdate(true)}
                             onTouchEnd={()=> setIsIntroduceUpdate(true)}
                             >
@@ -394,7 +400,7 @@ export default function Myinfo(props){
                 <InfoDetail id="avatar">
                     <InfoDetailTitle>
                         <ich>아바타 변경</ich> 
-                        <ic>아바타의 크기는 <font color="#ca5656">2MB 이하의 이미지 파일</font>만 설정 가능합니다.</ic> 
+                        <ic>아바타의 크기는 <font color="#ca5656">10MB 이하의 이미지 파일</font>만 설정 가능합니다.</ic> 
                         <ic>아바타를 설정하지 않을 경우 기본 이미지가 적용됩니다.</ic> 
                         <ic>&nbsp;</ic> 
                         <ic>아바타 변경을 원하면 <font color="#ca5656">현재 이미지 아이콘을 클릭</font> 해주세요.</ic> 
@@ -403,14 +409,14 @@ export default function Myinfo(props){
                             <div className="img_wrap">
                                 <span className="title">이미지</span>
                                 <img src={avatar ? avatar : "/profile.png"} alt="profile"/>
-                                <input type="file" onChange={(e)=>{
+                                <input type="file" id="myinfo_avater_file" onChange={(e)=>{
                                     if(e.target.files[0]){
                                         if(e.target.files[0].type.indexOf("image") === -1){
                                             alert("이미지 파일이 아닙니다.");
                                             return;
                                         }
-                                        if(e.target.files[0].size >= 2097152){
-                                            alert("이미지 크기가 2MB보다 큽니다.");
+                                        if(e.target.files[0].size >= 10000000){
+                                            alert("이미지 크기가 10MB보다 큽니다.");
                                             return;
                                         }
                                        
@@ -422,7 +428,15 @@ export default function Myinfo(props){
                                 }}/>
                             </div>   
                             <ic style={{marginLeft:"10px"}}>
-                            <button type="button" >변경</button>
+                            <button type="button" onClick={()=>{
+                                const avatar = document.getElementById("myinfo_avater_file");
+                                const fd = new FormData();
+                                fd.append("avatar", avatar.files[0])
+                                axios.post("/member/change/avatar",fd,{headers:{"Authorization": SESSION_UID}})
+                                    .then(res=>{
+                                        alert("이미지가 변경되었습니다.");
+                                    }).catch(e=>alert("이미지 변경에 실패했습니다."))
+                            }}>변경</button>
                             <button type="button" style={{backgroundColor : "#eee", color : "#000"}} onClick={()=> setAavtar(currentAvatar)}>기존이미지로</button>
                             </ic> 
                             

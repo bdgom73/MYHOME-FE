@@ -34,7 +34,6 @@ export default function FreeUpdate(props){
         setBoardId(params.id);
         axios.get("/bbs/view/"+params.id+"/free")
          .then(res=>{ 
-             console.log(res)  
             setData(res.data); 
             setTitle(res.data.title);
             setWriter(res.data.nickname);
@@ -42,7 +41,6 @@ export default function FreeUpdate(props){
             refTitle.innerHTML = `MYDOMUS | ${res.data.title ? res.data.title : "Update"}`
          })
          .catch(e=>{
-            console.log(e.response);
             history.push("/bbs/free/page=1");
          });
  
@@ -63,9 +61,8 @@ export default function FreeUpdate(props){
         fd.append("category","free")
         axios.put("/bbs/update",fd,{headers:{'Content-Type': 'multipart/form-data',"Authorization" : member.SESSION_UID}})
             .then(res=>{
-                console.log(res);
                 if(res.status === 200) history.push(`/bbs/free/${params.id}`)
-            }).catch(e=>console.log(e.response))
+            }).catch(e=>console.error(e.response))
     }
 
     return(

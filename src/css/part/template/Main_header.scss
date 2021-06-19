@@ -77,21 +77,17 @@ header{
         }
         .user_profile{
             margin-left: 10px;
-            background-color: #eee;
             width: 45px;
             height: 45px;
-            border : 1px solid #bbb;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            white-space: nowrap;
-            
+            white-space: nowrap;      
             font-size: 9px;
             font-weight: bold;
-            position: relative;
-            
+            position: relative;          
             .user_profile_main{
                 width: 100%;
                 height: 100%;
@@ -101,9 +97,8 @@ header{
                 overflow: hidden;
                 justify-content: center;            
                 img{
-                    padding :2px;
-                    width: 100%;
-                    height: 100%;
+                    width: 45px;
+                    height: 45px;
                     &:hover{
                         transform: scale(1.2);
                     }

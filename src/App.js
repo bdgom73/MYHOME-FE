@@ -10,7 +10,6 @@ import VideoBoard from "./component/route/board/list/VideoBoard";
 import NotFound from "./component/NotFound";
 import VideoDetail from "./component/route/board/detail/VideoDetail";
 import FreeBoard from "./component/route/board/list/FreeBoard";
-import SubLoading from "./component/sub_loading";
 import FreeDetail from "./component/route/board/detail/FreeDetail";
 import PhotoBoard from "./component/route/board/list/PhotoBoard";
 import PhotoDetail from "./component/route/board/detail/PhotoDetail";
@@ -21,21 +20,18 @@ import PhotoUpdate from "./component/route/board/update/PhotoUpdate";
 import FreeUpdate from "./component/route/board/update/FreeUpdate";
 import Notice from "./component/route/notice/Notice"
 import VideoUpdate from "./component/route/board/update/VideoUpdate";
-import Modal from "./component/modal/modal";
 import { ToastContainer } from 'react-toastify';
 import Search from "./component/route/Search";
 import Myinfo from "./component/route/myinfo/Myinfo";
 import UserInfo from "./component/route/user/UserInfo";
 import ToastWeather from "./component/part/ToastWeather";
 import UserFind from "./component/route/find/UserFind";
-import EmailAuth from "./component/EmailAuth";
 import Loading from "./component/part/Loading";
 
 function App() {
 
   return (   
     <>
-   
     <ToastContainer/>
     <Switch>   
       <Route exact path="/" ><Template><Home/></Template></Route>
@@ -48,10 +44,6 @@ function App() {
       {/* JOIN SERVICE */}
       <Route exact path="/login" ><Template access="non-user"><Login/></Template></Route>
       <Route exact path="/register"><Template access="non-user"><Register/></Template></Route>
-     
-      {/* Search Service */}
-      <Route exact path="/bbs/search=:id" render={(props)=>{ return <Template><SubLoading {...props}/></Template>}} ></Route>
-      <Route exact path="/bbs/search=" render={(props)=>{ return <Template><SubLoading {...props}/></Template>}} ></Route>
 
       {/* Notice Service */}
       <Route exact path="/bbs/notice" render={(props)=>{ return <Template><Notice {...props}/></Template>}} ></Route>
@@ -95,6 +87,7 @@ function App() {
 
       {/* User ID / PW Find Service*/}
       <Route exact path="/find/userinfo" render={(props)=>{ return <Template access="non-user"><UserFind {...props}/></Template> }}></Route>
+      
       {/* TEST */}
       <Route exact path="/test"><Loading text="adsdasdasd"/></Route>
 
