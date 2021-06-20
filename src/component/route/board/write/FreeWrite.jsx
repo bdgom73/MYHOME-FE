@@ -8,6 +8,7 @@ import Modal from "../../../modal/modal";
 import WriteEditor from "../../../part/write/WriteEditor";
 
 import CKEditor5 from "../../../part/write/CKEditor/CKEditor5";
+import { enterEventClear } from "../../../../js/common";
 
 export default function FreeWrite(props){
 
@@ -16,6 +17,7 @@ export default function FreeWrite(props){
     const modal = useModal();
     const member = useMember();
     const [desc,setDesc] = useState("");
+    const [keyword,setKeyword] = useState([]);
     function onModalHandler(){
         if(modal.modal === 1){
             return <Modal close={modal.close}>잘못된 URL입니다.</Modal>
@@ -33,7 +35,9 @@ export default function FreeWrite(props){
         const fd = new FormData();    
         fd.append("title",e.target[0].value);
         fd.append("description",desc);
-        
+        fd.append("keyword",new Array(keyword));
+
+        console.log(new Array(keyword));
         axios.post("/bbs/write?category=free",fd,{headers:{'Content-Type': 'multipart/form-data',"Authorization" : member.SESSION_UID}})
             .then(res=>{
                 history.push(`/bbs/free/${res.data}`)
@@ -44,12 +48,14 @@ export default function FreeWrite(props){
         <>
         {onModalHandler()}
         <div className="v_write_wrap">
-            <form onSubmit={onSubmitHandler}>
+            <form onSubmit={onSubmitHandler} onKeyDown={enterEventClear}>
                 <table>
                     <tbody>
                     <tr>
                         <td colSpan='2'>
-                            <input type="text" id="free_write_title" className="w_title" placeholder="제목을 입력해주세요" />
+                            <input type="text" id="free_write_title" className="w_title" placeholder="제목을 입력해주세요" 
+                                onKeyPress={enterEventClear}
+                            />
                         </td>
                     </tr>
                     <tr>
@@ -59,7 +65,7 @@ export default function FreeWrite(props){
                     </tr>    
                     <tr>
                         <td colSpan='2' style={{padding : 5, margin:"0 auto"}}>
-                           <CKEditor5 onChange={(ed)=>{setDesc(ed)}}/>
+                           <CKEditor5 onChange={(ed,kw)=>{setDesc(ed);setKeyword(kw)}}/>    
                            <div className="btn_wrap">
                                 <input type="submit" className="btn" value="글쓰기"/>
                                 <button className="btn">목록</button>

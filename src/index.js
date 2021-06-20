@@ -12,7 +12,6 @@ import { toast } from 'react-toastify';
 
 toast.configure();
 dotenv.config();
-
 ReactDOM.render(
   <CookiesProvider>
     <BrowserRouter>

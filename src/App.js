@@ -27,11 +27,13 @@ import UserInfo from "./component/route/user/UserInfo";
 import ToastWeather from "./component/part/ToastWeather";
 import UserFind from "./component/route/find/UserFind";
 import Loading from "./component/part/Loading";
+import { useEffect } from "react";
 
 function App() {
 
   return (   
     <>
+    
     <ToastContainer/>
     <Switch>   
       <Route exact path="/" ><Template><Home/></Template></Route>

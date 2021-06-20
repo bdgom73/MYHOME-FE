@@ -1,7 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-
 const comments_config = ['bold','italic','link','undo','redo'];
 const basic_config = [
   'heading','|','bold','italic','link','bulletedList','numberedList','|',
@@ -21,9 +20,9 @@ function CKEditor5({onlyComments, onChange, data, useKeyword}){
     }
   }
 
-  
+  const [keyword,setKeyword] = useState([]);
+  const ref = useRef(0); 
 
-      
   return (
       <div className="CKEditor_custom">
         <CKEditor
@@ -33,7 +32,7 @@ function CKEditor5({onlyComments, onChange, data, useKeyword}){
           data={data}
           onChange={(event, editor) => {
             const data = editor.getData();
-            onChange(data)
+            onChange(data,keyword);
           }}  
           onReady ={(editor) => {
             if(editor){
@@ -44,14 +43,60 @@ function CKEditor5({onlyComments, onChange, data, useKeyword}){
            
         }}       
       />
-      <div className="keyword">
-          <tr>
-            <td>태그달기</td>
-            <td>
-              <div contentEditable > zz</div>
-            </td>
-          </tr>
+      {/* ref.current.focus() */}
+      <div className="keyword" id="keyword_tag">
+        {
+          keyword.map((k,i)=>{
+            return (
+              <p className="tag" key={k+i}>
+                <span onClick={()=>{
+                  setKeyword(keyword.filter(v=> v !== k));
+                }}>x</span>
+                #{k}
+              </p>
+            )
+          })
+        }
+        <div className="keyword_wrap">
+          <span className="span_tag">#</span>
+          <input type="text" placeholder="태그 입력 (최대 10개)"
+          ref={(r)=>{ref.current = r}} maxLength="10" minLength="1" onKeyUp={(e)=>{  
+            const msg = document.getElementById("keyword_ckeditor_msg");
+            var blank_pattern = /^\s+|\s+$/g;
+            if(keyword.length >= 10){
+              msg.innerText = "태그는 최대 10개까지 가능합니다.";
+              msg.classList.add("error");
+              msg.classList.remove("success");
+              e.target.value = "";
+              return;
+            }
+            if(e.target.value.replace(blank_pattern,'') === ""){
+              msg.innerText = "공백은 입력할 수 없습니다.";
+              msg.classList.add("error");
+              msg.classList.remove("success");
+              e.target.value = "";
+              return;
+            }
+            if((e.code === "Enter" || e.code === "Space")){
+              const value =  e.target.value.replace(/(\s*)/g, "");
+              for(let i = 0 ; i < keyword.length ; i++){
+                if(keyword[i] === value){
+                  msg.innerText = "이미 입력된 태그입니다.";
+                  msg.classList.add("error");
+                  msg.classList.remove("success");
+                  e.target.value = "";
+                  return;
+                }
+              }        
+              setKeyword([...keyword, value]);
+              ref.current.focus();
+              e.target.value = "";
+            }    
+          }}/>
+        </div>
       </div>
+      
+      <div id="keyword_ckeditor_msg" style={{textAlign:"left"}}></div>
       </div>
   );
     

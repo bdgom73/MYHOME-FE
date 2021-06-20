@@ -1,8 +1,51 @@
-.search_result_wrap{
-    
+.tag_p{
+    font-size: 10px;
+    margin-left: 8px;
+    color : #adadad !important;
+    &:first-child{
+        margin-left: 5px;
+    }
 }
 .highlight{
     margin: 0;
     padding: 0;
     background-color: #eef103;
+}
+.search{
+    position: relative;
+    // padding: 2px;
+}
+.search_word_list{
+    position: absolute;
+    // border: 2px solid #bbb;
+    padding: 5px;
+    top:30px;
+    left: 7px;
+    background-color: #eee;
+    width: 100%;
+    max-width: 372px;   
+    max-height: 300px;
+    z-index: 99;
+    .word{
+        display: block;
+        margin: 3px 0;
+        font-size: 13px;
+        cursor: pointer;
+        &:hover{
+            background-color: #eee;
+        }
+    }
+    .word_sub_menu{
+        text-align: right;
+        font-size: 10px;
+        font-weight: bold;
+        cursor: pointer;    
+        span{
+            color: #a2a2a2 !important;
+            &:hover{
+                color: #222 !important;
+            }
+        }
+       
+    }
 }

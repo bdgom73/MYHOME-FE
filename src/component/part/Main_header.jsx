@@ -1,9 +1,10 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { BsList,BsFillBellFill } from 'react-icons/bs';
 import { useHistory } from 'react-router';
 
 import useMember from '../../customState/useMember';
 import { Link } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 
 export default function Main_header(props){
 
@@ -15,11 +16,43 @@ export default function Main_header(props){
     const history = useHistory();
     const {data,logined,removeCookie} = useMember();
     const searchRef = useRef(0);
+    const [searchWord,setSearchWord] =useState([]);
+    const [cookies,setCookies] = useCookies();
+    const [wordFiled,setWordFiled] = useState(false);
 
     const onFocusHandler = (e)=>{
         searchRef.current = e.target
+        setWordFiled(!wordFiled);
     }
-    
+    const onBlurHandler = ()=>{
+        setWordFiled(false);
+    }
+    const getSearchWord = ()=>{
+        if(cookies._hist){
+            if(cookies._hist.indexOf("^j") !== -1){
+                let word = cookies._hist.split("^j");
+                setSearchWord([...word]);
+            }else{
+                setSearchWord([cookies._hist]);
+            }
+        }
+    }
+
+    useEffect(()=>{
+        getSearchWord()
+    },[cookies._hist])
+
+    const saveSearchTerms = ()=>{
+        let value = searchRef.current.value;
+        if(cookies._hist){
+            setCookies("_hist", value+"^j"+cookies._hist,{path : "/"});
+        }else{
+            setCookies("_hist", value ,{path : "/"});
+        }
+        setWordFiled(false);
+        history.push(`/search?search=${searchRef.current.value}`);
+    }
+
     return(
         <> 
         <header style={props.style}>
@@ -35,8 +68,27 @@ export default function Main_header(props){
             {
                 history.location.pathname !== "/" ? (
                     <div className="search" >
-                        <input type="text" name="search" onFocus={onFocusHandler}/>
-                        <input type="button" value="검색" onClick={()=>{ history.push(`/search?search=${searchRef.current.value}`)}}/>
+                        <input type="text" ref={(s)=>{searchRef.current = s}} name="search" onClick={onFocusHandler}  autocomplete="off"/>
+                        <div className="search_word_list" style={{display : wordFiled ? "block" : "none"}}>
+                        {
+                            wordFiled ? 
+                            searchWord.map((s,i)=>{
+                                return (
+                                    <span key={s+i} className="word" onClick={()=>{searchRef.current.value = s; onBlurHandler()}}>
+                                        {s}
+                                    </span>
+                                )
+                            }) : <></>
+                        }
+                        <div className="word_sub_menu">
+                            <span onClick={()=>{
+                                setCookies("_hist", "" ,{path : "/"});
+                                setWordFiled(false);
+                                setSearchWord([]);
+                            }}>검색어 삭제</span>
+                        </div>
+                        </div>
+                        <input type="button" value="검색" onClick={saveSearchTerms}/>
                     </div>
                 ) :<></>
             }        

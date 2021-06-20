@@ -1,6 +1,6 @@
 import axios from "axios";
 import qs from "query-string";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useHistory, useLocation } from "react-router";
 import Highlighter from "react-highlight-words";
 import { AiFillLike ,AiOutlineUser} from 'react-icons/ai';
@@ -32,20 +32,22 @@ export default function Search(props){
     const [data , setData] = useState([]);
     const [sort,setSort] = useState("include");
     const [subSort,setSubSort] = useState("date");
+    const [searchTag,setSearchTag] = useState([]);
+    const searchRef = useRef(0);
     const onSearchHandler = ()=>{
         const search_url = `/search?term=${term}&size=${50}&page=${0}&sort=${sort}&sub_sort=${subSort}`
         axios.get(search_url)
         .then(res=>{
             setData(res.data);
-            console.log(res)
-        }).catch(e=> console.log(e))
+        }).catch(e=> console.log(e));
+        tagSetting();
     }
     const onChangeHandler = (e)=>{
         setSearchText(e.target.value);
     }
     useEffect(()=>{
         if(term){
-            onSearchHandler();
+            onSearchHandler();   
         }
     },[value,sort,subSort,term])
 
@@ -80,24 +82,55 @@ export default function Search(props){
                     <Highlight text={text}/>
                     </div>     
                 </div>    
-            </div>  
-              
-           
+            </div>         
         )
     }
+    function compare(a, b) {
+        if(term.toString().indexOf(" ") !== -1){
+            let text = term.split(" ");
+            for(let i = 0 ; i < text.length ; i++){
+                if (a.indexOf(text[i]) !== -1 ) {
+                    return -1;
+                } else if(b.indexOf(text[i]) !== -1 ){
+                    return 0;
+                }
+            }
+           
+        }  
+        return 0;
+    }
+
+    function tagSetting(){
+        if(term.indexOf(" ") !== -1){
+            let tags = term.split(" ");
+            setSearchTag([...tags]);
+        }
+    }
+
     if(term){
         return (
             <>  
             <div className="home_wrap">
-               
-                <div className="home_list">
-                    
+                <div className="home_list">          
                     <div className="search_data">
                         통합검색어 | <span>{term}</span>
+                        
+                        {
+                            searchTag.map((s,i)=>{
+                                return (
+                                    <span className="tag_p" key={s+i}>
+                                        <a href={`?search=${s}`} >
+                                            #{s}
+                                        </a>
+                                    </span>
+                                )
+                            })
+                        }
+                        
                     </div>
                     <top>
+                    <tl onClick={()=>{setSort("include")}} className={sort === "include" ? "selected" : ""}>전체검색</tl>
                         <tl onClick={()=>{setSort("exact")}} className={sort === "exact" ? "selected" : ""}>완전일치</tl>
-                        <tl onClick={()=>{setSort("include")}} className={sort === "include" ? "selected" : ""}>포함</tl>
                         <tl onClick={()=>{setSort("start")}} className={sort === "start" ? "selected" : ""}>첫일치</tl>
                     </top> 
                     <top>
@@ -108,7 +141,7 @@ export default function Search(props){
                         <h2>자유게시판</h2>
                         {
                         data.filter(v=>v.categoryList ==="FREE").length === 0 ? <>데이터없음</> :
-                        data.filter(v=>v.categoryList ==="FREE").map((d,i)=>{
+                        data.filter(v=>v.categoryList ==="FREE").sort((a,b)=> compare(a.title,b.title)).map((d,i)=>{
                             return boardList(d,i)        
                         })
                         }             
@@ -117,7 +150,7 @@ export default function Search(props){
                         <h2>사진게시판</h2>
                         {
                         data.filter(v=>v.categoryList ==="PHOTO").length === 0 ? <>데이터없음</> :
-                        data.filter(v=>v.categoryList ==="PHOTO").map((d,i)=>{
+                        data.filter(v=>v.categoryList ==="PHOTO").sort((a,b)=> compare(a.title,b.title)).map((d,i)=>{
                             return boardList(d,i)        
                         })
                         }             
@@ -126,7 +159,7 @@ export default function Search(props){
                         <h2>영상게시판</h2>
                         {
                         data.filter(v=>v.categoryList ==="VIDEO").length === 0 ? <>데이터없음</> :
-                        data.filter(v=>v.categoryList ==="VIDEO").map((d,i)=>{
+                        data.filter(v=>v.categoryList ==="VIDEO").sort((a,b)=> compare(a.title,b.title)).map((d,i)=>{
                             return boardList(d,i)        
                         })
                         }             
@@ -145,7 +178,7 @@ export default function Search(props){
             <h2>통합검색 기능입니다.</h2>
             <search style={{marginTop:"0px"}}>      
                 <div className="search" >
-                    <input type="text" name="search"  autocomplete="off" placeholder="통합검색 내용" onChange={onChangeHandler}/>
+                    <input type="text" name="search"  ref={s=> searchRef.current = s} autocomplete="off" placeholder="통합검색 내용" onChange={onChangeHandler}/>
                     <input type="button" value="검색" onClick={(e)=>{setValue(searchText) ;history.push(`/search?search=${searchText}`)}}/>
                 </div>
             </search>  

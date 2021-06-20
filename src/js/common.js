@@ -82,3 +82,10 @@ export function maskingText(text,type){
     }
    
 }
+
+export function enterEventClear(e){
+    if(e.code === "Enter"){
+        e.preventDefault();
+       
+    }
+}
