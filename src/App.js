@@ -26,8 +26,7 @@ import Myinfo from "./component/route/myinfo/Myinfo";
 import UserInfo from "./component/route/user/UserInfo";
 import ToastWeather from "./component/part/ToastWeather";
 import UserFind from "./component/route/find/UserFind";
-import Loading from "./component/part/Loading";
-import { useEffect } from "react";
+import TalkList from "./component/page/talk/TalkList";
 
 function App() {
 
@@ -36,8 +35,7 @@ function App() {
     
     <ToastContainer/>
     <Switch>   
-      <Route exact path="/" ><Template><Home/></Template></Route>
-      
+      <Route exact path="/" ><Template><Home/></Template></Route>   
       {/* MEMBERSHIP SERVICE */}
       <Route exact path="/weather" ><Template access="user"><TotalWeather/></Template></Route>
       <Route exact path="/schedule" ><Template access="user"><div className="calendar_main_wrap"><Calendar view/></div></Template></Route>
@@ -91,7 +89,7 @@ function App() {
       <Route exact path="/find/userinfo" render={(props)=>{ return <Template access="non-user"><UserFind {...props}/></Template> }}></Route>
       
       {/* TEST */}
-      <Route exact path="/test"><Loading text="adsdasdasd"/></Route>
+      <Route exact path="/test"><TalkList/></Route>
 
       {/* NOT FOUND SERVICE */}
       <Route path="/"><NotFound/></Route>

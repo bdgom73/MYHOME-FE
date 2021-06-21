@@ -1,5 +1,5 @@
 import { ImKey } from 'react-icons/im';
-
+import "../../../css/myinfo/myinfo.scss";
 import { RiGitRepositoryPrivateFill } from 'react-icons/ri';
 import { CgPassword,CgProfile } from 'react-icons/cg';
 import { HiStatusOnline } from 'react-icons/hi';
@@ -335,7 +335,8 @@ export default function Myinfo(props){
                         <ich>소개글</ich>  
                         <ic>본인의 <font color="#fff568">소개글</font> 입니다.</ic> 
                         <ic><font color="#fff568">50자 내</font>의 짧은 글만 작성할 수 있습니다.</ic> 
-                        <ic>줄바꿈은 적용되지않습니다.</ic>                  
+                        <ic>줄바꿈은 카운트 되지않습니다.</ic>   
+                        <ic>공백은 카운트 됩니다.</ic>                 
                     </InfoDetailTitle>
                     <InfoDetailBody style={{backgroundColor:"#F09AB1", flexDirection:"column"}}>
                         {
@@ -367,9 +368,9 @@ export default function Myinfo(props){
                             :
                             <div className="introduce_myself"      
                             onDoubleClick={()=> setIsIntroduceUpdate(true)}
-                            onTouchEnd={()=> setIsIntroduceUpdate(true)}
+                            onTouchEnd={()=> setIsIntroduceUpdate(true)}  
                             >
-                                {data.self_introduction ? data.self_introduction : `안녕하세요 ${data.nickname} 입니다.`}
+                                <p style={{ whiteSpace: "pre",overflow: "hidden", maxWidth: "440px"}}>{data.self_introduction ? data.self_introduction : `안녕하세요 ${data.nickname} 입니다.`}</p>
                             </div> 
                         }
                                 

@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
 import { BsList,BsFillBellFill } from 'react-icons/bs';
+import {MdClose} from 'react-icons/md';
 import { useHistory } from 'react-router';
-
+import { FaSearch } from 'react-icons/fa';
 import useMember from '../../customState/useMember';
 import { Link } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
@@ -44,8 +45,23 @@ export default function Main_header(props){
 
     const saveSearchTerms = ()=>{
         let value = searchRef.current.value;
-        if(cookies._hist){
-            setCookies("_hist", value+"^j"+cookies._hist,{path : "/"});
+        let wfs = "";
+        let ws = []
+        if(cookies._hist){   
+            if(cookies._hist.indexOf("^j") !== -1 ){
+                let word = cookies._hist.split("^j");
+                ws = word.filter(v => v !== value);
+            }else{
+                ws = [cookies._hist];
+            }
+            for(let i = 0 ; i < ws.length ; i++){
+                if(i === (ws.length-1)){
+                    wfs += ws[i];
+                }else{
+                    wfs += ws[i]+"^j";
+                }     
+            }    
+            setCookies("_hist", wfs === value ? value : value + (wfs ? "^j" + wfs : ""),{path : "/"});  
         }else{
             setCookies("_hist", value ,{path : "/"});
         }
@@ -67,15 +83,28 @@ export default function Main_header(props){
             </div>
             {
                 history.location.pathname !== "/" ? (
-                    <div className="search" >
-                        <input type="text" ref={(s)=>{searchRef.current = s}} name="search" onClick={onFocusHandler}  autocomplete="off"/>
+                    <div className="search" onFocus={onFocusHandler}>
+                        <input type="text" ref={(s)=>{searchRef.current = s}} name="search"  autocomplete="off"/>
                         <div className="search_word_list" style={{display : wordFiled ? "block" : "none"}}>
                         {
                             wordFiled ? 
                             searchWord.map((s,i)=>{
                                 return (
-                                    <span key={s+i} className="word" onClick={()=>{searchRef.current.value = s; onBlurHandler()}}>
-                                        {s}
+                                    <span key={s+i} className="word">
+                                        <FaSearch/> <span  onClick={()=>{history.push("/search?search="+s); onBlurHandler()}}>{s}</span>
+                                        <span className="search_text_close" onClick={()=>{
+                                            let sf = searchWord.filter(w=> w !== s);
+                                            setSearchWord([...sf]);
+                                            let cf = "";
+                                            for(let i = 0 ; i < sf.length ; i++){
+                                                if(i === (sf.length-1)){
+                                                    cf += sf[i];
+                                                }else{
+                                                    cf += sf[i]+"^j";
+                                                }
+                                            }
+                                            setCookies("_hist", cf ,{path : "/"});
+                                        }}><MdClose/></span>
                                     </span>
                                 )
                             }) : <></>

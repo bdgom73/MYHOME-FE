@@ -34,6 +34,8 @@ export default function VideoWrite(props){
     const [etcUrl , setETCUrl] = useState("");
     const [preUrl,setPreUrl] = useState("");
     const [uploadLoading, setUploadLoading] = useState(false);
+    const [keyword,setKeyword] = useState([]);
+
     function onModalHandler(){
         if(modal.modal === 1){
             return <Modal close={modal.close}>잘못된 URL입니다.</Modal>
@@ -118,7 +120,7 @@ export default function VideoWrite(props){
        
         fd.append("title",e.target[0].value);
         fd.append("description",desc);
-        
+        fd.append("keyword",new Array(keyword));
         
         axios.post("/bbs/write?category=video",fd,
         {headers:{'Content-Type': 'multipart/form-data',"Authorization" : member.SESSION_UID}})
@@ -284,8 +286,7 @@ export default function VideoWrite(props){
                     </tr>
                     <tr>
                         <td colSpan='2' style={{padding : 5, margin:"0 auto"}}>
-                           {/* <WriteEditor onChange={(ed)=>{setDesc(ed)}} /> */}
-                           <CKEditor5 onChange={(ed)=>{setDesc(ed)}}/>
+                           <CKEditor5 onChange={(ed,keywords)=>{setDesc(ed); setKeyword(keywords)}} useKeyword/>
                             <div className="btn_wrap">
                                 <input type="submit" className="btn" value="글쓰기"/>
                                 <button className="btn">목록</button>

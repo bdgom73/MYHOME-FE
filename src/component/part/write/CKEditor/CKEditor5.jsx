@@ -43,8 +43,10 @@ function CKEditor5({onlyComments, onChange, data, useKeyword}){
            
         }}       
       />
-      {/* ref.current.focus() */}
-      <div className="keyword" id="keyword_tag">
+      {
+        useKeyword ?
+        <>
+        <div className="keyword" id="keyword_tag">
         {
           keyword.map((k,i)=>{
             return (
@@ -96,7 +98,9 @@ function CKEditor5({onlyComments, onChange, data, useKeyword}){
         </div>
       </div>
       
-      <div id="keyword_ckeditor_msg" style={{textAlign:"left"}}></div>
+      <div id="keyword_ckeditor_msg" style={{textAlign:"left"}}></div></> :<></>
+      }
+     
       </div>
   );
     

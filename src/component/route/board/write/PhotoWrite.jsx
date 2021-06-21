@@ -20,7 +20,8 @@ export default function PhotoWrite(props){
     const [files, setFiles] = useState([]);
     const [filesize, setFilesize] = useState(0);
     const [change,setChange] = useState(true);
-   
+    const [keyword,setKeyword] = useState([]);
+
 
     useEffect(()=>{
         let size = 0;
@@ -102,6 +103,7 @@ export default function PhotoWrite(props){
         const fd = new FormData();     
         fd.append("title",e.target[0].value);
         fd.append("description",desc);
+        fd.append("keyword",new Array(keyword));
         let list = new DataTransfer();  
         for(let i = 0; i < files.length; i++) {
             list.items.add(files[i]);
@@ -147,7 +149,7 @@ export default function PhotoWrite(props){
                     </tr>
                     <tr>
                         <td colSpan='2' style={{padding : 5, margin:"0 auto"}}>
-                           <CKEditor5 onChange={(ed)=>{setDesc(ed)}}/>
+                           <CKEditor5 onChange={(ed,keywords)=>{setDesc(ed); setKeyword(keywords)}} useKeyword/>
                             <div className="btn_wrap">
                                 <input type="submit" className="btn" value="글쓰기"/>
                                 <button className="btn">목록</button>

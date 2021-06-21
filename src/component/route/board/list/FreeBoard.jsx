@@ -65,10 +65,10 @@ export default function FreeBoard(props){
             columnData={["No","제목","글쓴이","작성일","조회","추천"]}
             linkColumn={"title"}
             boardName="free"
-            columnDataKey={["id","title","writer","created","views","recommend"]}
+            columnDataKey={["id","title","nickcname","created","views","recommend"]}
             autoSize
             loading ={loading}
-            writerColumn="writer"
+            writerColumn="nickname"
             dateColumn="created"
             />                 
         <ReactPaginate 

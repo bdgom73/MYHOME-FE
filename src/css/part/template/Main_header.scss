@@ -39,9 +39,8 @@ header{
             width: 380px;
             height: 30px;
             border: 1px solid #bbb;
-            border-top-left-radius: 10px;
-            border-bottom-left-radius: 10px;
-            
+            // border-top-left-radius: 10px;
+            // border-bottom-left-radius: 10px;     
         }
         input[type="text"]:focus{
             outline: none;
@@ -56,8 +55,8 @@ header{
             font-weight: bold;
             cursor: pointer;
             color:#222;
-            border-top-right-radius: 5px;
-            border-bottom-right-radius: 5px;
+            // border-top-right-radius: 5px;
+            // border-bottom-right-radius: 5px;
             background-color:#dfdfdf ;
         }
         input[type="button"]:hover{
@@ -111,7 +110,7 @@ header{
                 min-height: 100px;
                 top : 55px;
                 right: 0px;
-                z-index: 12;
+                z-index: 101;
                 background-color: #eee;
                 padding: 6px;
                 border: 3px solid #bbb;

@@ -65,7 +65,7 @@ export default function FreeWrite(props){
                     </tr>    
                     <tr>
                         <td colSpan='2' style={{padding : 5, margin:"0 auto"}}>
-                           <CKEditor5 onChange={(ed,kw)=>{setDesc(ed);setKeyword(kw)}}/>    
+                           <CKEditor5 onChange={(ed,keywords)=>{setDesc(ed); setKeyword(keywords)}} useKeyword/>    
                            <div className="btn_wrap">
                                 <input type="submit" className="btn" value="글쓰기"/>
                                 <button className="btn">목록</button>

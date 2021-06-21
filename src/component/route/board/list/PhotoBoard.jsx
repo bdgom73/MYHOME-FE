@@ -58,11 +58,11 @@ export default function PhotoBoard(props){
             columnData={["No","이미지","제목","글쓴이","작성일","조회","추천"]}
             linkColumn={"title"}
             boardName="photo"
-            columnDataKey={["id","image","title","writer","created","views","recommend"]}
+            columnDataKey={["id","image","title","nickname","created","views","recommend"]}
             autoSize
             loading ={loading}
             imageColumn="image"
-            writerColumn="writer"
+            writerColumn="nickname"
             dateColumn="created"
             />   
         <ReactPaginate 

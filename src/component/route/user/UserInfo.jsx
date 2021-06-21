@@ -206,7 +206,7 @@ export default function UserInfo(props){
                                 <ic>해당 유저의 <font color="#fff">소개글</font> 입니다.</ic>                  
                             </InfoDetailTitle>
                             <InfoDetailBody style={{backgroundColor:"#F09AB1"}}>
-                                {user.self_introduction ? user.self_introduction : `안녕하세요 ${nickname}입니다.` }
+                            <p style={{ whiteSpace: "pre",overflow: "hidden", maxWidth: "440px"}}>{user.self_introduction ? user.self_introduction : `안녕하세요 ${user.nickname} 입니다.`}</p>
                             </InfoDetailBody>
                         </InfoDetail>      
                         <InfoDetail id="avatar">

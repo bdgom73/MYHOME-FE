@@ -1,0 +1,25 @@
+.talk_list_wrap{
+    background-color: #272727;
+    .talk_list_header{
+        padding: 5px;
+        border-bottom: 1px solid #bbb;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        img{
+            width: 100px;
+        }
+        svg{
+            color : #eee;
+            font-size: 20px;
+            cursor: pointer;
+            &:hover{
+                transform: scale(1.1);
+            }
+        }
+    }
+    .talk_list_body{
+        min-height: 300px;
+        padding: 5px;
+    }
+}
