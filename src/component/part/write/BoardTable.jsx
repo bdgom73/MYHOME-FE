@@ -142,7 +142,7 @@ export default function BoardTable(props){
                                                 <div className="flex"><pcon style={{backgroundColor:"#c4302b"}}>
                                                     <span >운영자</span>  
                                                 </pcon><a href={`/user/${d[k]}`}>{d[k]}</a></div> :
-                                                writerColumn === k  ? <a href={`/user/${d[k]}`}>{d[k]}</a> :
+                                                writerColumn === k  ? <a href={`/user=${d[k]}`}>{d[k]}</a> :
                                                 htmlToText === k ? desc :
                                                 imageColumn === k ?  <img className="thumbnail" src={d.imageList[0] ? d.imageList[0].image_url : `/no_thumbnail.png`} alt="youtube_video"/> :
                                                 d[k]}

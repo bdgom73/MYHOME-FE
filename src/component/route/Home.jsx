@@ -81,7 +81,7 @@ export default function Home(props){
                                 </span>
                                 <span className="long_data">
                                     <span>{moment(d.created, "YYYYMMDD").fromNow()}</span> 
-                                    <span className="name"><AiOutlineUser/><Link to={`/user/${d.nickname}`}>{d.nickname}</Link></span>          
+                                    <span className="name"><AiOutlineUser/><Link to={`/user=${d.nickname}`}>{d.nickname}</Link></span>          
                                 </span>
                                 <div className="list_n">         
                                     <span><GrFormView/>{d.views}</span>

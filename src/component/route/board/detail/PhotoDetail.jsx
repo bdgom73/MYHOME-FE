@@ -141,7 +141,7 @@ export default function PhotoDetail(props){
         <h1 title={data.title}>{data.title}</h1>
         <video-info>
             <info>
-                <vi><small>작성자 |</small><Link to={`/user/${member.data.name}`}><b>{data.nickname}</b> </Link>             
+                <vi><small>작성자 |</small><Link to={`/user=${member.data.name}`}><b>{data.nickname}</b> </Link>             
                 {
                     data.rank === "ADMIN" ? 
                     <pcon style={{backgroundColor:"#c4302b"}}>

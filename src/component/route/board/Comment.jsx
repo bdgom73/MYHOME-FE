@@ -39,7 +39,7 @@ export default function Comment(props){
                                 </avatar>
                                 <info>    
                                     <c>
-                                        <Link to={`/user/${d.nickname}`}>{d.nickname}</Link>
+                                        <Link to={`/user=${d.nickname}`}>{d.nickname}</Link>
                                         
                                         {
                                         writer_id && writer_id === d.member_id ? 

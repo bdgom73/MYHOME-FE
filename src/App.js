@@ -83,7 +83,7 @@ function App() {
       <Route exact path="/myinfo" render={(props)=>{ return <Myinfo {...props}/> }}></Route>
 
       {/* User Infomation */}
-      <Route exact path="/user/:nickname" render={(props)=>{ return <UserInfo {...props}/> }}></Route>
+      <Route exact path="/user=:nickname" render={(props)=>{ return <UserInfo {...props}/> }}></Route>
 
       {/* User ID / PW Find Service*/}
       <Route exact path="/find/userinfo" render={(props)=>{ return <Template access="non-user"><UserFind {...props}/></Template> }}></Route>
