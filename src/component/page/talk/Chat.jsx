@@ -1,28 +1,12 @@
 import { useEffect, useRef } from "react";
 
-const rooms = [
-    "general",
-    "random",
-    "jokes",
-    "javascript"
-];
+
 
 export default function Chat(props){
 
     const scrollRef = useRef();
 
-    const renderRooms = (room)=>{
-        const currentChat = {
-            chatName : room,
-            isChannel : true,
-            receiverId : "",
-        }
-        return(
-            <div className="row" onClick={()=>{props.toggleChat(currentChat); props.joinRoom(room)}} key={room}>
-                {room}
-            </div>
-        )
-    }
+
 
     const renderMessages=(message, index)=>{
         return(
@@ -61,49 +45,56 @@ export default function Chat(props){
             )
         };
         const currentChat = {
-            chatName : user.name,
+            chatName : user.username,
             isChannel : false,
             receiverId : user.id,
         }
         return(
-            <div className="row" key={user.id} onClick={()=>{props.toggleChat(currentChat)}}>
+            <div className="row" key={user.id} 
+            onClick={()=>{props.toggleChat(currentChat); props.joinRoom(user.username)}}>
                 {user.username}
             </div>
         )
     }
 
     const scrollToBottom = ()=>{
+        if(props.currentChat.chatName)
         scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
     useEffect(()=>{
         scrollToBottom();
         return ()=>{
             scrollToBottom(); 
+            
         }
     },[props.messages])
-
+    console.log(props.currentRoomUsers)
     return(
         <>
-        <div className="channel">
-            {rooms.map(renderRooms)}
-        </div>
         <div className="user">
             {props.allUsers.map(renderUser)}
-        </div>
-        <div className="chat_panel">
-            <div className="channelInfo">
-                {props.currentChat.chatName}
-            </div>
-            <div className="chat_wrap" ref={(r)=> scrollRef.current = r}>
-                {body}
-            </div>
-            <input type="text" 
-                onChange = {props.handleMessageChange}
-                value={props.message}
-                onKeyPress={handleKeypress}
-            />
+        </div>    
+        {
+             props.currentChat.chatName ? 
+             <div className="chat_panel">
+            <div className="user">
+
+            {props.currentRoomUsers.map(renderUser)}
+            </div> 
+             <div className="channelInfo">
+                 {props.currentChat.chatName}
+             </div>
+             <div className="chat_wrap" ref={(r)=> scrollRef.current = r}>
+                 {body}
+             </div>
             
-        </div>
+             <input type="text" 
+             onChange = {props.handleMessageChange}
+             value={props.message}
+             onKeyPress={handleKeypress}/>
+               
+         </div> :<></>  
+        }
         </>
     )
 }

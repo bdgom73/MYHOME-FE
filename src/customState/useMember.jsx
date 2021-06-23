@@ -20,7 +20,7 @@ function useMember(){
                 setLogined(true);   
                 setMessage(res.data.name+"님 어서오세요");     
             }).catch(e=>{
-                setMessage(e.response.data.message);
+                setMessage(e.response.data ? e.response.data.message : "");
                 setLogined(false);   
                 setUser({})    
                 if(cookie.SESSION_UID) removeCookie("SESSION_UID",{path:"/"}); 

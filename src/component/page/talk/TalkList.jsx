@@ -11,19 +11,26 @@ const initialMessagesState = {
     general : [],
     random : [],
     jokes : [],
-    javascript : []
+    javascript : [],
+    "123" : []
 }
-
+const rooms = [
+    "general",
+    "random",
+    "jokes",
+    "javascript",
+];
 export default function TalkList(){
 
     const member = useMember();
     const [username , setUsername] = useState("");
     const [connected, setConnected] = useState(false);
-    const [currentChat, setCurrentChat] = useState({isChannel : false, chatName : "general", receiverId:""});
+    const [currentChat, setCurrentChat] = useState({isChannel : false, chatName : "", receiverId:""});
     const [connectedRooms,setConnectedRooms]= useState(["general"]);
     const [allUsers, setAllUsers]=useState([]);
     const [messages, setMessages]=useState(initialMessagesState);
     const [message,setMessage] = useState("");
+    const [currentRoomUsers, setCurrentRoomUsers] = useState([]);
     const socketRef = useRef();
    
 
@@ -55,20 +62,34 @@ export default function TalkList(){
         };
         socketRef.current.emit("send message", payload);
 
-        const newMessages = immer(messages, draft=> {
-            draft[currentChat.chatName].push({
-                sender : username,
-                content : message,
-                date
+        if(currentChat.chatName){
+            const newMessages = immer(messages, draft=> {
+                draft[currentChat.chatName].push({
+                    sender : username,
+                    content : message,
+                    date
+                })
             })
-        })
-        setMessages(newMessages);
+            setMessages(newMessages);
+        }else{
+            const newMessages = immer(messages, draft=> {
+                draft[currentChat.chatName] = {
+                    sender : username,
+                    content : message,
+                    date
+                }
+            });
+            setMessages(newMessages);
+        }
+      
+        
     }
 
     const roomJoinCallBack = (incomingMessages, room)=>{
         const newMessages = immer(messages, draft=>{
             draft[room] = incomingMessages;
         });
+
         setMessages(newMessages);
     }
 
@@ -76,7 +97,8 @@ export default function TalkList(){
         const newConnectedRooms = immer(connectedRooms, draft=>{
             draft.push(room);
         });
-        socketRef.current.emit("join room", room , messages => roomJoinCallBack(messages, room));
+        socketRef.current.emit("join room", room , member.data.nickname, (messages) => roomJoinCallBack(messages, room));
+       
         setConnectedRooms(newConnectedRooms);
     }
 
@@ -85,17 +107,17 @@ export default function TalkList(){
             const newMessages = immer(messages, draft=>{
                 draft[currentChat.chatName] = [];
             });
-            setMessages(newMessages);
+            setMessages(newMessages);        
         }
+      
         setCurrentChat(currentChat);  
     }
-
 
     const connect = ()=>{       
         setConnected(true);
         socketRef.current = io.connect("/");
         socketRef.current.emit("join server", member.data.nickname ? member.data.nickname : "");
-        socketRef.current.emit("join room", "general", messages => roomJoinCallBack(messages, "general"));
+        // socketRef.current.emit("join room", "general", member.data.nickname , messages => roomJoinCallBack(messages, "general"));
         socketRef.current.on("new user", allUsers => {
             setAllUsers(allUsers);
         });
@@ -126,7 +148,8 @@ export default function TalkList(){
                 connectedRooms = {connectedRooms}
                 currentChat = {currentChat}
                 toggleChat={toggleChat}
-                messages={messages[currentChat.chatName]}
+                messages={messages[currentChat.chatName] || []}
+                currentRoomUsers = {currentRoomUsers}
             />
         );
     }else{
@@ -137,6 +160,18 @@ export default function TalkList(){
         )
     }
 
+    const renderRooms = (room)=>{
+        const currentChat = {
+            chatName : room,
+            isChannel : true,
+            receiverId : "",
+        }
+        return(
+            <div className="row" onClick={()=>{toggleChat(currentChat);joinRoom(room)}} key={room}>
+                {room}
+            </div>
+        )
+    }
 
     return(
         <>
@@ -146,6 +181,11 @@ export default function TalkList(){
                 <AiOutlineClose/>
             </div>
             <div className="talk_list_body" >
+            <div className="channel">
+                {                          
+                    rooms.map(renderRooms)  
+                }
+            </div>
                 {body}
             </div>
         </div>
