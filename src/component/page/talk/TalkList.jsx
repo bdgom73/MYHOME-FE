@@ -31,6 +31,7 @@ export default function TalkList(){
     const [messages, setMessages]=useState(initialMessagesState);
     const [message,setMessage] = useState("");
     const [currentRoomUsers, setCurrentRoomUsers] = useState([]);
+    const [alertMessage,setAlertMessage] = useState("");
     const socketRef = useRef();
    
 
@@ -109,18 +110,23 @@ export default function TalkList(){
             });
             setMessages(newMessages);        
         }
-      
+        socketRef.current.on("alert message",(msg)=>{
+            setAlertMessage(msg);
+        })
         setCurrentChat(currentChat);  
     }
 
     const connect = ()=>{       
         setConnected(true);
         socketRef.current = io.connect("/");
-        socketRef.current.emit("join server", member.data.nickname ? member.data.nickname : "");
+     
         // socketRef.current.emit("join room", "general", member.data.nickname , messages => roomJoinCallBack(messages, "general"));
         socketRef.current.on("new user", allUsers => {
             setAllUsers(allUsers);
         });
+        socketRef.current.on("alert message",(msg)=>{
+            setAlertMessage(msg);
+        })
         socketRef.current.on("new message", ({content, sender, chatName, date})=>{
             setMessages(messages=>{
                 const newMessages = immer(messages, draft=>{
@@ -133,6 +139,8 @@ export default function TalkList(){
                 return newMessages;
             })
         })    
+
+       
     }
 
     let body;
@@ -150,6 +158,7 @@ export default function TalkList(){
                 toggleChat={toggleChat}
                 messages={messages[currentChat.chatName] || []}
                 currentRoomUsers = {currentRoomUsers}
+                alertMessage={alertMessage}
             />
         );
     }else{
@@ -181,12 +190,15 @@ export default function TalkList(){
                 <AiOutlineClose/>
             </div>
             <div className="talk_list_body" >
-            <div className="channel">
+            {
+                connected ? 
+                <div className="channel">
                 {                          
                     rooms.map(renderRooms)  
                 }
-            </div>
-                {body}
+                </div> :<></>
+            } 
+            {body}
             </div>
         </div>
         </>

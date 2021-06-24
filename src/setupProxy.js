@@ -16,7 +16,7 @@ module.exports = (app) => {
         changeOrigin: true,
     }));
   app.use(
-    '/socket.io',
+    '/socket.io/?',
     createProxyMiddleware({
       target: 'http://127.0.0.1:1337',
       changeOrigin: true,

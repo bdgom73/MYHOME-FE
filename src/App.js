@@ -27,7 +27,7 @@ import UserInfo from "./component/route/user/UserInfo";
 import ToastWeather from "./component/part/ToastWeather";
 import UserFind from "./component/route/find/UserFind";
 import TalkList from "./component/page/talk/TalkList";
-
+import ChatPage from "./component/page/chat/ChatPage";
 function App() {
 
   return (   
@@ -90,6 +90,7 @@ function App() {
       
       {/* TEST */}
       <Route exact path="/test"><TalkList/></Route>
+      <Route exact path="/chat/room=:room" render={(props)=>{ return <Template access="user"><ChatPage {...props}/></Template> }}></Route>
 
       {/* NOT FOUND SERVICE */}
       <Route path="/"><NotFound/></Route>
