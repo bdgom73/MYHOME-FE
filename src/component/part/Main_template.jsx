@@ -49,7 +49,7 @@ export default function Main_template(props) {
     })
     return(
         <>
-        <Header subMenuHandler={subMenuHandler}/>
+        <Header subMenuHandler={subMenuHandler} talk_header={props.talk_header ? true : false}/>
         <div className="content_wrap" >
             {
                 subMenu ? (

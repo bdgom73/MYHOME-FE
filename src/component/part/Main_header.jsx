@@ -75,11 +75,17 @@ export default function Main_header(props){
             <div className="header_s1">
                 <div className="sub_menu">
                     <BsList size={30} onClick={props.subMenuHandler}/>
-                </div>
-                <div className="logo" style={{position:"relative"}} onClick={()=>{history.push("/")}} >
-                    <img src="/logo.png" alt="LOGO" style={{width:"30px",position:"absolute",bottom:"0px",left:"0px"}}/>
-                    <img src="/image/logo.png" alt="LOGO" style={{width:"100px",marginLeft:"15px",marginBottom:"-10px"}}/>
-                </div>
+                </div>   
+                {
+                    props.talk_header ? 
+                    <div className="logo" style={{position:"relative"}} >
+                    <img src="/image/talkLogo.png" alt="Talk Logo" onClick={()=>{history.push("/")}}/>
+                    </div> : 
+                    <div className="logo" style={{position:"relative"}} onClick={()=>{history.push("/")}} >
+                        <img src="/logo.png" alt="LOGO" style={{width:"30px",position:"absolute",bottom:"0px",left:"0px"}}/>
+                        <img src="/image/logo.png" alt="LOGO" style={{width:"100px",marginLeft:"15px",marginBottom:"-10px"}}/>
+                    </div>
+                }
             </div>
             {
                 history.location.pathname !== "/" ? (

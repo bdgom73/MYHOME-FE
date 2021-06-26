@@ -89,8 +89,11 @@ function App() {
       <Route exact path="/find/userinfo" render={(props)=>{ return <Template access="non-user"><UserFind {...props}/></Template> }}></Route>
       
       {/* TEST */}
-      <Route exact path="/test"><TalkList/></Route>
-      <Route exact path="/chat/room=:room" render={(props)=>{ return <Template access="user"><ChatPage {...props}/></Template> }}></Route>
+      <Route exact path="/test"><Template talk_header><TalkList/></Template></Route>
+
+      {/* ROOM CHAT */}
+      <Route exact path="/chat"><Template talk_header><TalkList/></Template></Route>
+      <Route exact path="/chat/room=:room" render={(props)=>{ return <Template talk_header><ChatPage {...props}/></Template> }}></Route>
 
       {/* NOT FOUND SERVICE */}
       <Route path="/"><NotFound/></Route>
