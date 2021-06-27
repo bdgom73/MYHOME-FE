@@ -4,6 +4,12 @@ const {createProxyMiddleware} =  require('http-proxy-middleware');
 module.exports = (app) => {
 
   app.use(
+    '/myApi', 
+    createProxyMiddleware({
+        target: 'http://127.0.0.1:8080',
+        changeOrigin: true,
+    }));
+  app.use(
     '/v1', 
     createProxyMiddleware({
         target: 'https://openapi.naver.com',
@@ -16,7 +22,7 @@ module.exports = (app) => {
         changeOrigin: true,
     }));
   app.use(
-    '/socket.io/?',
+    '/socket.io',
     createProxyMiddleware({
       target: 'http://127.0.0.1:1337',
       changeOrigin: true,

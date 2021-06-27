@@ -33,7 +33,7 @@ export default function VideoDetail(props){
 
     useEffect(()=>{    
        setBoardId(params.id);
-       axios.get("/bbs/view/"+params.id+"/video")
+       axios.get("/myApi/bbs/view/"+params.id+"/video")
         .then(res=>{
             console.log(res)
             const unique = res.data.video_url && res.data.videoType ==="YOUTUBE" ? res.data.video_url.split("https://youtu.be/")[1] : res.data.video_url;
@@ -54,7 +54,7 @@ export default function VideoDetail(props){
     },[board_id])
 
     useEffect(()=>{      
-        axios.get(`/bbs/${params.id}/check/recommend`,{
+        axios.get(`/myApi/bbs/${params.id}/check/recommend`,{
             headers : {
                 "Authorization" : member.SESSION_UID
             }
@@ -69,7 +69,7 @@ export default function VideoDetail(props){
   
 
     const Recommend = ()=>{
-        axios.get(`/bbs/${params.id}/recommend`,{
+        axios.get(`/myApi/bbs/${params.id}/recommend`,{
             headers : {
                 "Authorization" : member.SESSION_UID
             }
@@ -86,7 +86,7 @@ export default function VideoDetail(props){
 
     const onClickDeleteHandler = ()=>{
         if(window.confirm("정말 삭제하시겠습니까?")){
-            axios.delete("/bbs/delete?id="+params.id)
+            axios.delete("/myApi/bbs/delete?id="+params.id)
             .then(res=>{
                 history.push("/bbs/video")
             })
@@ -208,7 +208,7 @@ export default function VideoDetail(props){
                             <button className="btn" onClick={(e)=>{
                                 const fd = new FormData();
                                 fd.append("description",editorContent);
-                                axios.post(`/bbs/${board_id}/write/comment`,fd,{
+                                axios.post(`/myApi/bbs/${board_id}/write/comment`,fd,{
                                     headers : {
                                         "Authorization" : member.SESSION_UID
                                     }

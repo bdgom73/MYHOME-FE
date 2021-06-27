@@ -38,7 +38,7 @@ export default function ChatRoomForm(props){
                 fd.append("password",roomPassword);
             }
         }
-        axios.post(`/room/make/room/`,fd,{headers:{"Authorization" : SESSION_UID}})
+        axios.post(`/myApi/room/make/room/`,fd,{headers:{"Authorization" : SESSION_UID}})
             .then(res=>{
                 props.close();
             }).catch(e=> alert("방만들기 실패"));

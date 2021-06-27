@@ -112,7 +112,7 @@ export default function PhotoWrite(props){
             fd.append("images[]", list.files[i])
         }
       
-        axios.post("/bbs/write?category=photo",fd,{headers:{'Content-Type': 'multipart/form-data',"Authorization" : member.SESSION_UID}})
+        axios.post("/myApi/bbs/write?category=photo",fd,{headers:{'Content-Type': 'multipart/form-data',"Authorization" : member.SESSION_UID}})
             .then(res=>{
                 if(res.status === 200) history.push(`/bbs/photo/${res.data}`)
             }).catch(e=>{

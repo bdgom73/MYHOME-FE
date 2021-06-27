@@ -29,7 +29,7 @@ export default function PhotoBoard(props){
 
      // 총 size 가져오기
      useEffect(()=>{      
-        axios.get(`/bbs/photo/size`)
+        axios.get(`/myApi/bbs/photo/size`)
         .then(res=>{
             setTotal(res.data)
             setTotalPage(Math.ceil(res.data / 40));
@@ -37,7 +37,7 @@ export default function PhotoBoard(props){
     },[]);
     const _getUrl = ()=>{   
         setLoading(true);   
-        let url =  `/bbs/photo/get?size=${40}&page=${page}` 
+        let url =  `/myApi/bbs/photo/get?size=${40}&page=${page}` 
         axios.get(url)
         .then(res=>{
             setData(res.data);   

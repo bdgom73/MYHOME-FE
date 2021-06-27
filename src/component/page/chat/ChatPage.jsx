@@ -7,9 +7,6 @@ import { FaUser } from 'react-icons/fa';
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 
-const initialMessagesState = {
-    general : [],
-}
 let currentUser = "";
 export default function ChatPage(props){
     const {params : {room}}= props.match;
@@ -21,6 +18,7 @@ export default function ChatPage(props){
     const [message,setMessage] = useState("");
     const [users,setUsers] = useState([]);
     const [roomInfo, setRoomInfo] = useState({});
+    const [roomUser,setRoomUser] = useState([]);
     const socketRef = useRef();
     const chatRef = useRef();
 
@@ -57,9 +55,9 @@ export default function ChatPage(props){
     }
 
     const connect = ()=>{
-        setConn(true);
-        socketRef.current = io.connect("/");
-
+        setConn(true);     
+        socketRef.current = io.connect("/room");
+        socketRef.current.emit("join server");
         socketRef.current.emit("join room", room , data, (messages,roomUsers) => roomJoinCallBack(messages,roomUsers));
         
         socketRef.current.on("alert message", msg=>{     
@@ -82,6 +80,11 @@ export default function ChatPage(props){
         socketRef.current.on("new user", (user)=>{
             setUsers([...user]);
         })   
+        socketRef.current.emit("join server");
+
+        socketRef.current.on("user data", (users)=>{
+            setRoomUser(users);  
+        })
     }
 
     useEffect(()=>{
@@ -97,8 +100,18 @@ export default function ChatPage(props){
     },[data])
 
     useEffect(()=>{
+        if(roomUser[room] && data.id){
+            const findUser = roomUser[room].filter(v=> v.id === data.id);
+            if(findUser.length > 1){
+                socketRef.current.emit("deduplication user", room, data);
+            }
+        }
+    },[roomUser,data])
+
+    useEffect(()=>{
         window.addEventListener("beforeunload",()=>{
-            socketRef.current.emit("exit room", room, currentUser);            
+            socketRef.current.emit("exit room", room, currentUser);  
+            socketRef.current.disconnect();          
         })   
     })
     useEffect(()=>{   
@@ -107,14 +120,15 @@ export default function ChatPage(props){
         }   
        return()=>{
             if(SESSION_UID){
-                socketRef.current.emit("exit room", room, currentUser);      
+                socketRef.current.emit("exit room", room, currentUser);  
+                socketRef.current.disconnect();               
             }     
        } 
     },[]);
 
   
     const joinRoomCheck = ()=>{
-        axios.get("/room/join/"+room,{headers:{"Authorization" : SESSION_UID}})
+        axios.get("/myApi/room/join/"+room,{headers:{"Authorization" : SESSION_UID}})
             .then(res=>{
                 if(res.status === 200){
                     const result = res.data;
@@ -190,9 +204,7 @@ export default function ChatPage(props){
         <div className="char_room_wrap">
             <div className="talk_list_header">
                 <img src="/image/talkLogo.png" alt="Talk Logo"/>
-                <div className="btn_wrap">
-                    <button type="button" className="btn delete">신청현황</button>
-                </div>
+                <button type="button" className="btn delete">가입신청</button>
             </div>
             <div className="chat_wrap" >
                 <ul className="chat_users">

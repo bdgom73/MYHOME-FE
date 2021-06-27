@@ -119,7 +119,7 @@ export default function Register(){
         let emailRegExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
                
         if(email.match(emailRegExp) != null){       
-            axios.get(`/send/email/${email}`)
+            axios.get(`/myApi/send/email/${email}`)
                 .then(res=>{
                     setAuthNumber(res.data);
                     setAuthLoading(false);
@@ -192,7 +192,7 @@ export default function Register(){
             fd.append("zipcode",target[6].value);
             fd.append("address",target[8].value);
             fd.append("detail_address",target[9].value);
-            axios.post("/member/register",fd)
+            axios.post("/myApi/member/register",fd)
                 .then(res=>{
                     toast.success("회원가입 완료")
                     history.push("/login");
@@ -301,7 +301,7 @@ export default function Register(){
                             return;
                         }
                         if(e.target.value !== "" && e.target.value.length >= 3 && e.target.value.length <= 20){
-                            axios.get(`/member/duplicate/nickname=${e.target.value}`)
+                            axios.get(`/myApi/member/duplicate/nickname=${e.target.value}`)
                             .then(res=>{
                                 if(res.status === 200){   
                                     msg.innerText = "사용가능한 닉네임입니다.";

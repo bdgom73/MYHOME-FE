@@ -122,7 +122,7 @@ export default function VideoWrite(props){
         fd.append("description",desc);
         fd.append("keyword",new Array(keyword));
         
-        axios.post("/bbs/write?category=video",fd,
+        axios.post("/myApi/bbs/write?category=video",fd,
         {headers:{'Content-Type': 'multipart/form-data',"Authorization" : member.SESSION_UID}})
             .then(res=>{
                 e.preventDefault();

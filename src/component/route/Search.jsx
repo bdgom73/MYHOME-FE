@@ -35,7 +35,7 @@ export default function Search(props){
     const [searchTag,setSearchTag] = useState([]);
     const searchRef = useRef(0);
     const onSearchHandler = ()=>{
-        const search_url = `/search?term=${term}&size=${50}&page=${0}&sort=${sort}&sub_sort=${subSort}`
+        const search_url = `/myApi/search?term=${term}&size=${50}&page=${0}&sort=${sort}&sub_sort=${subSort}`
         axios.get(search_url)
         .then(res=>{
             setData(res.data);

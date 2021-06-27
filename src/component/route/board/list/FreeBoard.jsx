@@ -44,7 +44,7 @@ export default function FreeBoard(props){
     },[]);
     const _getUrl = ()=>{   
         setLoading(true);   
-        let url =  `/bbs/free/get?size=${40}&page=${page}` 
+        let url =  `/myApi/bbs/free/get?size=${40}&page=${page}` 
         axios.get(url)
         .then(res=>{
             setData(res.data);  

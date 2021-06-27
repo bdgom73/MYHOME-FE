@@ -67,7 +67,7 @@ export default function UserInfo(props){
         setCLoading(true)
         const fd = new FormData();
         fd.append("nickname",nickname);
-        axios.post(`/comments/nickname/get?page=${page}&size=10`,fd)
+        axios.post(`/myApi/comments/nickname/get?page=${page}&size=10`,fd)
         .then(res=>{
             const result = res.data;
             setComments(result.content || []);
@@ -80,7 +80,7 @@ export default function UserInfo(props){
         setBLoading(true)
         const fd = new FormData();
         fd.append("nickname",nickname);
-        axios.post(`/bbs/nickname/member/get?page=${page}&size=10`,fd)
+        axios.post(`/myApi/bbs/nickname/member/get?page=${page}&size=10`,fd)
         .then(res=>{
             const result = res.data;
             setBoard(result.content || []);
@@ -89,7 +89,7 @@ export default function UserInfo(props){
         }).catch(e=> {console.log(e.response); setBLoading(false);});
     }
     function getMemberData(){
-        axios.get(`/member/${nickname}`)
+        axios.get(`/myApi/member/${nickname}`)
         .then(res=>{
             const result = res.data;   
             setUser(result || {});

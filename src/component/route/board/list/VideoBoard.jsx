@@ -54,7 +54,7 @@ export default function VideoBoard(){
 
     // 총 size 가져오기
     useEffect(()=>{   
-        axios.get(`/bbs/video/size`)
+        axios.get(`/myApi/bbs/video/size`)
         .then(res=>{
             setTotalPage(Math.ceil(res.data / 40))
         })
@@ -66,7 +66,7 @@ export default function VideoBoard(){
    // data가져오기
     const _getUrl = ()=>{   
         setLoading(true)    
-        let url =  `/bbs/video/get?size=${40}&page=${page}`;
+        let url =  `/myApi/bbs/video/get?size=${40}&page=${page}`;
         axios.get(url)
         .then(res=>{
             for(let i = 0 ; i < res.data.length ; i++ ){

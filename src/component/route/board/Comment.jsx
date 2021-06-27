@@ -70,30 +70,42 @@ export default function Comment(props){
                         {
                             (member.data.id === d.member_id && d.member_id && member.data.id) || member.data.rank === "ADMIN" ? 
                             <controller>
-                                <button type="button" className="btn" onClick={()=> {
-                                    setCurrentComments(d.id)
-                                    if(!isUpdate){
-                                        setIsUpdate(true);
+                                <FiMoreVertical onClick={()=>{
+                                    const cmc = document.getElementById(`comments_more_content${d.id}`);
+                                    if(cmc.className.indexOf("block") !== -1){
+                                        cmc.classList.add("none");
+                                        cmc.classList.remove("block");
                                     }else{
-                                        const fd = new FormData();
-                                        fd.append("description", desc);
-                                        axios.put(`/comments/${d.id}/update`,fd)
-                                        .then(res=>{
-                                            if(res.status===200){ d.description = desc; setIsUpdate(false)}
-                                        })
+                                        cmc.classList.add("block");
+                                        cmc.classList.remove("none");
                                     }
-                                }}>수정</button>
-                                {
-                                    isUpdate && d.id === currentComments? 
-                                    <button type="button" className="btn" onClick={()=> setIsUpdate(false)}>취소</button> : <></>
-                                }
-                                <button type="button" className="btn delete" onClick={(e)=>{                   
-                                    axios.delete(`/comments/delete/${d.board_id}/${d.id}`)
-                                        .then(res=>{
-                                            const cur = document.getElementById("comment"+d.id);
-                                            if(res.status === 200) cur.remove(); 
-                                        })
-                                }}>삭제</button>
+                                }}/>
+                                <div className="comment_more none" id={`comments_more_content${d.id}`}>
+                                    <button type="button" className="btn" onClick={()=> {
+                                        setCurrentComments(d.id)
+                                        if(!isUpdate){
+                                            setIsUpdate(true);
+                                        }else{
+                                            const fd = new FormData();
+                                            fd.append("description", desc);
+                                            axios.put(`/myApi/comments/${d.id}/update`,fd)
+                                            .then(res=>{
+                                                if(res.status===200){ d.description = desc; setIsUpdate(false)}
+                                            })
+                                        }
+                                    }}>수정</button>
+                                    {
+                                        isUpdate && d.id === currentComments? 
+                                        <button type="button" className="btn" onClick={()=> setIsUpdate(false)}>취소</button> : <></>
+                                    }
+                                    <button type="button" className="btn delete" onClick={(e)=>{                   
+                                        axios.delete(`/myApi/comments/delete/${d.board_id}/${d.id}`)
+                                            .then(res=>{
+                                                const cur = document.getElementById("comment"+d.id);
+                                                if(res.status === 200) cur.remove(); 
+                                            })
+                                    }}>삭제</button>
+                                </div>
                             </controller>   : <controller><FiMoreVertical/></controller>
                         }
                        

@@ -34,7 +34,7 @@ export default function Notice({UseAsPart, match, top}){
     
     useEffect(()=>{  
         if(!UseAsPart){
-            axios.get(`/bbs/free/size`)
+            axios.get(`/myApi/bbs/free/size`)
             .then(res=>{
                 setTotal(res.data)
                 setTotalPage(Math.ceil(res.data / 40));
@@ -44,7 +44,7 @@ export default function Notice({UseAsPart, match, top}){
 
     const _getUrl = ()=>{   
         setLoading(true);   
-        let url = top ? `/notice/get?top=${top ? top : 10}` :  `/notice/get?size=${40}&page=${page}` 
+        let url = top ? `/myApi/notice/get?top=${top ? top : 10}` :  `/notice/get?size=${40}&page=${page}` 
         axios.get(url)
         .then(res=>{
             setData(res.data || []);  

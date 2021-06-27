@@ -38,7 +38,7 @@ export default function FreeWrite(props){
         fd.append("keyword",new Array(keyword));
 
         console.log(new Array(keyword));
-        axios.post("/bbs/write?category=free",fd,{headers:{'Content-Type': 'multipart/form-data',"Authorization" : member.SESSION_UID}})
+        axios.post("/myApi/bbs/write?category=free",fd,{headers:{'Content-Type': 'multipart/form-data',"Authorization" : member.SESSION_UID}})
             .then(res=>{
                 history.push(`/bbs/free/${res.data}`)
             }).catch(e=>console.log(e.response))

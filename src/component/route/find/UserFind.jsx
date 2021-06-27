@@ -65,7 +65,7 @@ const UserFind = (props)=>{
                         <div className="btn_wrap">
                             <button type="button" className="btn" onClick={()=>{
                                 setLoading(true);
-                                axios.get(`/member/find/password?email=${currentEmail}`)
+                                axios.get(`/myApi/member/find/password?email=${currentEmail}`)
                                     .then(res=>{
                                         alert("해당 이메일을 확인 후 로그인해주세요");
                                         close();

@@ -29,7 +29,7 @@ export default function Home(props){
     useEffect(()=>{
         axios({
             method : "get",      
-            url : `/bbs/${sort}/top10`})
+            url : `/myApi/bbs/${sort}/top10`})
         .then(res=>{
             const d = res.data;
             setData(d || []);

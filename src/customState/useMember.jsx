@@ -10,7 +10,7 @@ function useMember(){
 
     useEffect(()=>{
         if(cookie.SESSION_UID){
-            axios.get(`/member/authorization`,{
+            axios.get(`/myApi/member/authorization`,{
                 headers : {
                     "Authorization" :`${cookie.SESSION_UID}`
                 }

@@ -125,7 +125,7 @@ export default function Myinfo(props){
                             const fd = new FormData();
                             fd.append("current_password",current_password.value);
                             fd.append("password",changed_password.value);
-                            axios.post("/member/change/password",fd,{headers:{"Authorization":SESSION_UID}})
+                            axios.post("/myApi/member/change/password",fd,{headers:{"Authorization":SESSION_UID}})
                                 .then(res=>{
                                     alert("비밀번호 변경이 완료되었습니다.")
                                     current_password.value="";
@@ -200,7 +200,7 @@ export default function Myinfo(props){
         setBoard([]);
         const fd = new FormData();
         fd.append("nickname",data.nickname);
-        axios.post(`/bbs/nickname/member/get?page=${page}&size=10`,fd)
+        axios.post(`/myApi/bbs/nickname/member/get?page=${page}&size=10`,fd)
         .then(res=>{
             const result = res.data;
             setBoard(result.content || []);
@@ -213,7 +213,7 @@ export default function Myinfo(props){
         setComments([]);
         const fd = new FormData();
         fd.append("nickname",data.nickname);
-        axios.post(`/comments/nickname/get?page=${page}&size=10`,fd)
+        axios.post(`/myApi/comments/nickname/get?page=${page}&size=10`,fd)
         .then(res=>{
             const result = res.data;
             console.log(result);
@@ -231,7 +231,7 @@ export default function Myinfo(props){
     }
 
     function duplicateNickname(){
-        axios.get(`/member/duplicate/nickname=${nickname}`)
+        axios.get(`/myApi/member/duplicate/nickname=${nickname}`)
         .then(res=>{}).catch(e=>{})
     }
     function onUpdateHandler(){
@@ -240,7 +240,7 @@ export default function Myinfo(props){
         fd.append("address",address);
         fd.append("zipcode",zipcode);
         fd.append("detail_address",detail_address);
-        axios.put(`/member/update`,fd,{"headers" : {"Authorization" : SESSION_UID}})
+        axios.put(`/myApi/member/update`,fd,{"headers" : {"Authorization" : SESSION_UID}})
         .then(res=> {
             if(res.status === 200) {
                 setPrivateInfoIsUpdate(false);
@@ -354,7 +354,7 @@ export default function Myinfo(props){
                                         const text = document.getElementById("myinfo_intro_textarea");
                                         const fd = new FormData();
                                         fd.append("introduce",text.value);
-                                        axios.post("/member/change/introduce",fd,{headers:{"Authorization":SESSION_UID}})
+                                        axios.post("/myApi/member/change/introduce",fd,{headers:{"Authorization":SESSION_UID}})
                                             .then(res=>{
                                                 window.location.reload();       
                                             }).catch(e=>{
@@ -433,7 +433,7 @@ export default function Myinfo(props){
                                 const avatar = document.getElementById("myinfo_avater_file");
                                 const fd = new FormData();
                                 fd.append("avatar", avatar.files[0])
-                                axios.post("/member/change/avatar",fd,{headers:{"Authorization": SESSION_UID}})
+                                axios.post("/myApi/member/change/avatar",fd,{headers:{"Authorization": SESSION_UID}})
                                     .then(res=>{
                                         alert("이미지가 변경되었습니다.");
                                     }).catch(e=>alert("이미지 변경에 실패했습니다."))
@@ -509,7 +509,7 @@ export default function Myinfo(props){
                             }
                             const fd = new FormData();                           
                             fd.append("password",current_password.value);      
-                            axios.post("/member/equality/password/check",fd,{headers:{"Authorization":SESSION_UID}})
+                            axios.post("/myApi/member/equality/password/check",fd,{headers:{"Authorization":SESSION_UID}})
                                 .then(res=>{
                                     const data = res.data;
                                     if(data.result){

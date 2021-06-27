@@ -32,7 +32,7 @@ export default function FreeUpdate(props){
 
     useEffect(()=>{    
         setBoardId(params.id);
-        axios.get("/bbs/view/"+params.id+"/free")
+        axios.get("/myApi/bbs/view/"+params.id+"/free")
          .then(res=>{ 
             setData(res.data); 
             setTitle(res.data.title);
@@ -59,7 +59,7 @@ export default function FreeUpdate(props){
         fd.append("title",e.target[0].value);
         fd.append("description",desc);
         fd.append("category","free")
-        axios.put("/bbs/update",fd,{headers:{'Content-Type': 'multipart/form-data',"Authorization" : member.SESSION_UID}})
+        axios.put("/myApi/bbs/update",fd,{headers:{'Content-Type': 'multipart/form-data',"Authorization" : member.SESSION_UID}})
             .then(res=>{
                 if(res.status === 200) history.push(`/bbs/free/${params.id}`)
             }).catch(e=>console.error(e.response))

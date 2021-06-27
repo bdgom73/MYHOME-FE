@@ -38,7 +38,7 @@ export default function PhotoUpdate(props){
     },[data])
     useEffect(()=>{    
         setBoardId(params.id);
-        axios.get("/bbs/view/"+params.id+"/photo")
+        axios.get("/myApi/bbs/view/"+params.id+"/photo")
          .then(res=>{ 
              console.log(res)
             setData(res.data); 
@@ -142,7 +142,7 @@ export default function PhotoUpdate(props){
             fd.append("images[]", list.files[i])
         }
       
-        axios.put("/bbs/update",fd,{headers:{'Content-Type': 'multipart/form-data',"Authorization" : member.SESSION_UID}})
+        axios.put("/myApi/bbs/update",fd,{headers:{'Content-Type': 'multipart/form-data',"Authorization" : member.SESSION_UID}})
             .then(res=>{
                 if(res.status === 200) history.push(`/bbs/photo/${board_id}`)
             }).catch(e=>console.log(e.response))

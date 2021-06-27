@@ -321,3 +321,16 @@ ul.channel{
       
     }
 }
+
+.basic_btn{
+   border: 1px solid #eee;
+   border-radius: 5px;
+   padding: 3px 5px;
+   background-color: #190c63;
+   color: #eee;
+   font-size: 9px;
+   cursor: pointer;
+   &:hover{
+    background-color: #382799;
+   }
+}

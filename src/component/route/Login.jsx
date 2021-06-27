@@ -32,7 +32,7 @@ export default function Login(){
                 fd.append("ip",result);
                 fd.append("countryCode",res.data.whois.countryCode);
                 fd.append("ipv",res.data.whois.queryType);
-                axios.post("/member/login",fd)
+                axios.post("/myApi/member/login",fd)
                 .then(response=>{
                     setCookies("SESSION_UID",response.data,{path : "/"});
                     toast.success(`${result} ${res.data.whois.countryCode} ${moment().format("YY-MM-DD HH:mm")} 로그인`);

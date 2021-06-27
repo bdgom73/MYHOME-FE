@@ -66,7 +66,7 @@ export default function Calendar(props){
         const endWeek = today.clone().endOf('month').week() === 1 ? 53 : today.clone().endOf('month').week()+1;
         const start_date = moment(year+"-"+month).clone().week(startWeek-1).format("YYYY-MM-DD");
         const end_date = moment(year+"-"+month).clone().week(endWeek).format("YYYY-MM-DD");
-        axios.get(`/calendar/schedule?start_date=${start_date}&end_date=${end_date}&type=range`,{headers:{'Authorization': member.SESSION_UID}})
+        axios.get(`/myApi/calendar/schedule?start_date=${start_date}&end_date=${end_date}&type=range`,{headers:{'Authorization': member.SESSION_UID}})
         .then(res=>{    
             setRangeEvent(res.data.range || []);
             setSingleEvent(res.data.single || [] );

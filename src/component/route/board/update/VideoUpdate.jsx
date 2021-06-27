@@ -35,7 +35,7 @@ export default function VideoUpdate(props){
 
     useEffect(()=>{    
         setBoardId(params.id);
-        axios.get("/bbs/view/"+params.id+"/video")
+        axios.get("/myApi/bbs/view/"+params.id+"/video")
          .then(res=>{ 
             setData(res.data); 
             setTitle(res.data.title);
@@ -91,7 +91,7 @@ export default function VideoUpdate(props){
         fd.append("description",desc);
         fd.append("category","video");
         fd.append("id",board_id);
-        axios.put("/bbs/update",fd,
+        axios.put("/myApi/bbs/update",fd,
         {headers:{'Content-Type': 'multipart/form-data',"Authorization" : member.SESSION_UID}})
             .then(res=>{
                 e.preventDefault();

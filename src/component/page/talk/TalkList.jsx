@@ -23,7 +23,7 @@ const alertMessageInit = {
 export default function TalkList(){
 
     const history = useHistory();
-    const {SESSION_UID} = useMember();
+    const {SESSION_UID,data} = useMember();
     const {modal, setModal, close} = useModal();
     const [roomList, setRoomList] = useState([]);
     const [roomUser,setRoomuser] = useState({});
@@ -79,7 +79,7 @@ export default function TalkList(){
     }
 
     const connect = ()=>{;
-        socketRef.current = io.connect("/");
+        socketRef.current = io.connect("/room");
         
         socketRef.current.emit("join server");
 
@@ -89,20 +89,46 @@ export default function TalkList(){
     }
 
     const joinRoom = (room)=>{
-        if(SESSION_UID){
-            axios.get("/room/join/"+room.id,{headers:{"Authorization" : SESSION_UID}})
+        if(SESSION_UID){   
+            if(roomUser[room.id]){
+                const findUser = roomUser[room.id].find(v=> v.id === data.id);
+                console.log(roomUser);
+                if(findUser){
+                    setAlertMessage({
+                        type : "error",
+                        message : "해당 채팅방에 이미 접속중입니다."
+                    });
+                    setModal(3);
+                    return;
+                }
+            }
+            axios.get("/myApi/room/join/"+room.id,{headers:{"Authorization" : SESSION_UID}})
             .then(res=>{
                 if(res.status === 200){
                     const result = res.data;
                     if(!result.result){
-                        alert("접속권한이 없습니다.");
+                        setAlertMessage({
+                            type : "error",
+                            message : "접속권한이 없습니다"
+                        });
+                        setModal(3);
                     }else{
                         history.push(`/chat/room=${room.id}`) ;
                     }
                 }
-            }).catch(e=> {alert("접속권한이 없습니다.");})
+            }).catch(e=> {
+                setAlertMessage({
+                    type : "error",
+                    message : "접속권한이 없습니다"
+                });
+                setModal(3);
+            })
         }else{
-            alert("로그인 후 이용해주세요");
+            setAlertMessage({
+                type : "error",
+                message : "로그인 후 사용가능합니다."
+            });
+            setModal(3);
         }
       
     }
@@ -139,6 +165,7 @@ export default function TalkList(){
             </li>        
             )
         }
+       
         return(    
             <li className="room" key={room.id}>
                  <span className="room_type">
@@ -147,6 +174,10 @@ export default function TalkList(){
                     "오픈채팅" : "그룹채팅"
                     }
                     <span  className="date">{moment(room.created).format("YYYY년 MM월 DD일")}</span>
+                    {
+                        room.type === "PRIVATE" ? 
+                        <button type="button" className="basic_btn" style={{float:"right"}}>가입신청</button>   :<></>
+                    }
                 </span>   
                 <div className="room_top" >
                     <span  className="room_title" onClick={()=>{joinRoom(room)}}>{room.title}</span>  
@@ -157,16 +188,15 @@ export default function TalkList(){
                     <span className="room_leader">
                         <BiCrown size="20"/>
                         {room.nickname}
-                    </span>
-                   
-                </div>     
+                    </span>   
+                </div>           
             </li>
         )
     }
 
     const getRooms = ()=>{
         connect();
-        axios.get("/room/random/read")
+        axios.get("/myApi/room/random/read")
         .then(res=>{
             if(res.status === 200){
                 setRoomList(res.data);     
@@ -176,21 +206,24 @@ export default function TalkList(){
 
     useEffect(()=>{
         getRooms();  
+        return ()=>{
+            socketRef.current.disconnect();        
+        }
     },[]);
     
     const searchRoomHandler = (type, value)=>{
         if(type === "term"){
-            axios.get(`/room/search?condition=${searchType}&term=${value}`)
+            axios.get(`/myApi/room/search?condition=${searchType}&term=${value}`)
             .then(res=>{
                 setRoomList(res.data);
             }).catch(e=> console.log(e.response));
         }else if(type === "condition"){
-            axios.get(`/room/search?condition=${value}&term=${searchValue}`)
+            axios.get(`/myApi/room/search?condition=${value}&term=${searchValue}`)
             .then(res=>{
                 setRoomList(res.data);
             }).catch(e=> console.log(e.response));
         }else{
-            axios.get(`/room/search?condition=${searchType}&term=${searchValue}`)
+            axios.get(`/myApi/room/search?condition=${searchType}&term=${searchValue}`)
             .then(res=>{
                 setRoomList(res.data);
             }).catch(e=> console.log(e.response));
@@ -204,7 +237,7 @@ export default function TalkList(){
             <div className="talk_list_body" >
                 <ul className="channel">
                 {
-                    !roomList.length ? <li>현재 생성된 채널이 없습니다.</li> :
+                    !roomList.length ? <li className="room">채널이 없습니다.</li> :
                     roomList.map(renderRooms)
                 }
                 </ul>

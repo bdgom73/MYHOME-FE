@@ -59,27 +59,26 @@ comment{
         display: block;
         position: absolute;
         top : 5px;
-        right: 5px;
+        right: 5px;   
         .btn{
             padding: 2px 5px;
             min-width: 45px;
             margin: 0 2px;
-            background-color: #a36508;
-            border: 1px solid #eee;
-            border-radius: 5px;
-            color : #fff;
+            background-color: #fff;
+            border: 0;
+            font-size: 13px;
+            border-radius: 0;
+            color : #000;
             font-weight: bold;
             cursor: pointer;
             &:hover{
-                background-color: #c47f18;
+               text-decoration: underline;
             }
         }
         .delete{
-            background-color: #cf0101;
-            &:hover{
-                background-color: #e22222;
-            }
+            color : #d61919; 
         }
+       
     }
 }
 no-comment{
@@ -88,4 +87,43 @@ no-comment{
     padding: 15px 0;
     font-weight: bold;  
     color : #747474;
+}
+
+.block{
+    display: block;
+}
+.none{
+    display: none;
+}
+.comment_more{
+    position: absolute;
+    top:25px;
+    right: 0px;
+    padding: 10px;
+    border: 1px solid #bbb;
+    z-index: 155;
+    background-color: #fff;
+    &:after, &:before {
+        bottom: 100%;
+        left: 80%;
+        border: solid transparent;
+        content: "";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+    }
+    
+    &:after {
+        border-color: rgba(136, 183, 213, 0);
+        border-bottom-color: #fff;
+        border-width: 8px;
+        margin-left: -8px;
+    }
+    &:before {
+        border-color: rgba(194, 225, 245, 0);
+        border-bottom-color: #bbb;
+        border-width: 9px;
+        margin-left: -9px;
+    }
 }
