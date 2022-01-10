@@ -91,10 +91,6 @@ function App() {
       {/* TEST */}
       <Route exact path="/test"><Template talk_header><TalkList/></Template></Route>
 
-      {/* ROOM CHAT */}
-      <Route exact path="/chat"><Template talk_header><TalkList/></Template></Route>
-      <Route exact path="/chat/room=:room" render={(props)=>{ return <Template talk_header><ChatPage {...props}/></Template> }}></Route>
-
       {/* NOT FOUND SERVICE */}
       <Route path="/"><NotFound/></Route>
     </Switch> 
